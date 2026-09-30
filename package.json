@@ -11,8 +11,9 @@
     "build": "node scripts/build-pages.mjs",
     "dev": "wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "test": "node scripts/test-scoring.mjs && node scripts/test-api.mjs",
-    "seed:compact": "node scripts/gen-seed-compact.mjs"
+    "test": "node scripts/test-scoring.mjs && node scripts/test-api.mjs && node scripts/test-api.mjs --real && node scripts/test-sql.mjs",
+    "seed:compact": "node scripts/gen-seed-compact.mjs",
+    "preview": "node scripts/dev-server.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.0.0"

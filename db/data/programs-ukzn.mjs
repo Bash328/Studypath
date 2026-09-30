@@ -8,10 +8,9 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 //    No 2027 table was published at the time of research, so intake_year is left null
 //    and every row is flagged [dated-document].
 // 2. UKZN's APS runs on levels 1-8 across 6 subjects excluding Life Orientation
-//    (maximum 48). The percentage-to-level conversion table for that 8-point scale was
-//    NOT captured from an official UKZN source, so we deliberately do not calculate a
-//    UKZN score from your marks. We would rather show nothing than a guessed number.
-//    See research_log entry ukzn-aps-scale.
+//    (maximum 48): 90-100% = 8, 80-89% = 7 ... 0-29% = 1. That table was read from
+//    UKZN's own 2026 College handbook, so the calculator now computes it - see
+//    src/scoring-audit.js for the sources.
 
 const BROCHURE = 'https://studyatukzn.ukzn.ac.za/wp-content/uploads/2026/02/Study@UKZN-BROCHURE-2026.pdf';
 

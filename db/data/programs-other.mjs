@@ -66,14 +66,14 @@ const ujPrograms = [
 ];
 
 // =====================================================================
-// University of the Western Cape - weighted points.
-// UWC scores English and Maths up to 15 points at level 8 and Life Orientation up to 3.
-// The full conversion table could not be read from the official page, so UWC scores are
-// NOT computed from your marks anywhere in this product. We show the published point
-// totals and say plainly that we cannot work out yours yet.
+// University of the Western Cape - weighted points (out of 65).
+// The scoring rule is read from UWC's own official APS calculator (see
+// src/scoring-audit.js), so the calculator computes it. What we could NOT read is the
+// per-subject minimums for each programme - those pages did not render - so the rows
+// stay flagged [unverified] for that reason only.
 // =====================================================================
-const UWC_POINTS = 'https://www.uwc.ac.za/admission-and-financial-aid/undergraduate-admission/application-information';
-const UWC_CAVEAT = 'UWC uses a weighted points system: English and Mathematics score up to 15 points at level 8 and Life Orientation up to 3. The full conversion table did not render on the official page, so we do not calculate a UWC score for you - we would be guessing. Points system source: ' + UWC_POINTS;
+const UWC_POINTS = 'https://www.uwc.ac.za/admission-point-score-calculator/south-african-aps-calculator';
+const UWC_CAVEAT = 'UWC counts seven subjects (English, an additional language, Mathematics or Mathematical Literacy, Life Orientation and your three best others) with English and Mathematics weighted most, for a total out of 65. The points total shown is what UWC publishes; its subject-by-subject minimums for this programme could not be read, so check them with UWC. Scoring rule: ' + UWC_POINTS;
 
 const uwcBase = {
   university_id: 'uwc',
@@ -142,8 +142,8 @@ const ruPrograms = [
 ];
 
 // =====================================================================
-// North-West University - only two entries verified. NWU's own APS formula was not
-// captured from an official source, so we do not compute an NWU score.
+// North-West University - only two programme entries verified. NWU's APS formula (six
+// best subjects, 8-point scale) is read from NWU's own calculator, so it is computed.
 // =====================================================================
 const nwuBase = {
   university_id: 'nwu',
@@ -152,7 +152,7 @@ const nwuBase = {
   intake_year: null,
   document_date: null,
 };
-const NWU_CAVEAT = 'We have not captured NWU’s own APS formula from an official source, so we do not work out your NWU score. The requirement below is what NWU publishes.';
+const NWU_CAVEAT = 'NWU adds your six best subjects (excluding Life Orientation) on an 8-point scale, for a total out of 48 - read from NWU’s own APS calculator. The requirement shown is what NWU publishes.';
 
 const nwuPrograms = [
   { ...nwuBase, id: 'nwu-beng', career_id: 'civil-engineer', name: 'BEng (all disciplines)', faculty: 'Engineering',
@@ -176,8 +176,18 @@ const ufsPrograms = [
     duration_years: null, min_aps: 36, scoring_system: 'UFS_AP', score_type: 'minimum',
     intake_year: 2027, document_date: null,
     source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/default-document-library/2027-mbchb-selection-rules.pdf?sfvrsn=34af520_0',
-    subject_requirements: [manual('Subject minimums', 'The per-subject minimums were not confirmed from the 2027 UFS document.')],
-    notes: flag('unverified', 'UFS requires an "AP score of at least 36" for MBChB. We have not captured the UFS AP formula from an official source, so we do not calculate your UFS score. The per-subject minimums and the duration are not confirmed from the 2027 document either.') },
+    // From the 2027 UFS MBChB selection rules: English, Mathematics, Physical Sciences and
+    // Life Sciences are compulsory, each at academic level 5 (60%) or better.
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5), lvl('Life Sciences', 5)],
+    notes: flag(['selection', 'partially-verified'], 'UFS requires an AP score of at least 36 to qualify for selection, plus level 5 (60%) in each of English, Mathematics, Physical Sciences and Life Sciences - both from the 2027 MBChB selection rules. Selection then goes well beyond marks (the document also awards points for other things). The AP scale is worked from the four compulsory subjects plus your best two, plus 1 point for Life Orientation at 60%+; the scale itself comes from UFS’s 2024 prospectus because the 2027 document refers to the prospectus for it. The duration is not stated in the 2027 document.') },
 ];
 
-export const otherPrograms = [...ujPrograms, ...uwcPrograms, ...ruPrograms, ...nwuPrograms, ...ufsPrograms];
+// Rhodes: "Life Orientation is not counted for points, but you're required to obtain at
+// least Level 4 (50%) for acceptance" - stated for all faculties in the prospectus.
+const ruWithLO = ruPrograms.map((p) => ({
+  ...p,
+  subject_requirements: [...p.subject_requirements, lvl('Life Orientation', 4)],
+  notes: p.notes + ' Life Orientation is not scored, but you need at least 50% in it.',
+}));
+
+export const otherPrograms = [...ujPrograms, ...uwcPrograms, ...ruWithLO, ...nwuPrograms, ...ufsPrograms];

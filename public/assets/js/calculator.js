@@ -174,7 +174,8 @@ function universityBlock(block) {
     el('h3', { style: 'font-size:1.45rem' }, university.name),
     el('div', { class: 'grid grid--2' }, scoreCard, selection),
     group(t('calc.qualifies'), block.qualifies, scoreFor),
-    group(t('calc.close'), block.close, scoreFor, { intro: 'A small push and these open up.' }),
+    group(t('calc.marksOk'), block.marksOk, scoreFor, { intro: t('calc.marksOkWhy') }),
+    group(t('calc.close'), block.close, scoreFor, { intro: t('calc.closeWhy') }),
     group(t('calc.notYet'), block.notYet, scoreFor),
     group(t('calc.cannotTell'), block.cannotTell, scoreFor, { intro: t('calc.cannotTellWhy') }));
 }
@@ -203,16 +204,25 @@ async function calculate() {
     const data = await api('/qualify', { method: 'POST', body: { marks } });
     track('calculator_run', { subjects: data.marksCounted, universities: data.universities.length });
 
-    const totalQualified = data.universities.reduce((n, u) => n + u.qualifies.length, 0);
+    const sum = (key) => data.universities.reduce((n, u) => n + u[key].length, 0);
+    const clean = sum('qualifies');
+    const withMore = sum('marksOk');
+    const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+    const headline = [];
+    if (clean) headline.push(el('strong', {}, `You meet the published requirements for ${plural(clean, 'programme', 'programmes')}.`));
+    if (withMore) {
+      const what = clean ? `${withMore} more` : plural(withMore, 'programme', 'programmes');
+      headline.push(el('span', {}, `${clean ? ' ' : ''}Your marks are enough for ${what}, but ${withMore === 1 ? 'it also needs' : 'each of those also needs'} something we can’t check from marks — like an NBT, a portfolio or an interview.`));
+    }
+    if (!clean && !withMore) headline.push(el('strong', {}, t('calc.nothingYet')));
 
     clear(out).append(
       el('div', { class: 'callout callout--warn' },
         el('h3', {}, t('calc.notComparable')),
         el('p', {}, t('calc.notComparableBody'))),
-      el('p', { style: 'margin-top:1.5rem;font-size:1.1rem' },
-        totalQualified
-          ? el('strong', {}, `Good news — you meet the published requirements for ${totalQualified} ${totalQualified === 1 ? 'programme' : 'programmes'} right now.`)
-          : el('strong', {}, 'You do not meet the published minimum for anything we have captured yet — but look at the "you are close" lists below, and remember we have only covered some of the universities so far.')),
+      el('p', { style: 'margin-top:1.5rem;font-size:1.1rem' }, ...headline),
+      (clean || withMore) ? el('p', { class: 'small muted' }, t('calc.selectionReminder')) : null,
       ...data.universities.map(universityBlock));
 
     out.scrollIntoView({ behavior: 'smooth', block: 'start' });

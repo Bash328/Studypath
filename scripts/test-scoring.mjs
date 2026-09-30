@@ -6,7 +6,7 @@
 // verified, and that "you qualify" is only ever said when it is true.
 
 import { normaliseMarks } from '../src/subjects.js';
-import { SCORING_SYSTEMS, scoreEverySystem, assessProgram, stellenboschSelection, nscLevel, witsLevel } from '../src/scoring.js';
+import { SCORING_SYSTEMS, scoreEverySystem, scoreForProgram, requirementGroups, assessProgram, stellenboschSelection, nscLevel, witsLevel } from '../src/scoring.js';
 import { uctPrograms } from '../db/data/programs-uct.mjs';
 import { witsPrograms } from '../db/data/programs-wits.mjs';
 import { suPrograms } from '../db/data/programs-su.mjs';
@@ -64,10 +64,18 @@ assert('all five computable systems produced different numbers',
   new Set([scores.UCT_FPS600.value, scores.WITS_APS_incLO.value, scores.UP_APS_exLO.value,
            scores.SU_aggregate_pct.value, scores.RU_pct_div10.value]).size === 5);
 
-console.log('\nWe refuse to guess the systems we have not verified');
-for (const id of ['UKZN_APS_exLO', 'UWC_weighted', 'NWU_APS', 'UFS_AP', 'WITS_COMPOSITE_INDEX']) {
-  assert(`${id} returns no number`, scores[id].computable === false && !!scores[id].reason);
-}
+console.log('\nWe refuse to guess what we cannot verify');
+assert('Wits Composite Index returns no number, with a reason',
+  scores.WITS_COMPOSITE_INDEX.computable === false && !!scores.WITS_COMPOSITE_INDEX.reason);
+assert('every other system is now verified well enough to compute',
+  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 1);
+assert('every system carries an audit record with at least one official source',
+  Object.entries(SCORING_SYSTEMS).every(([, s]) => s.audit && s.audit.sources.length > 0));
+assert('partly-verified systems name what is still unconfirmed',
+  Object.values(SCORING_SYSTEMS).filter((s) => s.audit.status !== 'verified').every((s) => s.audit.gaps.length > 0));
+// UWC needs a second language besides English; without one it must say so rather than guess.
+assert('UWC refuses to guess when no additional language is entered',
+  scores.UWC_weighted.computable === false && /additional language/.test(scores.UWC_weighted.reason));
 
 console.log('\nStellenbosch selection formulas');
 const eng = stellenboschSelection(STRONG, 'Engineering');
@@ -88,9 +96,26 @@ check('UCT Civil Engineering verdict', uctCivil.verdict, 'not_yet');
 check('UCT Civil Engineering points gap', uctCivil.pointsGap, 51);
 assert('UCT Civil is NOT flagged as close (51 FPS is a long way)', uctCivil.close === false);
 
-// Wits BSc General needs APS 42, English L5, Maths L5. Student has 43.
+// Wits BSc General needs APS 42, English L5, Maths L5 - AND the NBT. Student has 43, which
+// clears every mark we can check, but the NBT is something marks cannot settle.
 const witsBsc = assessProgram(find('wits-bsc-general'), STRONG, scores.WITS_APS_incLO);
-check('Wits BSc (General) verdict', witsBsc.verdict, 'qualifies');
+check('Wits BSc (General) verdict: marks fine, NBT outstanding', witsBsc.verdict, 'marks_ok');
+assert('Wits BSc (General) names the NBT as the outstanding item', witsBsc.manual.some((m) => m.label === 'NBT'));
+
+// The rule that keeps "you qualify" honest: any programme with an unchecked requirement
+// (NBT, portfolio, interview, job shadowing...) can never come back as a flat "qualifies".
+{
+  const flat = programs.filter((p) => (p.subject_requirements || []).some((r) => r.not_computable || r.label));
+  assert(`${flat.length} programmes carry an unchecked requirement`, flat.length > 20);
+  const offenders = flat.filter((p) => assessProgram(p, STRONG, scores[p.scoring_system]).verdict === 'qualifies');
+  assert('none of them is ever reported as a plain "qualifies"', offenders.length === 0, offenders.map((p) => p.id).join(', '));
+}
+{
+  // ...and the converse: a programme with nothing unchecked still can.
+  const clean = programs.filter((p) => !(p.subject_requirements || []).some((r) => r.not_computable || r.label));
+  assert('programmes with nothing unchecked can still qualify',
+    clean.some((p) => assessProgram(p, STRONG, scores[p.scoring_system]).verdict === 'qualifies'));
+}
 
 // Wits Computer Science needs 44; student has 43 -> close, not qualified.
 const witsCs = assessProgram(find('wits-bsc-compsci'), STRONG, scores.WITS_APS_incLO);
@@ -98,8 +123,10 @@ check('Wits Computer Science verdict', witsCs.verdict, 'not_yet');
 assert('Wits Computer Science is flagged as close (1 point)', witsCs.close === true);
 
 // UKZN: score not computable, so we must never claim a verdict either way.
+// UKZN: English 6 + Maths 7 + PS 6 + LS 6 + Geography 6 + Accounting 5 = 36 on the 8-point scale.
+check('UKZN APS/48', scores.UKZN_APS_exLO.value, 36);
 const ukzn = assessProgram(find('ukzn-bcom-general'), STRONG, scores.UKZN_APS_exLO);
-assert('UKZN programme never says "qualifies" without a score', ukzn.verdict !== 'qualifies');
+check('UKZN BCom General (needs 30): points status', ukzn.pointsStatus, 'met');
 
 // A programme with no published cut-off must not claim one.
 const witsMed = assessProgram(find('wits-mbbch'), STRONG, scores.WITS_COMPOSITE_INDEX);
@@ -113,6 +140,76 @@ const suCs = assessProgram(find('su-bsc-compsci'), weakMaths, weakScores.SU_aggr
 const mathsGap = suCs.subjectGaps.find((g) => g.label.startsWith('Mathematics'));
 assert('SU Computer Science reports the exact Maths shortfall', mathsGap && mathsGap.gap === 2,
   mathsGap ? `gap was ${mathsGap.gap}` : 'no Maths gap found');
+
+console.log('\nTest vectors from the universities own worked examples');
+{
+  const mk = (o) => normaliseMarks(o);
+  const one = (id, m, program) => (program ? scoreForProgram(id, m, program) : scoreEverySystem(m, [id])[id]);
+  const engineering = { subject_requirements: [{ subject: 'Mathematics', min_percent: 80 }, { subject: 'Physical Sciences', min_percent: 70 }] };
+
+  // UCT's 2025 Guidelines, worked example 1 (Commerce/EBE/Humanities/Law): FPS = 463/600.
+  const uctExample = mk({ 'english-hl': 75, isixhosa: 70, mathematics: 84, 'physical-sciences': 86, cat: 79, 'consumer-studies': 69, 'life-orientation': 80 });
+  check('UCT worked example: FPS 463/600', one('UCT_FPS600', uctExample).value, 463);
+
+  // UCT's worked example 3 (Faculty of Science): English 75, isiXhosa FAL 70, Maths 84,
+  // Physical Sciences 86, Consumer Studies 79, EGD 69 -> FPS 633/800.
+  const uctScience = mk({ 'english-hl': 75, isixhosa: 70, mathematics: 84, 'physical-sciences': 86, 'consumer-studies': 79, egd: 69, 'life-orientation': 80 });
+  check('UCT Science worked example: FPS 633/800', one('UCT_FPS800', uctScience).value, 633);
+
+  // UCT: a result below 40% attracts no score.
+  const uctLow = mk({ 'english-hl': 75, mathematics: 84, 'physical-sciences': 86, cat: 79, geography: 69, history: 35, economics: 30 });
+  check('UCT: marks under 40% score zero', one('UCT_FPS600', uctLow).value, 75 + 84 + 86 + 79 + 69 + 0);
+
+  // UCT: the subjects a degree requires are forced into the six even if weaker.
+  const uctForce = mk({ 'english-hl': 60, mathematics: 50, 'physical-sciences': 41, cat: 90, history: 88, geography: 85, economics: 84 });
+  check('UCT generic: plain best six', one('UCT_FPS600', uctForce).value, 60 + 90 + 88 + 85 + 84 + 50);
+  check('UCT: a degree requiring Maths + Physical Sciences counts them', one('UCT_FPS600', uctForce, engineering).value, 60 + 50 + 41 + 90 + 88 + 85);
+
+  // UFS own worked example: five subjects at level 5, one at level 4, Life Orientation level 5 = 30.
+  const ufsExample = mk({ 'english-hl': 65, mathematics: 62, 'physical-sciences': 61, 'life-sciences': 66, geography: 64, history: 55, 'life-orientation': 60 });
+  check('UFS worked example: AP 30', one('UFS_AP', ufsExample).value, 30);
+
+  // Wits boundaries, straight from the table on wits.ac.za.
+  const witsScore = (over) => one('WITS_APS_incLO', mk({ 'english-hl': 50, mathematics: 50, 'physical-sciences': 50, 'life-sciences': 50, geography: 50, history: 50, 'life-orientation': 50, ...over })).value;
+  const base = witsScore({});
+  check('Wits: 50% everywhere = 4 x 6, LO 0', base, 24);
+  check('Wits: Maths 59% gets no bonus', witsScore({ mathematics: 59 }) - base, 0);
+  check('Wits: Maths 60% = 5 + 2 bonus = 7', witsScore({ mathematics: 60 }) - base, 3);
+  check('Wits: English 90% = 8 + 2 = 10', witsScore({ 'english-hl': 90 }) - base, 6);
+  check('Wits: Life Orientation 59% = 0 and 60% = 1', [witsScore({ 'life-orientation': 59 }) - base, witsScore({ 'life-orientation': 60 }) - base], [0, 1]);
+  check('Wits: Life Orientation 90% = 4', witsScore({ 'life-orientation': 90 }) - base, 4);
+  check('Wits: a subject under 40% scores 0, not level 1 or 2', witsScore({ geography: 39 }) - base, -4);
+  check('Wits: without Life Orientation it refuses rather than guess',
+    one('WITS_APS_incLO', mk({ 'english-hl': 70, mathematics: 70, 'physical-sciences': 70, 'life-sciences': 70, geography: 70, history: 70 })).computable, false);
+
+  // Wits: required subjects must be among the seven counted.
+  const witsWeakPs = mk({ 'english-hl': 80, mathematics: 80, 'physical-sciences': 41, 'life-sciences': 90, geography: 90, history: 90, accounting: 90, 'life-orientation': 50 });
+  check('Wits generic: drops the weak Physical Sciences', one('WITS_APS_incLO', witsWeakPs).value, 9 + 9 + 8 + 8 + 8 + 8 + 0);
+  check('Wits engineering: must count Physical Sciences (41% = 3)', one('WITS_APS_incLO', witsWeakPs, engineering).value, 9 + 9 + 3 + 8 + 8 + 8 + 0);
+
+  // UKZN table boundaries (UKZN CLMS Handbook 2026).
+  check('UKZN scale: 29% = 1, 30% = 2, 89% = 7, 90% = 8', [29, 30, 89, 90].map(witsLevel), [1, 2, 7, 8]);
+
+  // UWC, worked through the official calculator's own functions.
+  const uwcStudent = mk({ 'english-hl': 78, 'afrikaans-fal': 65, mathematics: 82, 'life-orientation': 85, 'physical-sciences': 76, 'life-sciences': 71, geography: 74, accounting: 68 });
+  check('UWC: 11 + 5 + 13 + 3 + (6+6+6) = 50', one('UWC_weighted', uwcStudent).value, 50);
+  const uwcMathsLit = mk({ 'english-hl': 78, 'afrikaans-fal': 65, 'mathematical-literacy': 82, 'life-orientation': 85, 'physical-sciences': 76, 'life-sciences': 71, geography: 74 });
+  check('UWC: Mathematical Literacy scores its level (7), not the Maths column (13)', one('UWC_weighted', uwcMathsLit).value, 11 + 5 + 7 + 3 + 6 + 6 + 6);
+
+  // NWU: six best on the 8-point scale.
+  check('NWU: six best', one('NWU_APS', mk({ 'english-hl': 91, mathematics: 85, 'physical-sciences': 72, 'life-sciences': 65, geography: 55, history: 45, accounting: 20 })).value, 8 + 7 + 6 + 5 + 4 + 3);
+
+  // Rhodes and SU count the six best, not everything entered.
+  const seven = mk({ 'english-hl': 90, mathematics: 80, 'physical-sciences': 70, 'life-sciences': 60, geography: 50, history: 40, accounting: 10 });
+  check('Rhodes: six best / 10', one('RU_pct_div10', seven).value, 39);
+  check('SU: average of the six best', one('SU_aggregate_pct', seven).value, 65);
+
+  check('requirementGroups: plain, any_of, and manual items', requirementGroups([
+    { subject: 'English', hl_min_percent: 50 },
+    { any_of: [{ subject: 'Mathematics' }, { subject: 'Mathematical Literacy' }] },
+    { label: 'NBT', not_computable: true },
+  ]), [['English'], ['Mathematics', 'Mathematical Literacy']]);
+}
 
 console.log('\nEvery programme in the dataset can be assessed without throwing');
 let assessed = 0;

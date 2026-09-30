@@ -2,170 +2,160 @@
 <html lang="en-ZA">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>APS Calculator — work out your score at every South African university | Studypath</title>
-<meta name="description" content="Enter your subjects and marks once. Studypath works out your score the way each South African university actually calculates it — Wits APS, UP APS, UCT FPS, Stellenbosch aggregate, Rhodes points — and shows which degrees you qualify for, with a link to every official source.">
-<link rel="canonical" href="https://studypath.example/calculator.html">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What do I qualify for? – APS calculator for South African universities | Studypath</title>
+<meta name="description" content="Enter your subjects and marks once. Studypath works out your score the way each South African university does – UCT, Wits, UP, Stellenbosch, UKZN, Rhodes and more – and shows which degrees you qualify for.">
+<link rel="canonical" href="https://studypath.co.za/calculator.html">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Studypath">
-<meta property="og:title" content="APS Calculator for South African universities">
-<meta property="og:description" content="One set of marks. A separate, correctly-calculated score for each university — because their formulas are not the same.">
-<meta property="og:url" content="https://studypath.example/calculator.html">
-<meta name="theme-color" content="#2f3e9e">
+<meta property="og:title" content="What do I qualify for? – APS calculator for South African universities | Studypath">
+<meta property="og:description" content="Enter your subjects and marks once. Studypath works out your score the way each South African university does – UCT, Wits, UP, Stellenbosch, UKZN, Rhodes and more – and shows which degrees you qualify for.">
+<meta property="og:url" content="https://studypath.co.za/calculator.html">
+<meta property="og:locale" content="en_ZA">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#3a35c8">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Why does Studypath give me a different APS for each university?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Because South African universities genuinely calculate it differently. Wits counts your best 7 subjects including Life Orientation and gives English and Maths a bonus. UP and UJ count 6 subjects and exclude Life Orientation. UCT adds percentages out of 600. Stellenbosch uses a percentage average and no APS at all. Rhodes adds percentages and divides by 10. A score from one university means nothing at another, so we never put them on one scale." }
-    },
-    {
-      "@type": "Question",
-      "name": "What is an APS?",
-      "acceptedAnswer": { "@type": "Answer", "text": "APS stands for Admission Point Score. It is a number a university works out from your subject marks to decide whether you meet its entry requirements. Higher is better, and each university has its own formula and its own minimum per degree." }
-    },
-    {
-      "@type": "Question",
-      "name": "Are my marks stored anywhere?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Your marks are saved only in your own browser so you do not have to retype them. Studypath has no accounts and does not keep a copy of your marks." }
-    },
-    {
-      "@type": "Question",
-      "name": "Does meeting the minimum mean I will get in?",
-      "acceptedAnswer": { "@type": "Answer", "text": "No. Many degrees — medicine, engineering, law and most health sciences — are selection programmes, which means the university picks the strongest applicants from everyone who met the minimum. The real cut-off is usually higher than the published minimum, and we flag those programmes." }
-    }
-  ]
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Studypath APS calculator","url":"https://studypath.co.za/calculator.html","applicationCategory":"EducationalApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"ZAR"},"inLanguage":"en-ZA"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://studypath.co.za/"},{"@type":"ListItem","position":2,"name":"What do I qualify for?","item":"https://studypath.co.za/calculator.html"}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="logo" href="/"><span class="logo__mark">SP</span> Studypath</a>
+    <a class="logo" href="/" aria-label="Studypath home"><span class="logo__mark" aria-hidden="true">SP</span><span class="logo__text">Studypath</span></a>
     <nav class="nav" aria-label="Main">
       <a href="/careers.html">Careers</a>
       <a href="/universities.html">Universities</a>
+      <a href="/grade-10-subjects.html">Choose subjects</a>
+      <a href="/dates.html">Dates</a>
       <a href="/nbt.html">The NBT</a>
-      <a href="/bursaries.html">Bursaries</a>
-      <a href="/study-abroad.html">Study abroad</a>
-      <a href="/data-sources.html">Where our data comes from</a>
-      <a class="nav__cta" href="/calculator.html">Check my marks</a>
+      <a href="/bursaries.html">Money</a>
+      <a href="/faq.html">FAQ</a>
+      <a class="nav__cta" href="/calculator.html" aria-current="page">What do I qualify for?</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
-  <section class="hero wrap wrap--narrow">
-    <p class="eyebrow">Takes about two minutes · No account needed</p>
-    <h1>What do your marks actually get you?</h1>
-    <p class="lead">
-      Put in your subjects and your latest percentages. We'll work out your score at each
-      university the way that university does it, and show you which degrees you qualify for.
-    </p>
-  </section>
 
-  <section class="wrap wrap--narrow">
-    <div class="callout">
-      <h3>Before you start — two things worth knowing</h3>
-      <p>
-        <strong>Use your most recent real marks.</strong> Your Grade 11 final or latest Grade 12
-        report is fine. Most universities let you apply on Grade 11 results.
-      </p>
-      <p>
-        <strong>There is no single "APS".</strong> Each university counts different subjects in a
-        different way, so you'll get a separate score for each one. That's not a bug — putting
-        them on one scale would give you the wrong answer.
-      </p>
-    </div>
-  </section>
+<section class="hero hero--slim">
+  <div class="wrap wrap--narrow">
+    <p class="eyebrow">About 2 minutes · no account · your marks stay on your device</p>
+    <h1>What do I qualify for?</h1>
+    <p class="lead">Pick your subjects, type your marks, and see which degrees are open to you – scored the way <strong>each university</strong> scores.</p>
+  </div>
+</section>
 
-  <section class="section wrap wrap--narrow">
-    <form id="calc-form">
-      <h2>Your subjects and marks</h2>
-      <p class="hint">
-        Add every subject you take, including Life Orientation — some universities count it and
-        some don't, and we handle that for you. Percentages, not levels.
-      </p>
+<section class="wrap wrap--narrow" aria-label="Calculator">
+  <noscript><div class="callout callout--warn"><p>The calculator runs on your own device so your marks stay private, which means it needs JavaScript switched on.</p></div></noscript>
 
-      <div class="table-scroll">
-        <table class="marks-table">
-          <thead>
-            <tr>
-              <th scope="col" style="width:60%">Subject</th>
-              <th scope="col">Mark</th>
-              <th scope="col"><span class="sr-only">Remove</span></th>
-            </tr>
-          </thead>
-          <tbody id="marks-body"></tbody>
-        </table>
-      </div>
+  <ol class="steps" id="steps" aria-label="Progress">
+    <li class="steps__i is-current" data-step="1"><span>1</span> Subjects</li>
+    <li class="steps__i" data-step="2"><span>2</span> Marks</li>
+    <li class="steps__i" data-step="3"><span>3</span> Results</li>
+  </ol>
 
-      <div class="btn-row">
-        <button type="button" class="btn btn--ghost" id="add-subject">+ Add another subject</button>
-        <button type="button" class="btn btn--ghost" id="reset-marks">Clear my marks</button>
-      </div>
+  <div id="calc" class="calc" aria-live="polite">
+    <p class="loading">Loading the calculator…</p>
+  </div>
 
-      <div id="calc-errors" aria-live="polite"></div>
+  <p class="hint calc__privacy">🔒 Your marks are worked out in your browser and saved only on this device, so you don’t have to type them again. We have no accounts and keep no copy.</p>
+</section>
 
-      <div class="btn-row">
-        <button type="submit" class="btn btn--primary">See what I qualify for</button>
-      </div>
+<section class="section wrap wrap--narrow" aria-labelledby="read">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">📖</span>
+  <div><h2>How to read your results</h2></div>
+</div>
+  <div class="stack">
+    <div class="card result-key"><h3><span class="pill pill--good">✓ Good to go</span></h3><p>Your score and every subject rule we can check are met, and nothing else is needed. If it also says <span class="badge badge--info">Selection programme</span>, meeting the minimum still doesn’t guarantee a place.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--more">+ More to it</span></h3><p>Your marks are enough, but the degree also needs something marks can’t show – an <a href="/nbt.html">NBT</a>, a portfolio, an audition, an interview. The card lists exactly what.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--close">≈ Nearly</span></h3><p>You’re within a few points, or a few percent in one subject. We tell you what’s missing, like “2% to go in Maths”.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--unknown">? Can’t tell</span></h3><p>Either the university publishes no points cut-off for that degree, or we don’t calculate its score because we couldn’t confirm how. We’d rather say so than guess.</p></div>
+  </div>
+  <p class="small muted">How sure are we of each formula? <span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> means we read the rule on the official page – <a href="/data-sources.html#scoring">see every formula and its source</a>.</p>
+</section>
 
-      <p class="hint" style="margin-top:1rem">
-        Your marks are saved in this browser only so you don't have to type them again.
-        We don't have accounts and we don't keep a copy.
-      </p>
-    </form>
-  </section>
+<section class="section wrap wrap--narrow" aria-labelledby="why">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">🤔</span>
+  <div><h2>Why do I get a different score for each university?</h2></div>
+</div>
+  <div class="claim claim--verified">
+  <p>APS stands for <strong>Admission Point Score</strong>: a number a university works out from your marks to decide whether you meet its entry requirements. It is <strong>not the same at every university</strong> - each one counts different subjects in a different way, so a score from one university means nothing at another.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="/data-sources.html#scoring">How each university scores you (Studypath)</a></span></p>
+</div>
+<div class="claim claim--verified">
+  <p>A few examples. <strong>UCT</strong> adds your six best subject percentages (English is always counted; anything under 40% scores nothing). <strong>Wits</strong> uses a points scale where English and Maths get a bonus and Life Orientation counts a little. <strong>UP</strong> adds the levels (1 to 7) of your six best subjects and leaves out Life Orientation. <strong>Stellenbosch</strong> uses your average percentage and no APS at all. <strong>Rhodes</strong> adds your six subjects’ percentages and divides by 10.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Sources:</span> <a href="https://www.uct.ac.za/sites/default/files/media/documents/2025_National-Senior-Certificate-NSC_Guidelines-for-Admissions.pdf" target="_blank" rel="noopener">UCT Guidelines for Admission for NSC holders (2025)<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.wits.ac.za/undergraduate/entry-requirements/" target="_blank" rel="noopener">Wits undergraduate entry requirements<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://drupalwebprod-files.up.ac.za/Public/2025-12/2020-hum_ug-final.zp176067.pdf?VersionId=4wZe_mMeDEmQMs5LCJiz4a__0U.IbD3J" target="_blank" rel="noopener">UP Faculty of Humanities admission document<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://files.su.ac.za/public/undergraduate-maties/documents/2026-01/su-admissions-booklet-2027.pdf" target="_blank" rel="noopener">Stellenbosch Admissions Booklet 2027<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.ru.ac.za/media/rhodesuniversity/content/registrar/documents/information/studentrecruitment/RU_READY_Undergraduate_Prospectus_2026_DIGITAL_A5_Landscape_24pp_18Mar2026.pdf" target="_blank" rel="noopener">Rhodes Undergraduate Prospectus<span class="sr-only"> (opens the official page)</span></a></span></p>
+</div>
+<div class="claim claim--verified">
+  <p>That is why Studypath works out a separate score for each university from the same marks, and never shows you one &quot;APS&quot;.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="/data-sources.html#scoring">How each university scores you (Studypath)</a></span></p>
+</div>
+  <div class="claim claim--verified">
+  <p>It depends on the university. <strong>UCT, UP, UJ, UKZN, NWU and Stellenbosch leave it out</strong> of the score. <strong>Wits counts it</strong>, but only for a little: 4, 3, 2 or 1 point for 90, 80, 70 or 60% and up. <strong>UFS</strong> gives 1 point for 60% or more. <strong>UWC</strong> gives 0 to 3 points. <strong>Rhodes</strong> does not score it but you must get at least 50% for acceptance.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Sources:</span> <a href="https://www.uct.ac.za/sites/default/files/media/documents/2025_National-Senior-Certificate-NSC_Guidelines-for-Admissions.pdf" target="_blank" rel="noopener">UCT Guidelines for Admission for NSC holders (2025)<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.wits.ac.za/undergraduate/entry-requirements/" target="_blank" rel="noopener">Wits undergraduate entry requirements<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://drupalwebprod-files.up.ac.za/Public/2025-12/2020-hum_ug-final.zp176067.pdf?VersionId=4wZe_mMeDEmQMs5LCJiz4a__0U.IbD3J" target="_blank" rel="noopener">UP Faculty of Humanities admission document<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://clms.ukzn.ac.za/wp-content/uploads/2026/01/UKZN-CLMS-Handbook-2026.pdf" target="_blank" rel="noopener">UKZN College of Law &amp; Management Studies Handbook 2026<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://studies.nwu.ac.za/studies/aps-calculator" target="_blank" rel="noopener">NWU APS calculator<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://files.su.ac.za/public/undergraduate-maties/documents/2026-01/su-admissions-booklet-2027.pdf" target="_blank" rel="noopener">Stellenbosch Admissions Booklet 2027<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.ufs.ac.za/docs/librariesprovider23/ems-documents/e3_ufs-undergraduade-programme-2024.pdf?sfvrsn=71432920_3" target="_blank" rel="noopener">UFS Undergraduate Programmes 2024 (AP score)<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.uwc.ac.za/admission-point-score-calculator/south-african-aps-calculator" target="_blank" rel="noopener">UWC official APS calculator<span class="sr-only"> (opens the official page)</span></a><span aria-hidden="true"> · </span><a href="https://www.ru.ac.za/media/rhodesuniversity/content/registrar/documents/information/studentrecruitment/RU_READY_Undergraduate_Prospectus_2026_DIGITAL_A5_Landscape_24pp_18Mar2026.pdf" target="_blank" rel="noopener">Rhodes Undergraduate Prospectus<span class="sr-only"> (opens the official page)</span></a></span></p>
+</div>
+  <p><a href="/faq.html">More answers in the FAQ →</a></p>
+</section>
 
-  <section class="wrap" id="calc-results" aria-live="polite"></section>
-
-  <section class="section wrap wrap--narrow">
-    <h2>How to read your results</h2>
-    <div class="stack">
-      <div class="card">
-        <h3><span class="badge badge--good">✓</span> You meet the published requirements</h3>
-        <p>Your score and every subject requirement we can check are satisfied. If the programme is also marked <strong>Selection programme</strong>, that still doesn't guarantee a place — the university chooses from everyone who qualified.</p>
-      </div>
-      <div class="card">
-        <h3>You are close</h3>
-        <p>You're within a few points, or a few percent in one subject. These are the ones worth pushing for this year — we tell you exactly what's missing, like "2% to go in Maths".</p>
-      </div>
-      <div class="card">
-        <h3>We cannot tell you yet</h3>
-        <p>These need something we can't work out from marks alone — an NBT result, a portfolio, an audition, or a cut-off the university simply doesn't publish. We'd rather say so than guess.</p>
-      </div>
-    </div>
-    <p style="margin-top:1.5rem">
-      Still confused by a word? <a href="/#jargon">We explain the jargon here</a>, and
-      <a href="/nbt.html">the NBT has its own page</a>.
-    </p>
-  </section>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
-    <nav aria-label="Footer">
-      <a href="/careers.html">Careers</a>
-      <a href="/calculator.html">Calculator</a>
-      <a href="/universities.html">Universities</a>
-      <a href="/nbt.html">The NBT</a>
-      <a href="/bursaries.html">Bursaries</a>
-      <a href="/study-abroad.html">Study abroad</a>
-      <a href="/data-sources.html">Data &amp; sources</a>
-    </nav>
-    <p class="small">Always confirm on the university's own page before you rely on anything — that's why we link to it every time.</p>
+    <div class="site-footer__grid">
+      <div>
+        <p class="site-footer__brand">Studypath</p>
+        <p class="small">Free and independent help for South African learners choosing what to study. We are not a university and cannot apply for you.</p>
+        <p class="small"><strong>Always confirm on the university’s own page before you rely on anything</strong> – that is why we link to it every time.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/universities.html">Universities</a>
+        <a href="/grade-10-subjects.html">Choose your subjects</a>
+        <a href="/nbt.html">The NBT explained</a>
+        <a href="/bursaries.html">Money &amp; bursaries</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/ask-a-university.html">Ask a university</a>
+        <a href="/ask.html">Ask us a question</a>
+        <a href="/study-abroad.html">Study abroad</a>
+        <a href="/data-sources.html">Where our data comes from</a>
+        <a href="/privacy.html">Privacy</a>
+      </nav>
+    </div>
   </div>
 </footer>
 
+<nav class="tabbar" aria-label="Quick navigation">
+  <a class="tab" href="/"><span class="tab__i" aria-hidden="true">🏠</span><span class="tab__l">Home</span></a>
+  <a class="tab" href="/careers.html"><span class="tab__i" aria-hidden="true">🧭</span><span class="tab__l">Careers</span></a>
+  <a class="tab tab--main" href="/calculator.html" aria-current="page"><span class="tab__i" aria-hidden="true">🧮</span><span class="tab__l">My marks</span></a>
+  <a class="tab" href="/dates.html"><span class="tab__i" aria-hidden="true">📅</span><span class="tab__l">Dates</span></a>
+  <details class="tab tab--more">
+    <summary><span class="tab__i" aria-hidden="true">⋯</span><span class="tab__l">More</span></summary>
+    <div class="sheet" role="menu">
+      <a role="menuitem" href="/universities.html"><span aria-hidden="true">🏫</span> Universities</a>
+      <a role="menuitem" href="/grade-10-subjects.html"><span aria-hidden="true">🧠</span> Choose your subjects</a>
+      <a role="menuitem" href="/nbt.html"><span aria-hidden="true">✍️</span> The NBT explained</a>
+      <a role="menuitem" href="/bursaries.html"><span aria-hidden="true">💰</span> Money &amp; bursaries</a>
+      <a role="menuitem" href="/faq.html"><span aria-hidden="true">❓</span> FAQ</a>
+      <a role="menuitem" href="/ask-a-university.html"><span aria-hidden="true">📞</span> Ask a university</a>
+      <a role="menuitem" href="/ask.html"><span aria-hidden="true">💬</span> Ask us a question</a>
+      <a role="menuitem" href="/study-abroad.html"><span aria-hidden="true">🌍</span> Study abroad</a>
+      <a role="menuitem" href="/data-sources.html"><span aria-hidden="true">🔎</span> Where our data comes from</a>
+      <a role="menuitem" href="/privacy.html"><span aria-hidden="true">🔒</span> Privacy</a>
+    </div>
+  </details>
+</nav>
+
+<script type="module" src="/assets/js/app.js"></script>
 <script type="module" src="/assets/js/calculator.js"></script>
 </body>
 </html>

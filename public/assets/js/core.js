@@ -1,10 +1,10 @@
-// Shared helpers: tiny DOM builder, API client, analytics, and the source-link
-// component that every requirement on this site has to carry.
+// Shared helpers for the page scripts: a tiny DOM builder, data loading, dates, storage,
+// and the source-link component every requirement has to carry.
 
-import { t, applyStaticTranslations } from './strings.js';
+import { API_BASE } from './config.js';
 import { track } from './analytics.js';
 
-export { t, track };
+export { track };
 
 export const $ = (sel, root = document) => root.querySelector(sel);
 export const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
@@ -29,124 +29,117 @@ export function el(tag, attrs = {}, ...children) {
 export const clear = (node) => { while (node.firstChild) node.removeChild(node.firstChild); return node; };
 
 // ---------------------------------------------------------------------------
-// API
+// Data
 // ---------------------------------------------------------------------------
 
-export async function api(path, options) {
-  const res = await fetch(`/api${path}`, {
-    headers: { 'content-type': 'application/json' },
-    ...options,
-    body: options && options.body ? JSON.stringify(options.body) : undefined,
-  });
+const cache = new Map();
+
+/** Load a static JSON file the build generated (programs, dates, contacts ...). */
+export function getJson(path) {
+  if (!cache.has(path)) {
+    cache.set(path, fetch(path).then((r) => {
+      if (!r.ok) throw new Error(`Could not load ${path}`);
+      return r.json();
+    }));
+  }
+  return cache.get(path);
+}
+
+/**
+ * Call the optional API (reminders, questions). On a static host with no API the request
+ * 404s or fails; we turn that into a message a teenager can understand.
+ */
+export async function api(path, options = {}) {
+  let res;
+  try {
+    res = await fetch(`${API_BASE}/api${path}`, {
+      method: options.method || 'GET',
+      headers: { 'content-type': 'application/json' },
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+  } catch {
+    throw new Error('We could not reach our server. Check your connection and try again.');
+  }
+  const ctype = res.headers.get('content-type') || '';
+  if (!ctype.includes('json')) {
+    throw new Error('This feature is not switched on yet. Please try again later – nothing you typed was sent.');
+  }
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || t('common.error'));
+  if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
   return data;
 }
 
-/** Render a loading state, then either the content or a readable error. */
-export async function load(container, work) {
-  clear(container).append(el('p', { class: 'loading' }, t('common.loading')));
-  try {
-    const content = await work();
-    clear(container).append(content);
-  } catch (err) {
-    clear(container).append(
-      el('div', { class: 'callout callout--warn' },
-        el('p', {}, err.message || t('common.error')),
-        el('button', { class: 'btn btn--ghost', onclick: () => load(container, work) }, t('common.retry')))
-    );
-  }
+// ---------------------------------------------------------------------------
+// Dates (local midnight, so "closes in 3 days" is right for the learner)
+// ---------------------------------------------------------------------------
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+export function prettyDate(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  return m ? `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}` : '';
 }
 
+export function daysUntil(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!m) return null;
+  const target = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return Math.round((target - today) / 86400000);
+}
+
+export const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
 // ---------------------------------------------------------------------------
-// Shared pieces
+// Storage that never throws (private browsing, blocked storage ...)
 // ---------------------------------------------------------------------------
+
+export const store = {
+  get(key, fallback = null) {
+    try { const v = localStorage.getItem(key); return v == null ? fallback : JSON.parse(v); } catch { return fallback; }
+  },
+  set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* fine */ } },
+  remove(key) { try { localStorage.removeItem(key); } catch { /* fine */ } },
+};
+
+// ---------------------------------------------------------------------------
+// Shared bits of UI
+// ---------------------------------------------------------------------------
+
+export function hostOf(url) {
+  try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return String(url || ''); }
+}
 
 /**
  * The citation. This is the product's entire reason to exist, so it is a visible
  * line of text with a real link - never a tooltip, never an icon you have to find.
  */
 export function sourceLine(url, extra) {
-  let host = '';
-  try { host = new URL(url).hostname.replace(/^www\./, ''); } catch { host = url; }
   return el('p', { class: 'source' },
-    el('span', { class: 'source__label' }, t('common.source')),
-    el('span', {},
-      el('a', {
-        href: url, target: '_blank', rel: 'noopener',
-        onclick: () => track('source_click', { url }),
-      }, `${t('common.viewSource')} (${host})`),
-      extra ? ` · ${extra}` : ''
-    )
-  );
+    el('span', { class: 'source__label' }, 'Source:'),
+    el('a', { href: url, target: '_blank', rel: 'noopener', onclick: () => track('source_click', { url }) },
+      `View the official page (${hostOf(url)})`),
+    extra ? el('span', { class: 'muted' }, `· ${extra}`) : null);
 }
 
-export const flagBadges = (flags) =>
-  !flags || !flags.length ? null :
-    el('div', { class: 'badge-row' },
-      flags.map((f) => el('span', {
-        class: `badge badge--${f.tone === 'warn' ? 'warn' : 'info'}`,
-        title: f.id === 'conflict' ? 'Two official sources give different numbers. We show both rather than pick one.' : '',
-      }, f.label)));
+export const TAGS = {
+  verified: ['✓', 'Checked on the official page'],
+  reported: ['◔', 'From our research'],
+  general: ['!', 'Not from an official source'],
+  unverified: ['?', 'Could not be confirmed'],
+  conflict: ['⚡', 'Sources disagree'],
+};
 
-/** Human-readable version of one programme's subject requirements. */
-export function requirementText(req) {
-  if (req.label) return req.label + (req.note ? ` — ${req.note}` : '');
-  if (req.any_of) return req.any_of.map(requirementText).join(' OR ');
-  if (req.all_of) return req.all_of.map(requirementText).join(' AND ');
-  if (req.subject === 'English' && (req.hl_min_percent || req.hl_min_level)) {
-    const hl = req.hl_min_percent != null ? `${req.hl_min_percent}%` : `level ${req.hl_min_level}`;
-    const fal = req.fal_min_percent != null ? `${req.fal_min_percent}%` : `level ${req.fal_min_level}`;
-    return `English: ${hl} if it is your Home Language, ${fal} if it is your First Additional Language`;
-  }
-  if (req.min_percent != null) return `${req.subject}: ${req.min_percent}%`;
-  if (req.min_level != null) return `${req.subject}: level ${req.min_level} (${levelPercent(req.min_level)}% or more)`;
-  return req.subject || '';
+export function tagEl(level, text) {
+  const [icon, label] = TAGS[level] || TAGS.general;
+  return el('span', { class: `tag tag--${level}` }, el('span', { 'aria-hidden': 'true' }, icon), ` ${text || label}`);
 }
 
-export const levelPercent = (level) => ({ 1: 0, 2: 30, 3: 40, 4: 50, 5: 60, 6: 70, 7: 80, 8: 90 })[level];
-
-/** One programme, rendered the same way everywhere it appears. */
-export function programCard(program, { showUniversity = true } = {}) {
-  const bits = [];
-  if (showUniversity && program.university) bits.push(program.university.shortName || program.university.name);
-  if (program.faculty) bits.push(program.faculty);
-  if (program.durationYears) bits.push(`${program.durationYears} years`);
-
-  const score = program.minScore != null
-    ? el('p', {},
-        el('strong', {}, `${program.scoringSystemLabel}: ${program.minScore} ${program.scoringSystemUnit || ''}`.trim()),
-        program.scoreType && program.scoreType !== 'minimum' ? ` (${program.scoreType.replace('_', ' ')})` : '')
-    : el('p', { class: 'muted' }, 'No points cut-off published for this one — see the note below.');
-
-  const reqs = (program.subjectRequirements || []).length
-    ? el('ul', { class: 'req-list' },
-        program.subjectRequirements.map((r) => el('li', {}, el('span', { class: 'mark' }, '•'), el('span', {}, requirementText(r)))))
-    : null;
-
-  return el('article', { class: 'card' },
-    flagBadges(program.flags),
-    el('h3', {}, program.name),
-    el('p', { class: 'card__meta' }, bits.join(' · ')),
-    score,
-    reqs,
-    program.notes ? el('p', { class: 'small muted' }, program.notes) : null,
-    sourceLine(program.sourceUrl, program.intakeYear ? `${program.intakeYear} intake` : null)
-  );
+/** Wire a set of filter chips so exactly one is pressed. */
+export function chipGroup(container, onChange) {
+  $$('.chip', container).forEach((chip) => chip.addEventListener('click', () => {
+    $$('.chip', container).forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+    onChange(chip);
+  }));
 }
-
-// ---------------------------------------------------------------------------
-// Page boot
-// ---------------------------------------------------------------------------
-
-export function boot() {
-  applyStaticTranslations();
-  // Mark the current page in the nav without hardcoding it into every file.
-  const here = location.pathname.replace(/index\.html$/, '').replace(/\/$/, '') || '/';
-  $$('.nav a').forEach((a) => {
-    const target = new URL(a.getAttribute('href'), location.origin).pathname.replace(/\/$/, '') || '/';
-    if (target === here) a.setAttribute('aria-current', 'page');
-  });
-}
-
-document.addEventListener('DOMContentLoaded', boot);

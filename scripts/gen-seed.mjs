@@ -12,6 +12,7 @@ import { upPrograms } from '../db/data/programs-up.mjs';
 import { ukznPrograms } from '../db/data/programs-ukzn.mjs';
 import { otherPrograms } from '../db/data/programs-other.mjs';
 import { researchLog } from '../db/data/research-log.mjs';
+import { bursaries } from '../db/data/bursaries.mjs';
 
 const programs = [
   ...uctPrograms, ...witsPrograms, ...suPrograms,
@@ -46,6 +47,10 @@ for (const p of programs) {
     errors.push(`${p.id}: bad score_type ${p.score_type}`);
   }
 }
+for (const b of bursaries) {
+  if (!String(b.source_url || '').startsWith('https://')) errors.push(`${b.id}: a bursary needs an https source_url from the provider or an official source`);
+  if (!String(b.apply_url || '').startsWith('https://')) errors.push(`${b.id}: a bursary needs an https apply_url`);
+}
 const orphanCareers = careers.filter((c) => !programs.some((p) => p.career_id === c.id));
 if (orphanCareers.length) {
   console.warn(`note: ${orphanCareers.length} career(s) have no verified programme yet: ${orphanCareers.map((c) => c.id).join(', ')}`);
@@ -61,11 +66,8 @@ const lines = [
   '-- Source of truth: db/data/*.mjs. Regenerate with `npm run seed:generate`.',
   `-- Generated ${new Date().toISOString()}`,
   '',
-  '-- Replaces the dataset wholesale so re-running is safe and idempotent.',
-  'DELETE FROM programs;',
-  'DELETE FROM research_log;',
-  'DELETE FROM careers;',
-  'DELETE FROM universities;',
+  '-- Upserts by id: re-running is safe, and rows that are NOT in db/data (for example ones',
+  '-- added to D1 directly by the recurring research task) are left untouched.',
   '',
 ];
 
@@ -73,13 +75,15 @@ const lines = [
  * Emits one multi-row INSERT per batch rather than one statement per row.
  * Batches are capped so each statement stays comfortably inside D1's limits.
  */
+const upsert = (columns) =>
+  `\nON CONFLICT(id) DO UPDATE SET ${columns.filter((c) => c !== 'id').map((c) => `${c} = excluded.${c}`).join(', ')}`;
 const insertMany = (table, columns, rows, toValues, maxChars = 16000) => {
   const head = `INSERT INTO ${table} (${columns.join(', ')}) VALUES`;
   let batch = [];
   let len = 0;
   const flush = () => {
     if (!batch.length) return;
-    lines.push(head + '\n' + batch.join(',\n') + ';');
+    lines.push(head + '\n' + batch.join(',\n') + upsert(columns) + ';');
     lines.push('');
     batch = [];
     len = 0;
@@ -109,6 +113,9 @@ insertMany('programs',
 
 insertMany('research_log', ['id', 'university_id', 'faculty_or_program', 'status', 'notes'], researchLog,
   (r) => [q(r.id), q(r.university_id), q(r.faculty_or_program), q(r.status), q(r.notes)]);
+
+insertMany('bursaries', ['id', 'name', 'provider', 'field_of_study', 'deadline', 'amount_covers', 'eligibility', 'apply_url', 'source_url', 'active'], bursaries,
+  (b) => [q(b.id), q(b.name), q(b.provider), q(b.field_of_study), q(b.deadline), q(b.amount_covers), q(b.eligibility), q(b.apply_url), q(b.source_url), q(b.active ?? 1)]);
 
 writeFileSync(new URL('../db/seed.sql', import.meta.url), lines.join('\n') + '\n');
 console.log(`Wrote db/seed.sql: ${universities.length} universities, ${careers.length} careers, ${programs.length} programmes, ${researchLog.length} research-log entries.`);

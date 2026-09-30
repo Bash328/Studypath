@@ -17,4 +17,4 @@ database_id = "2cfc439e-fa19-4213-bba2-88255be8202d"
 
 [vars]
 # Placeholder until the real domain is bought. Used for canonical URLs and sitemap.
-SITE_ORIGIN = "https://studypath.example"
+SITE_ORIGIN = "https://studypath.co.za"

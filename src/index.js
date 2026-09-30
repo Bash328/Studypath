@@ -1,81 +1,29 @@
-// Studypath API. One Worker: it serves the static site (via the [assets] binding)
-// and everything under /api/* from the `studypath` D1 database.
+// Studypath API. One Worker that serves the optional dynamic parts of the site from the
+// `pathwise` D1 database (the database keeps the name it was provisioned with).
+//
+// The static site does NOT depend on this: the calculator runs in the browser from the
+// same shared code (qualify-core.js), and content pages are generated at build time. The
+// Worker is for what a static host cannot do - storing a WhatsApp reminder sign-up or a
+// question - and for serving the live database if you want it.
+//
+// Because the site may live on a different host from this API (for example GitHub Pages
+// calling a Worker), every response carries CORS headers for the allowed origins.
 
-import { SUBJECTS, normaliseMarks } from './subjects.js';
-import { SCORING_SYSTEMS, scoreEverySystem, assessProgram, stellenboschSelection } from './scoring.js';
+import { SUBJECTS } from './subjects.js';
+import { SCORING_SYSTEMS } from './scoring.js';
+import { shapeProgram, splitFlags, safeJson } from './shape.js';
+import { qualifyAll, InputError } from './qualify-core.js';
 
 const json = (data, { status = 200, maxAge = 300 } = {}) =>
   new Response(JSON.stringify(data), {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'cache-control': status === 200 ? `public, max-age=${maxAge}` : 'no-store',
+      'cache-control': status === 200 && maxAge > 0 ? `public, max-age=${maxAge}` : 'no-store',
     },
   });
 
 const fail = (status, message) => json({ error: message }, { status });
-
-/**
- * Notes carry their caveats as leading [tokens] so the UI can badge them instead of
- * burying "sources disagree" in a paragraph nobody reads. See db/data/_helpers.mjs.
- */
-const KNOWN_FLAGS = {
-  conflict: { label: 'Sources disagree', tone: 'warn' },
-  unverified: { label: 'Not fully verified', tone: 'warn' },
-  'partially-verified': { label: 'Partly verified', tone: 'warn' },
-  'dated-document': { label: 'From an older document', tone: 'info' },
-  selection: { label: 'Selection programme', tone: 'info' },
-  'no-cutoff-published': { label: 'No cut-off published', tone: 'info' },
-};
-
-function splitFlags(notes) {
-  let rest = notes || '';
-  const flags = [];
-  for (;;) {
-    const m = rest.match(/^\s*\[([a-z-]+)\]\s*/);
-    if (!m) break;
-    const known = KNOWN_FLAGS[m[1]];
-    if (known) flags.push({ id: m[1], ...known });
-    rest = rest.slice(m[0].length);
-  }
-  return { flags, notes: rest.trim() };
-}
-
-function shapeProgram(row) {
-  const { flags, notes } = splitFlags(row.notes);
-  const system = SCORING_SYSTEMS[row.scoring_system];
-  return {
-    id: row.id,
-    name: row.name,
-    faculty: row.faculty,
-    durationYears: row.duration_years,
-    minScore: row.min_aps,
-    scoreType: row.score_type,
-    scoringSystem: row.scoring_system,
-    scoringSystemLabel: system ? system.label : row.scoring_system,
-    scoringSystemUnit: system ? system.unit : '',
-    scoreIsComputable: system ? system.computable !== false : false,
-    subjectRequirements: safeJson(row.subject_requirements, []),
-    notes,
-    flags,
-    sourceUrl: row.source_url,
-    verifiedAt: row.verified_at,
-    intakeYear: row.intake_year,
-    documentDate: row.document_date,
-    university: row.university_id
-      ? { id: row.university_id, name: row.university_name, shortName: row.university_short_name, website: row.university_website }
-      : null,
-    career: row.career_id ? { id: row.career_id, name: row.career_name } : null,
-  };
-}
-
-const safeJson = (value, fallback) => {
-  try {
-    return value ? JSON.parse(value) : fallback;
-  } catch {
-    return fallback;
-  }
-};
 
 const PROGRAM_SELECT = `
   SELECT p.*, u.name AS university_name, u.short_name AS university_short_name, u.website AS university_website,
@@ -83,6 +31,35 @@ const PROGRAM_SELECT = `
   FROM programs p
   JOIN universities u ON u.id = p.university_id
   LEFT JOIN careers c ON c.id = p.career_id`;
+
+// ---------------------------------------------------------------------------
+// CORS
+// ---------------------------------------------------------------------------
+
+/** Origins allowed to call this API from a browser: the site itself, plus local preview. */
+function allowedOrigins(env) {
+  const configured = String((env && (env.ALLOWED_ORIGINS || env.SITE_ORIGIN)) || '')
+    .split(',').map((s) => s.trim()).filter(Boolean);
+  return new Set([...configured, 'http://localhost:8788', 'http://127.0.0.1:8788']);
+}
+
+function corsHeaders(request, env) {
+  const origin = request.headers.get('origin');
+  const headers = { vary: 'origin' };
+  if (origin && allowedOrigins(env).has(origin)) {
+    headers['access-control-allow-origin'] = origin;
+    headers['access-control-allow-methods'] = 'GET, POST, OPTIONS';
+    headers['access-control-allow-headers'] = 'content-type';
+    headers['access-control-max-age'] = '86400';
+  }
+  return headers;
+}
+
+function withHeaders(response, extra) {
+  const headers = new Headers(response.headers);
+  for (const [k, v] of Object.entries(extra)) headers.set(k, v);
+  return new Response(response.body, { status: response.status, headers });
+}
 
 // ---------------------------------------------------------------------------
 
@@ -98,6 +75,7 @@ const routes = [
   ['POST', /^\/api\/qualify$/, qualify],
   ['GET', /^\/api\/bursaries$/, listBursaries],
   ['POST', /^\/api\/reminders$/, createReminder],
+  ['POST', /^\/api\/questions$/, createQuestion],
   ['GET', /^\/api\/research-log$/, researchLog],
   ['GET', /^\/api\/coverage$/, coverage],
 ];
@@ -107,20 +85,21 @@ export default {
     const url = new URL(request.url);
     if (!url.pathname.startsWith('/api/')) return env.ASSETS.fetch(request);
 
-    if (request.method === 'OPTIONS') return new Response(null, { status: 204 });
+    const cors = corsHeaders(request, env);
+    if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers: cors });
 
     for (const [method, pattern, handler] of routes) {
       const match = url.pathname.match(pattern);
       if (!match) continue;
-      if (method !== request.method) return fail(405, 'Method not allowed');
+      if (method !== request.method) return withHeaders(fail(405, 'Method not allowed'), cors);
       try {
-        return await handler({ request, env, ctx, url, params: match.slice(1) });
+        return withHeaders(await handler({ request, env, ctx, url, params: match.slice(1) }), cors);
       } catch (err) {
         console.error(url.pathname, err && err.stack);
-        return fail(500, 'Something went wrong on our side. Please try again.');
+        return withHeaders(fail(500, 'Something went wrong on our side. Please try again.'), cors);
       }
     }
-    return fail(404, 'No such endpoint');
+    return withHeaders(fail(404, 'No such endpoint'), cors);
   },
 };
 
@@ -158,6 +137,7 @@ async function meta({ env }) {
       explanation: s.explanation,
       reason: s.reason ?? null,
       sourceUrl: s.sourceUrl ?? null,
+      audit: { ...s.audit, auditedOn: s.auditedOn },
     })),
   });
 }
@@ -222,15 +202,11 @@ async function getUniversity({ env, params }) {
   ]);
 
   const shaped = programs.results.map(shapeProgram);
-  const systemId = shaped.length ? shaped[0].scoringSystem : null;
-  const system = systemId ? SCORING_SYSTEMS[systemId] : null;
+  const systems = [...new Set(shaped.map((p) => p.scoringSystem))]
+    .map((id) => [id, SCORING_SYSTEMS[id]]).filter(([, s]) => s)
+    .map(([id, s]) => ({ id, label: s.label, unit: s.unit, computable: s.computable !== false, explanation: s.explanation, reason: s.reason ?? null, audit: s.audit }));
 
-  return json({
-    university,
-    scoring: system ? { id: systemId, label: system.label, unit: system.unit, computable: system.computable !== false, explanation: system.explanation, reason: system.reason ?? null } : null,
-    programs: shaped,
-    researchLog: log.results,
-  });
+  return json({ university, scoring: systems, programs: shaped, researchLog: log.results });
 }
 
 async function listPrograms({ env, url }) {
@@ -263,74 +239,19 @@ async function getProgram({ env, params }) {
 /**
  * The calculator. One set of marks in; one score PER UNIVERSITY out, each computed
  * that university's own way, plus what each programme says about those marks.
+ * (The browser runs the same qualifyAll() itself, so this route is optional.)
  */
 async function qualify({ request, env }) {
   const body = await request.json().catch(() => null);
-  if (!body || typeof body.marks !== 'object') return fail(400, 'Send your marks as { "marks": { "mathematics": 72, ... } }.');
-
-  const marks = normaliseMarks(body.marks);
-  if (marks.length < 4) return fail(400, 'Enter at least 4 subjects so we can work anything out.');
+  if (!body) return fail(400, 'Send your marks as { "marks": { "mathematics": 72, ... } }.');
 
   const { results } = await env.DB.prepare(`${PROGRAM_SELECT} ORDER BY u.name, p.faculty, p.name`).all();
-  const programs = results.map(shapeProgram);
-
-  const systems = [...new Set(programs.map((p) => p.scoringSystem))];
-  const scores = scoreEverySystem(marks, systems);
-
-  const byUniversity = new Map();
-  for (const program of programs) {
-    const score = scores[program.scoringSystem];
-    const assessment = assessProgram(
-      { ...program, subject_requirements: program.subjectRequirements, min_aps: program.minScore },
-      marks,
-      score
-    );
-
-    const uid = program.university.id;
-    if (!byUniversity.has(uid)) {
-      byUniversity.set(uid, {
-        university: program.university,
-        // A university can use more than one system: Wits scores most faculties on its
-        // APS but Health Sciences on a Composite Index. Carry every system it uses.
-        scores: [],
-        selectionScores: [],
-        qualifies: [],
-        close: [],
-        notYet: [],
-        cannotTell: [],
-      });
-    }
-    const bucket = byUniversity.get(uid);
-    if (score && !bucket.scores.some((s) => s.id === score.id)) bucket.scores.push(score);
-    const entry = { program, ...assessment, scoreId: score ? score.id : null };
-    if (assessment.verdict === 'qualifies') bucket.qualifies.push(entry);
-    else if (assessment.close) bucket.close.push(entry);
-    else if (assessment.verdict === 'not_yet') bucket.notYet.push(entry);
-    else bucket.cannotTell.push(entry);
+  try {
+    return json(qualifyAll(body.marks, results.map(shapeProgram)), { maxAge: 0 });
+  } catch (err) {
+    if (err instanceof InputError) return fail(400, err.message);
+    throw err;
   }
-
-  // Stellenbosch publishes selection formulas on top of the aggregate.
-  const su = byUniversity.get('su');
-  if (su) {
-    for (const faculty of ['Engineering', 'Science']) {
-      const extra = stellenboschSelection(marks, faculty);
-      if (extra) su.selectionScores.push(extra);
-    }
-  }
-
-  const universities = [...byUniversity.values()].sort(
-    (a, b) => b.qualifies.length - a.qualifies.length || a.university.name.localeCompare(b.university.name)
-  );
-
-  return json(
-    {
-      marksCounted: marks.length,
-      universities,
-      warning:
-        'These scores are NOT comparable with each other. Each one is worked out using that university’s own formula, from the same marks. Never compare a Wits APS with a UP APS or a UCT FPS.',
-    },
-    { maxAge: 0 }
-  );
 }
 
 async function listBursaries({ env, url }) {
@@ -363,6 +284,41 @@ async function createReminder({ request, env }) {
   ).bind(crypto.randomUUID(), phone, field).run();
 
   return json({ ok: true, message: 'You are on the list. We will WhatsApp you before bursary deadlines close.' }, { maxAge: 0 });
+}
+
+/**
+ * "Ask a question that's not in the FAQ". We store the question so a person can answer
+ * it and add it to the FAQ. We do not generate an answer automatically: an invented
+ * answer about admissions is exactly the harm this product exists to avoid.
+ *
+ * Contact details are optional. If given, consent must be explicit, and we keep them
+ * only so we can reply to that one question.
+ */
+async function createQuestion({ request, env }) {
+  const body = await request.json().catch(() => null);
+  if (!body) return fail(400, 'Send your question as { "question": "..." }.');
+
+  // A hidden "website" field that real people never fill in: bots do.
+  if (body.website) return json({ ok: true, message: 'Thanks - your question is in.' }, { maxAge: 0 });
+
+  const question = String(body.question || '').replace(/\s+/g, ' ').trim();
+  if (question.length < 10) return fail(400, 'Tell us a bit more - a question needs at least 10 characters.');
+  if (question.length > 600) return fail(400, 'That is a bit long. Please keep your question under 600 characters.');
+
+  const contact = body.contact ? String(body.contact).trim().slice(0, 120) : null;
+  if (contact && !body.consent) return fail(400, 'Tick the box so we know it is okay to use your contact details to reply.');
+
+  // Basic guard against someone pasting an ID number: a question never needs one.
+  if (/\b\d{13}\b/.test(question.replace(/\s/g, ''))) {
+    return fail(400, 'Please take out any ID number - a question never needs one.');
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO questions (id, question, contact, consent, page, status, created_at)
+     VALUES (?, ?, ?, ?, ?, 'new', datetime('now'))`
+  ).bind(crypto.randomUUID(), question, contact, contact ? 1 : 0, String(body.page || '').slice(0, 200) || null).run();
+
+  return json({ ok: true, message: 'Thanks - your question is in. We will add an answer to the FAQ once we have checked it against the official sources.' }, { maxAge: 0 });
 }
 
 async function researchLog({ env }) {

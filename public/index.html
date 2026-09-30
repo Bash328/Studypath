@@ -2,225 +2,253 @@
 <html lang="en-ZA">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Studypath — Work out which universities you can actually get into</title>
-<meta name="description" content="Free South African career and university guide. Pick a career, see the school subjects you need, work out your APS the way each university actually calculates it, and see which degrees you qualify for — every requirement linked to the official university page.">
-<link rel="canonical" href="https://studypath.example/">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Studypath – which degrees can your marks actually get you into?</title>
+<meta name="description" content="Free South African career and university guide. Put in your marks and see which degrees you qualify for – scored the way each university scores, with a link to the official page for every number.">
+<link rel="canonical" href="https://studypath.co.za/">
+
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Studypath">
-<meta property="og:title" content="Studypath — Work out which universities you can actually get into">
-<meta property="og:description" content="Pick a career, see the subjects you need, and find out which South African degrees you qualify for. Every number linked to the official university page.">
-<meta property="og:url" content="https://studypath.example/">
+<meta property="og:title" content="Studypath – which degrees can your marks actually get you into?">
+<meta property="og:description" content="Free South African career and university guide. Put in your marks and see which degrees you qualify for – scored the way each university scores, with a link to the official page for every number.">
+<meta property="og:url" content="https://studypath.co.za/">
 <meta property="og:locale" content="en_ZA">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="theme-color" content="#2f3e9e">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#3a35c8">
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/site.css">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "@id": "https://studypath.example/#website",
-      "name": "Studypath",
-      "url": "https://studypath.example/",
-      "inLanguage": "en-ZA",
-      "description": "South African career and university guidance with admission requirements sourced from official university pages.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": { "@type": "EntryPoint", "urlTemplate": "https://studypath.example/careers.html?q={search_term_string}" },
-        "query-input": "required name=search_term_string"
-      }
-    },
-    {
-      "@type": "Organization",
-      "@id": "https://studypath.example/#org",
-      "name": "Studypath",
-      "url": "https://studypath.example/",
-      "areaServed": { "@type": "Country", "name": "South Africa" }
-    }
-  ]
-}
-</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://studypath.co.za/#website","name":"Studypath","url":"https://studypath.co.za/","inLanguage":"en-ZA","description":"South African career and university guidance with admission requirements sourced from official university pages.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://studypath.co.za/careers.html?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Organization","@id":"https://studypath.co.za/#org","name":"Studypath","url":"https://studypath.co.za/","areaServed":{"@type":"Country","name":"South Africa"}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="logo" href="/"><span class="logo__mark">SP</span> Studypath</a>
+    <a class="logo" href="/" aria-label="Studypath home"><span class="logo__mark" aria-hidden="true">SP</span><span class="logo__text">Studypath</span></a>
     <nav class="nav" aria-label="Main">
       <a href="/careers.html">Careers</a>
       <a href="/universities.html">Universities</a>
+      <a href="/grade-10-subjects.html">Choose subjects</a>
+      <a href="/dates.html">Dates</a>
       <a href="/nbt.html">The NBT</a>
-      <a href="/bursaries.html">Bursaries</a>
-      <a href="/study-abroad.html">Study abroad</a>
-      <a href="/data-sources.html">Where our data comes from</a>
-      <a class="nav__cta" href="/calculator.html">Check my marks</a>
+      <a href="/bursaries.html">Money</a>
+      <a href="/faq.html">FAQ</a>
+      <a class="nav__cta" href="/calculator.html">What do I qualify for?</a>
     </nav>
   </div>
 </header>
 
 <main id="main">
 
-  <section class="hero wrap">
-    <p class="eyebrow">Free · For South African high-school students</p>
-    <h1>Find out which universities you can actually get into.</h1>
-    <p class="lead">
-      Tell us your subjects and your marks once. We work out your score the way each
-      university works it out — because they all do it differently — and show you exactly
-      which degrees you qualify for right now.
-    </p>
-    <p class="lead">
-      Every single requirement links to the official university page or PDF that says it,
-      so you never have to take our word for it.
-    </p>
-    <div class="btn-row">
-      <a class="btn btn--primary" href="/calculator.html">Check my marks</a>
-      <a class="btn btn--ghost" href="/careers.html">I don't know what I want to do yet</a>
+<section class="hero hero--home">
+  <div class="wrap hero__grid">
+    <div>
+      <p class="eyebrow">Free · for South African learners · no sign-up</p>
+      <h1>Find out which degrees your marks can <span class="hl">actually</span> get you into.</h1>
+      <p class="lead">Put in your subjects and marks. Studypath works out your score <strong>the way each university does</strong> – because they all count it differently – and shows you what you qualify for.</p>
+      <div class="btn-row">
+        <a class="btn btn--sun btn--big" href="/calculator.html">What do I qualify for? →</a>
+        <a class="btn btn--ghost btn--big" href="/careers.html">I don’t know what I want to do yet</a>
+      </div>
+      <ul class="trust-row">
+        <li><span aria-hidden="true">✓</span> Every number links to the official page</li>
+        <li><span aria-hidden="true">🔒</span> Your marks never leave your phone</li>
+        <li><span aria-hidden="true">⚠️</span> We tell you what we couldn’t verify</li>
+      </ul>
     </div>
-  </section>
-
-  <section class="section wrap" aria-labelledby="how">
-    <h2 id="how">How it works</h2>
-    <div class="grid grid--3">
-      <div class="card">
-        <h3>1. Pick something you're curious about</h3>
-        <p>Browse careers by the kind of work they are — health, engineering, law, teaching, the arts — and see which school subjects usually lead there.</p>
-        <p><a href="/careers.html">Browse careers →</a></p>
-      </div>
-      <div class="card">
-        <h3>2. Put in your marks</h3>
-        <p>Your subjects and your latest percentages. That's it. Nothing is sent anywhere — your marks stay in your browser.</p>
-        <p><a href="/calculator.html">Open the calculator →</a></p>
-      </div>
-      <div class="card">
-        <h3>3. See where you stand</h3>
-        <p>Which degrees you already qualify for, and which ones you're close to — like "you need 2% more in Maths for this one".</p>
-        <p><a href="/universities.html">See the universities →</a></p>
-      </div>
+    <div class="hero__art" aria-hidden="true">
+      <div class="bubble bubble--1">🎓</div>
+      <div class="bubble bubble--2">🧮</div>
+      <div class="bubble bubble--3">🏫</div>
+      <div class="bubble bubble--4">📚</div>
+      <div class="hero__score"><em>Example student</em><span>UCT score</span><strong>449</strong><span>Wits score</span><strong>43</strong><em>Same marks. Different numbers.</em></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section wrap" aria-labelledby="jargon">
-    <h2 id="jargon">The words everyone uses but nobody explains</h2>
-    <p>If you've been told to "check your APS" and had no idea what that meant, you're not behind — nobody explains this properly. Here's the whole thing in plain language.</p>
-
-    <div class="grid grid--2">
-      <div class="card">
-        <h3>APS</h3>
-        <p><strong>Admission Point Score.</strong> A number universities work out from your Grade 11 or 12 marks to decide if you can get in. Higher is better.</p>
-        <p>The catch: <strong>every university calculates it differently.</strong> Some count 6 subjects, some count 7. Some include Life Orientation, some don't. Some don't use APS at all.</p>
-      </div>
-      <div class="card">
-        <h3>NSC achievement levels</h3>
-        <p>Your percentage gets turned into a <strong>level from 1 to 7</strong> (some universities use 1 to 8). Level 4 is 50–59%, level 5 is 60–69%, level 6 is 70–79%, level 7 is 80% and up.</p>
-        <p>When a university says "Maths level 6", it means <strong>70% or more in Maths</strong>.</p>
-      </div>
-      <div class="card">
-        <h3>Home Language vs First Additional Language</h3>
-        <p>Your Home Language is the one you're strongest in; your First Additional Language is your second one. Universities usually ask for a <strong>higher mark in a First Additional Language</strong> than a Home Language, because the subject is a bit easier.</p>
-      </div>
-      <div class="card">
-        <h3>The NBT</h3>
-        <p><strong>National Benchmark Tests.</strong> Extra tests some universities make you write on top of matric. They test reading, reasoning and maths — not your school syllabus.</p>
-        <p><a href="/nbt.html">Everything about the NBT →</a></p>
-      </div>
-      <div class="card">
-        <h3>"Selection programme"</h3>
-        <p>Meeting the minimum does <strong>not</strong> get you in. The university picks the best applicants from everyone who qualified, so the real cut-off is usually higher than the published one. Medicine, engineering and law are almost always like this.</p>
-      </div>
-      <div class="card">
-        <h3>Bursary</h3>
-        <p>Money for your studies that you usually don't pay back — unlike a loan. Some require you to work for the company afterwards. Deadlines are strict and most of them close mid-year.</p>
-        <p><a href="/bursaries.html">Find bursaries →</a></p>
-      </div>
+<section class="section wrap" aria-labelledby="where">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">📍</span>
+  <div><h2>Where are you right now?</h2><p class="sec-head__sub">Tap your grade and we’ll point you at what matters <strong>this year</strong>.</p></div>
+</div>
+  <div class="chip-row" id="grade-chips" role="group" aria-label="Your grade">
+    <button class="chip chip--big" type="button" data-grade="9" aria-pressed="false">Grade 9</button><button class="chip chip--big" type="button" data-grade="10" aria-pressed="false">Grade 10</button><button class="chip chip--big" type="button" data-grade="11" aria-pressed="false">Grade 11</button><button class="chip chip--big" type="button" data-grade="12" aria-pressed="false">Grade 12</button>
+  </div>
+  <div class="grade-panels" id="grade-panels">
+    <div class="card card--accent grade-panel" data-for="9 10">
+      <h3>🧠 Choosing your subjects is your big job</h3>
+      <p>The subjects you pick at the end of Grade 9 decide which degrees are open in Grade 12. <strong>Mathematics vs Maths Literacy</strong> is the one that matters most.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/grade-10-subjects.html">Help me choose</a><a class="btn btn--ghost" href="/careers.html">Explore careers first</a></div>
     </div>
-  </section>
-
-  <section class="section wrap" aria-labelledby="honest">
-    <h2 id="honest">Why you can trust the numbers here</h2>
-    <div class="grid grid--2">
-      <div class="card">
-        <h3>We never guess a number</h3>
-        <p>If we can't find a requirement on an official university page or PDF, we don't show it. We say we don't know instead. Every figure on this site has a link to its source next to it.</p>
-      </div>
-      <div class="card">
-        <h3>We don't mix up the universities' scores</h3>
-        <p>A "Wits APS of 42" is not the same as a "UP APS of 35" or a "UCT score of 500". Putting them on one scale would be wrong, so we never do it. You get a separate result for each university.</p>
-      </div>
-      <div class="card">
-        <h3>We show you when sources disagree</h3>
-        <p>Sometimes two official university pages give different numbers. We show you both and tell you they disagree, rather than quietly picking one and sounding confident.</p>
-      </div>
-      <div class="card">
-        <h3>We publish what we don't know</h3>
-        <p>There's a public list of every gap in our data and why it's there. We're still adding universities — new ones go up twice a week as we verify them.</p>
-        <p><a href="/data-sources.html">See our data and our gaps →</a></p>
-      </div>
+    <div class="card card--accent grade-panel" data-for="11">
+      <h3>🎯 Test your marks and go see a campus</h3>
+      <p>Universities look at your <strong>Grade 11 results</strong>. Find out where you stand now, while you still have a year to push.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/dates.html?kind=open_day">Open days</a><a class="btn btn--ghost" href="/nbt.html">The NBT</a></div>
     </div>
-  </section>
-
-  <section class="section wrap" aria-labelledby="coverage">
-    <h2 id="coverage">What's on Studypath right now</h2>
-    <div id="coverage-stats" class="grid grid--3"></div>
-    <p class="small muted" style="margin-top:1rem">
-      South Africa has 26 public universities. We publish one only once we've captured its
-      requirements from its own official sources, so this list grows every week rather than
-      appearing complete on day one.
-    </p>
-  </section>
-
-  <section class="section wrap">
-    <div class="callout">
-      <h3>Ready?</h3>
-      <p>The calculator takes about two minutes and you don't need an account.</p>
-      <p><a class="btn btn--primary" href="/calculator.html" style="margin-top:.5rem">Check my marks</a></p>
+    <div class="card card--accent grade-panel" data-for="12">
+      <h3>⏰ Deadlines are the thing now</h3>
+      <p>Check what you qualify for, then watch the closing dates. Don’t forget <strong>NSFAS</strong> is a separate application.</p>
+      <div class="btn-row"><a class="btn btn--primary" href="/dates.html">Closing dates</a><a class="btn btn--ghost" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/bursaries.html">Money</a></div>
     </div>
-  </section>
+    <p class="small muted grade-hint">Pick a grade above. Not sure? Start with <a href="/calculator.html">What do I qualify for?</a></p>
+  </div>
+</section>
+
+<section class="section wrap" aria-labelledby="soon">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">📅</span>
+  <div><h2>Coming up</h2><p class="sec-head__sub">The next dates that matter. Closed ones are for the 2027 intake – <strong>2028 dates aren’t published yet</strong>.</p></div>
+</div>
+  <div id="upcoming" class="upcoming" data-src="/data/dates.json">
+    <p class="muted">Loading the next dates… <a href="/dates.html">See them all</a></p>
+  </div>
+</section>
+
+<section class="section wrap" aria-labelledby="tools">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">🧰</span>
+  <div><h2>Everything in one place</h2></div>
+</div>
+  <div class="grid grid--4">
+    <a class="card card--link tool" href="/calculator.html"><span class="tool__i">🧮</span><h3>What do I qualify for?</h3><p>Your marks → every degree you can apply for.</p></a>
+    <a class="card card--link tool" href="/careers.html"><span class="tool__i">🧭</span><h3>Careers</h3><p>49 careers, and the degrees that lead to them.</p></a>
+    <a class="card card--link tool" href="/grade-10-subjects.html"><span class="tool__i">🧠</span><h3>Choose your subjects</h3><p>Grade 9–10? Start here.</p></a>
+    <a class="card card--link tool" href="/dates.html"><span class="tool__i">📅</span><h3>Dates</h3><p>Closing dates, open days and NBT sittings.</p></a>
+    <a class="card card--link tool" href="/nbt.html"><span class="tool__i">✍️</span><h3>The NBT</h3><p>What it is, who needs it, when to write.</p></a>
+    <a class="card card--link tool" href="/bursaries.html"><span class="tool__i">💰</span><h3>Money</h3><p>NSFAS and bursaries, with deadline reminders.</p></a>
+    <a class="card card--link tool" href="/ask-a-university.html"><span class="tool__i">📞</span><h3>Ask a university</h3><p>The right email or phone number for your question.</p></a>
+    <a class="card card--link tool" href="/faq.html"><span class="tool__i">❓</span><h3>FAQ</h3><p>Quick answers – and ask us what’s missing.</p></a>
+  </div>
+</section>
+
+<section class="section wrap" aria-labelledby="jargon">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">📖</span>
+  <div><h2>The words everyone uses and nobody explains</h2><p class="sec-head__sub">If you’ve been told to “check your APS” and had no idea what that meant, you’re not behind. Tap one.</p></div>
+</div>
+  <div class="grid grid--2">
+    <details class="card jargon">
+      <summary><span class="jargon__q">What is an APS, and is it the same at every university?</span></summary>
+      <div class="claim claim--verified">
+  <p>APS stands for <strong>Admission Point Score</strong>: a number a university works out from your marks to decide whether you meet its entry requirements. It is <strong>not the same at every university</strong> - each one counts different subjects in a different way, so a score from one university means nothing at another.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="/data-sources.html#scoring">How each university scores you (Studypath)</a></span></p>
+</div>
+      <p class="small"><a href="/faq.html#what-is-aps">Read the full answer →</a></p>
+    </details>
+    <details class="card jargon">
+      <summary><span class="jargon__q">What are achievement levels (1 to 7)?</span></summary>
+      <div class="claim claim--verified">
+  <p>Your percentage in each subject is turned into an <strong>NSC achievement level</strong> from 1 to 7: <strong>7 = 80-100%, 6 = 70-79%, 5 = 60-69%, 4 = 50-59%, 3 = 40-49%, 2 = 30-39%, 1 = 0-29%</strong>. When a university asks for &quot;Maths level 6&quot; it means 70% or more.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="https://drupalwebprod-files.up.ac.za/Public/2025-12/2020-hum_ug-final.zp176067.pdf?VersionId=4wZe_mMeDEmQMs5LCJiz4a__0U.IbD3J" target="_blank" rel="noopener">UP Faculty of Humanities admission document<span class="sr-only"> (opens the official page)</span></a></span></p>
+</div>
+      <p class="small"><a href="/faq.html#levels">Read the full answer →</a></p>
+    </details>
+    <details class="card jargon">
+      <summary><span class="jargon__q">What is the NBT?</span></summary>
+      <div class="claim claim--verified">
+  <p>The National Benchmark Tests &quot;measure your academic readiness for University.&quot; There are two tests. The <strong>AQL</strong> (Academic and Quantitative Literacy) is written by applicants to all programmes that require the NBT. The <strong>MAT</strong> (Mathematics) is for programmes where Mathematics is a requirement. Each is multiple-choice and takes three hours.</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="https://www.nbt.ac.za/content/faq-0" target="_blank" rel="noopener">NBT Project FAQ<span class="sr-only"> (opens the official page)</span></a></span></p>
+</div>
+      <p class="small"><a href="/faq.html#what-is-nbt">Read the full answer →</a></p>
+    </details>
+    <details class="card jargon">
+      <summary><span class="jargon__q">What is the difference between Home Language and First Additional Language?</span></summary>
+      <div class="claim claim--general">
+  <p>Your <strong>Home Language</strong> is the language subject you study at the higher level; your <strong>First Additional Language</strong> is the second language subject, studied at a lower level. Every NSC learner takes both.</p>
+  <p class="claim__meta"><span class="tag tag--general"><span aria-hidden="true">!</span> Not from an official source</span></p>
+</div>
+      <p class="small"><a href="/faq.html#hl-fal">Read the full answer →</a></p>
+    </details>
+    <details class="card jargon">
+      <summary><span class="jargon__q">What is a &quot;selection programme&quot;?</span></summary>
+      <div class="claim claim--verified">
+  <p>A degree where the university has <strong>more qualified applicants than places</strong>, so meeting the minimum is not enough: it picks the strongest. Stellenbosch puts it this way: it &quot;receives more applications than we have places available. Therefore, meeting the minimum admission requirements does not guarantee admission to your programme of choice. All programmes are selection programmes.&quot;</p>
+  <p class="claim__meta"><span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> <span class="srcs"><span class="srcs__label">Source:</span> <a href="https://files.su.ac.za/public/undergraduate-maties/documents/2026-01/su-admissions-booklet-2027.pdf" target="_blank" rel="noopener">Stellenbosch Admissions Booklet 2027<span class="sr-only"> (opens the official page)</span></a></span></p>
+</div>
+      <p class="small"><a href="/faq.html#selection">Read the full answer →</a></p>
+    </details>
+    <details class="card jargon">
+      <summary><span class="jargon__q">What is the difference between a bursary and a loan?</span></summary>
+      <div class="claim claim--general">
+  <p>A <strong>bursary</strong> is money for your studies that you normally do not pay back (some come with a condition, such as working for the provider for a set time). A <strong>loan</strong> must be repaid. These are general definitions - always read the terms of the specific offer.</p>
+  <p class="claim__meta"><span class="tag tag--general"><span aria-hidden="true">!</span> Not from an official source</span></p>
+</div>
+      <p class="small"><a href="/faq.html#bursary-vs-loan">Read the full answer →</a></p>
+    </details></div>
+  <p class="small muted">Each answer is tagged: <span class="tag tag--verified"><span aria-hidden="true">✓</span> Checked</span> we read it on the official page · <span class="tag tag--reported"><span aria-hidden="true">◔</span> From our research</span> from our research · <span class="tag tag--general"><span aria-hidden="true">!</span> Not from an official source</span> common knowledge we couldn’t source.</p>
+</section>
+
+<section class="section wrap" aria-labelledby="trust">
+  <div class="sec-head">
+  <span class="sec-head__emoji" aria-hidden="true">🤝</span>
+  <div><h2>Why you can trust the numbers</h2><p class="sec-head__sub">Most sites copy a number and move on. Here’s what we do differently.</p></div>
+</div>
+  <div class="grid grid--2">
+    <div class="card"><h3>We never guess a number</h3><p>If we can’t find a requirement on an official university page or PDF, we don’t show it. We say we don’t know.</p></div>
+    <div class="card"><h3>Every university gets its own score</h3><p>A Wits score of 42 is not a UP score of 35 or a UCT score of 500. We work each one out <em>their</em> way, and <a href="/data-sources.html#scoring">show you which official page we checked</a>.</p></div>
+    <div class="card"><h3>When sources disagree, you see both</h3><p>Sometimes two official pages give different numbers. We show a “Sources disagree” badge instead of quietly picking one.</p></div>
+    <div class="card"><h3>We publish what we don’t know</h3><p>Right now we’ve captured requirements for <strong>10 of 26</strong> universities, and 29 things are still open. <a href="/data-sources.html">See every gap</a>.</p></div>
+  </div>
+  <div class="stat-row">
+    <div class="stat"><strong>181</strong><span>degrees, each with a source link</span></div>
+    <div class="stat"><strong>10/26</strong><span>universities with requirements</span></div>
+    <div class="stat"><strong>49</strong><span>careers to explore</span></div>
+  </div>
+</section>
 
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
-    <nav aria-label="Footer">
-      <a href="/careers.html">Careers</a>
-      <a href="/calculator.html">Calculator</a>
-      <a href="/universities.html">Universities</a>
-      <a href="/nbt.html">The NBT</a>
-      <a href="/bursaries.html">Bursaries</a>
-      <a href="/study-abroad.html">Study abroad</a>
-      <a href="/data-sources.html">Data &amp; sources</a>
-    </nav>
-    <p class="small">
-      Studypath is free and independent. We are not a university and we can't apply on your
-      behalf — always confirm on the university's own page before you rely on anything,
-      which is why we link to it every time.
-    </p>
+    <div class="site-footer__grid">
+      <div>
+        <p class="site-footer__brand">Studypath</p>
+        <p class="small">Free and independent help for South African learners choosing what to study. We are not a university and cannot apply for you.</p>
+        <p class="small"><strong>Always confirm on the university’s own page before you rely on anything</strong> – that is why we link to it every time.</p>
+      </div>
+      <nav aria-label="Footer">
+        <a href="/universities.html">Universities</a>
+        <a href="/grade-10-subjects.html">Choose your subjects</a>
+        <a href="/nbt.html">The NBT explained</a>
+        <a href="/bursaries.html">Money &amp; bursaries</a>
+        <a href="/faq.html">FAQ</a>
+        <a href="/ask-a-university.html">Ask a university</a>
+        <a href="/ask.html">Ask us a question</a>
+        <a href="/study-abroad.html">Study abroad</a>
+        <a href="/data-sources.html">Where our data comes from</a>
+        <a href="/privacy.html">Privacy</a>
+      </nav>
+    </div>
   </div>
 </footer>
 
-<script type="module">
-  import { api, el, $ } from '/assets/js/core.js';
+<nav class="tabbar" aria-label="Quick navigation">
+  <a class="tab" href="/" aria-current="page"><span class="tab__i" aria-hidden="true">🏠</span><span class="tab__l">Home</span></a>
+  <a class="tab" href="/careers.html"><span class="tab__i" aria-hidden="true">🧭</span><span class="tab__l">Careers</span></a>
+  <a class="tab tab--main" href="/calculator.html"><span class="tab__i" aria-hidden="true">🧮</span><span class="tab__l">My marks</span></a>
+  <a class="tab" href="/dates.html"><span class="tab__i" aria-hidden="true">📅</span><span class="tab__l">Dates</span></a>
+  <details class="tab tab--more">
+    <summary><span class="tab__i" aria-hidden="true">⋯</span><span class="tab__l">More</span></summary>
+    <div class="sheet" role="menu">
+      <a role="menuitem" href="/universities.html"><span aria-hidden="true">🏫</span> Universities</a>
+      <a role="menuitem" href="/grade-10-subjects.html"><span aria-hidden="true">🧠</span> Choose your subjects</a>
+      <a role="menuitem" href="/nbt.html"><span aria-hidden="true">✍️</span> The NBT explained</a>
+      <a role="menuitem" href="/bursaries.html"><span aria-hidden="true">💰</span> Money &amp; bursaries</a>
+      <a role="menuitem" href="/faq.html"><span aria-hidden="true">❓</span> FAQ</a>
+      <a role="menuitem" href="/ask-a-university.html"><span aria-hidden="true">📞</span> Ask a university</a>
+      <a role="menuitem" href="/ask.html"><span aria-hidden="true">💬</span> Ask us a question</a>
+      <a role="menuitem" href="/study-abroad.html"><span aria-hidden="true">🌍</span> Study abroad</a>
+      <a role="menuitem" href="/data-sources.html"><span aria-hidden="true">🔎</span> Where our data comes from</a>
+      <a role="menuitem" href="/privacy.html"><span aria-hidden="true">🔒</span> Privacy</a>
+    </div>
+  </details>
+</nav>
 
-  const box = $('#coverage-stats');
-  api('/meta').then(({ stats, universities }) => {
-    const withData = universities.filter((u) => u.programCount > 0).length;
-    const tiles = [
-      [stats.programs, 'degree programmes', 'each one with a link to the official page it came from'],
-      [withData, 'universities covered', 'out of 26 public universities in South Africa'],
-      [stats.careers, 'careers to explore', 'across health, engineering, business, law, teaching and the arts'],
-    ];
-    box.replaceChildren(...tiles.map(([n, label, sub]) =>
-      el('div', { class: 'card' },
-        el('p', { class: 'score-card__value', style: 'margin:0' }, String(n)),
-        el('p', { style: 'margin:.2rem 0 .3rem;font-weight:650' }, label),
-        el('p', { class: 'small muted', style: 'margin:0' }, sub))));
-  }).catch(() => { box.remove(); });
-</script>
+<script type="module" src="/assets/js/app.js"></script>
+<script type="module" src="/assets/js/home.js"></script>
 </body>
 </html>

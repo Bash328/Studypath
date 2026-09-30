@@ -146,6 +146,18 @@ export const uctPrograms = [
       manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. First Additional Language applicants need Proficient NBTs.')],
     notes: bands(500, 525, '475-479, Education Development Unit only') },
 
+  // ---------------- Science ----------------
+  // This row was already in the database before the bulk import (the first row of the
+  // project), so it is preserved with its original wording and source. UCT Science uses
+  // an FPS out of 800, which the calculator now computes - but the numeric cut-off is on
+  // pages of the 2027 prospectus that could not be read, so no points figure is shown.
+  { ...base, id: 'uct-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science',
+    faculty: 'Science', duration_years: null, min_aps: null, score_type: 'minimum',
+    source_url: 'https://sit.uct.ac.za/our-degrees-undergraduates/bsc-degrees',
+    scoring_system: 'UCT_FPS800', intake_year: null, document_date: null,
+    subject_requirements: [pct('Mathematics', 70)],
+    notes: flag('partially-verified', 'UCT’s own Computer Science page states the Maths minimum directly but defers full admission rules to the Science Faculty Handbook - the FPS cut-off and other subject minimums are not yet confirmed from an official source. Do not treat this as fully specified.') },
+
   // ---------------- Humanities ----------------
   // Requirements are confirmed; the numeric FPS cut-off was in the truncated part of
   // the prospectus, so min_aps stays null rather than being invented.

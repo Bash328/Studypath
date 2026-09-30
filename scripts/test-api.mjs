@@ -3,6 +3,7 @@
 //   node scripts/test-api.mjs
 
 import worker from '../src/index.js';
+import { createRealDb } from './d1-shim.mjs';
 import { universities } from '../db/data/universities.mjs';
 import { careers } from '../db/data/careers.mjs';
 import { uctPrograms } from '../db/data/programs-uct.mjs';
@@ -35,7 +36,7 @@ const joined = (p) => ({
  * handlers use and returns the right shape, which is enough to catch the bugs that
  * actually happen here (wrong field names, bad JSON, unhandled nulls).
  */
-const DB = {
+const STUB_DB = {
   prepare(sql) {
     const binds = [];
     const self = {
@@ -47,6 +48,12 @@ const DB = {
     return self;
   },
 };
+
+// --real runs the Worker's actual SQL against SQLite loaded with the real seed.
+// (A flag rather than an env var so `npm test` also works in Windows cmd.)
+const REAL = process.argv.includes('--real');
+const DB = REAL ? createRealDb() : STUB_DB;
+console.log(REAL ? 'Using real SQLite + db/seed.sql' : 'Using the stub DB');
 
 function rowsFor(sql, binds) {
   const s = sql.replace(/\s+/g, ' ');
@@ -111,8 +118,9 @@ console.log('\nRoutes');
   const { res, body } = await call('/api/meta');
   ok('GET /api/meta is 200', res.status === 200);
   ok('meta reports every programme', body.stats.programs === programs.length, `got ${body.stats && body.stats.programs}`);
-  ok('meta lists all scoring systems', body.scoringSystems.length === 11, `got ${body.scoringSystems.length}`);
-  ok('meta marks 5 systems as not computable', body.scoringSystems.filter((s) => !s.computable).length === 5);
+  ok('meta lists all scoring systems', body.scoringSystems.length === 12, `got ${body.scoringSystems.length}`);
+  ok('meta: only the Wits Composite Index is left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 1);
+  ok('meta carries an audit record for every system', body.scoringSystems.every((s) => s.audit && s.audit.status && s.audit.sources.length > 0));
 }
 {
   const { res, body } = await call('/api/subjects');
@@ -156,16 +164,20 @@ console.log('\nThe calculator');
      wits.scores.find((s) => s.id === 'WITS_COMPOSITE_INDEX').computable === false);
 
   const ukzn = body.universities.find((u) => u.university.id === 'ukzn');
-  ok('UKZN produces no score at all', ukzn.scores.every((s) => s.computable === false));
-  ok('UKZN never claims the student qualifies', ukzn.qualifies.length === 0);
+  ok('UKZN now produces a verified score (36/48)', ukzn.scores.length === 1 && ukzn.scores[0].value === 36, JSON.stringify(ukzn.scores));
+  ok('UKZN programmes are judged on that score', ukzn.qualifies.length + ukzn.marksOk.length + ukzn.close.length + ukzn.notYet.length > 0);
 
   const su = body.universities.find((u) => u.university.id === 'su');
   ok('Stellenbosch adds its published selection scores', su.selectionScores.length === 2);
 
-  const everyEntry = body.universities.flatMap((u) => [...u.qualifies, ...u.close, ...u.notYet, ...u.cannotTell]);
+  const everyEntry = body.universities.flatMap((u) => [...u.qualifies, ...u.marksOk, ...u.close, ...u.notYet, ...u.cannotTell]);
   ok('every programme lands in exactly one bucket', everyEntry.length === programs.length, `got ${everyEntry.length}`);
   ok('every result knows which scoring system judged it', everyEntry.every((e) => 'scoreId' in e));
   ok('somebody qualifies for something', body.universities.some((u) => u.qualifies.length > 0));
+  ok('programmes needing an NBT/portfolio are not counted as plain qualifies',
+     body.universities.flatMap((u) => u.qualifies).every((e) => e.manual.length === 0));
+  ok('...they land in marksOk instead', body.universities.flatMap((u) => u.marksOk).length > 0 &&
+     body.universities.flatMap((u) => u.marksOk).every((e) => e.manual.length > 0));
 }
 {
   const { res, body } = await call('/api/qualify', { method: 'POST', body: JSON.stringify({ marks: { mathematics: 80 } }) });

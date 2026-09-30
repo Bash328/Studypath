@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://studypath.example/sitemap.xml
+Sitemap: https://studypath.co.za/sitemap.xml
