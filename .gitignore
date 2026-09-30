@@ -1,0 +1,11 @@
+node_modules/
+.wrangler/
+.dev.vars
+dist/
+db/seed.sql
+public/universities/
+public/careers/
+public/sitemap.xml
+.DS_Store
+db/chunks/
+db/seed-compact.sql

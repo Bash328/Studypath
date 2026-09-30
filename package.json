@@ -1,0 +1,20 @@
+{
+  "name": "studypath",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "South African high-school career guidance: subjects, APS, universities, bursaries.",
+  "scripts": {
+    "seed:generate": "node scripts/gen-seed.mjs",
+    "seed:apply": "wrangler d1 execute pathwise --remote --file=db/seed.sql",
+    "seed:apply:local": "wrangler d1 execute pathwise --local --file=db/seed.sql",
+    "build": "node scripts/build-pages.mjs",
+    "dev": "wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "test": "node scripts/test-scoring.mjs && node scripts/test-api.mjs",
+    "seed:compact": "node scripts/gen-seed-compact.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

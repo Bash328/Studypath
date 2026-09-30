@@ -1,0 +1,6 @@
+# Studypath
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://studypath.example/sitemap.xml

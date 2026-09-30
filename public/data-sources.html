@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Where our data comes from — and what we don't know | Studypath</title>
+<meta name="description" content="Studypath only publishes admission requirements taken from official South African university pages and PDFs. This page lists our sources, how each university scores applicants, and every gap and conflict we have not been able to resolve.">
+<link rel="canonical" href="https://studypath.example/data-sources.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Studypath">
+<meta property="og:title" content="Where Studypath's data comes from — and what we don't know">
+<meta property="og:description" content="Our sources, the scoring system each university uses, and a public list of every gap in our data.">
+<meta property="og:url" content="https://studypath.example/data-sources.html">
+<meta name="theme-color" content="#2f3e9e">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="logo" href="/"><span class="logo__mark">SP</span> Studypath</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/careers.html">Careers</a>
+      <a href="/universities.html">Universities</a>
+      <a href="/nbt.html">The NBT</a>
+      <a href="/bursaries.html">Bursaries</a>
+      <a href="/study-abroad.html">Study abroad</a>
+      <a href="/data-sources.html">Where our data comes from</a>
+      <a class="nav__cta" href="/calculator.html">Check my marks</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap wrap--narrow">
+    <p class="eyebrow">Our working shown</p>
+    <h1>Where this data comes from</h1>
+    <p class="lead">
+      One rule: if a requirement isn't on an official university page or PDF, it doesn't go on
+      Studypath. Not "probably", not "usually", not "according to another site". This page
+      shows you what we have, how each university counts, and — just as importantly — what we
+      still don't know.
+    </p>
+  </section>
+
+  <section class="section wrap wrap--narrow">
+    <h2>The rules we hold ourselves to</h2>
+    <div class="stack">
+      <div class="card">
+        <h3>Every number links to its source</h3>
+        <p>Not in a tooltip. Not behind a "learn more". A visible link, next to the number, on every single programme. If you ever find a figure here without one, that's a bug — tell us.</p>
+      </div>
+      <div class="card">
+        <h3>We never put universities on one scale</h3>
+        <p>Their scoring systems measure different things. Combining or comparing them would produce a number that is confidently wrong, which is the worst kind. So the calculator gives you a separate result per university, every time.</p>
+      </div>
+      <div class="card">
+        <h3>When sources disagree, we show both</h3>
+        <p>Wits' Bachelor of Architectural Studies is the clearest example: the schools-liaison guide says APS 34, the programme's own FAQ says 29. We show a "Sources disagree" badge and both figures rather than quietly picking one.</p>
+      </div>
+      <div class="card">
+        <h3>When we can't compute something, we say so</h3>
+        <p>We don't calculate a UKZN, UWC, NWU or UFS score, because we haven't verified those universities' formulas from their own pages. Guessing would give you a number to plan your life around that we made up.</p>
+      </div>
+      <div class="card">
+        <h3>The dataset grows, it doesn't pretend to be finished</h3>
+        <p>South Africa has 26 public universities. We publish one only once it's verified, and we add more twice a week. You'll see gaps here because there are gaps.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>How each university scores you</h2>
+    <p class="wrap--narrow" style="padding:0">
+      This is why one "APS" number can't work. Each of these produces a different figure from
+      exactly the same marks.
+    </p>
+    <div id="scoring-systems" class="grid grid--2"></div>
+  </section>
+
+  <section class="section wrap">
+    <h2>Coverage right now</h2>
+    <div id="coverage-table"></div>
+  </section>
+
+  <section class="section wrap">
+    <h2>What we could not verify</h2>
+    <p class="wrap--narrow" style="padding:0">
+      Most sites hide this. We think a student deciding their future deserves to know exactly
+      where the information runs out. Every entry below is something we tried to confirm and
+      couldn't, with the reason.
+    </p>
+    <div id="research-log"></div>
+  </section>
+
+  <section class="section wrap wrap--narrow">
+    <h2>Found something wrong?</h2>
+    <p>
+      Universities change their requirements, and documents get replaced. If a figure here
+      doesn't match what the university's own page says today, the university is right and we
+      are wrong — please tell us so we can fix it.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="/careers.html">Careers</a>
+      <a href="/calculator.html">Calculator</a>
+      <a href="/universities.html">Universities</a>
+      <a href="/nbt.html">The NBT</a>
+      <a href="/bursaries.html">Bursaries</a>
+      <a href="/study-abroad.html">Study abroad</a>
+      <a href="/data-sources.html">Data &amp; sources</a>
+    </nav>
+    <p class="small">Studypath is independent and free. We are not affiliated with any university.</p>
+  </div>
+</footer>
+
+<script type="module">
+import { api, el, clear, load, $, sourceLine } from '/assets/js/core.js';
+
+load($('#scoring-systems'), async () => {
+  const { scoringSystems } = await api('/meta');
+  return el('div', { class: 'grid grid--2' }, scoringSystems.map((s) =>
+    el('div', { class: 'card' },
+      el('div', { class: 'badge-row' },
+        s.computable
+          ? el('span', { class: 'badge badge--good' }, 'We calculate this')
+          : el('span', { class: 'badge badge--warn' }, 'We do not calculate this')),
+      el('h3', {}, s.label),
+      el('p', {}, s.explanation),
+      s.reason ? el('p', { class: 'small muted' }, s.reason) : null,
+      s.sourceUrl ? sourceLine(s.sourceUrl) : null)));
+});
+
+load($('#coverage-table'), async () => {
+  const { universities, flagCounts } = await api('/coverage');
+  const rows = universities.filter((u) => u.programs > 0);
+  const table = el('div', { class: 'table-scroll' },
+    el('table', { class: 'data' },
+      el('thead', {}, el('tr', {},
+        el('th', { scope: 'col' }, 'University'),
+        el('th', { scope: 'col' }, 'Programmes captured'),
+        el('th', { scope: 'col' }, 'Without a published points cut-off'))),
+      el('tbody', {}, rows.map((u) => el('tr', {},
+        el('td', {}, el('a', { href: `/universities/${u.id}.html` }, u.name)),
+        el('td', {}, String(u.programs)),
+        el('td', {}, String(u.withoutScore)))))));
+
+  const flagLabels = {
+    conflict: 'programmes where two official sources disagree',
+    unverified: 'programmes with a figure we could not fully verify',
+    'partially-verified': 'programmes captured from indexed text rather than the full page',
+    'dated-document': 'programmes whose only official source is labelled for an earlier intake',
+    selection: 'programmes where the published minimum is a floor, not a cut-off',
+    'no-cutoff-published': 'programmes where the university publishes no cut-off at all',
+  };
+  const caveats = Object.entries(flagCounts).sort((a, b) => b[1] - a[1]);
+
+  return el('div', {}, table,
+    el('h3', { style: 'margin-top:2rem' }, 'Caveats we carry on individual programmes'),
+    el('ul', {}, caveats.map(([id, n]) => el('li', {}, el('strong', {}, String(n)), ' ', flagLabels[id] || id))));
+});
+
+load($('#research-log'), async () => {
+  const { entries } = await api('/research-log');
+  const groups = { could_not_verify: [], partially_verified: [], verified: [] };
+  for (const e of entries) (groups[e.status] || groups.could_not_verify).push(e);
+
+  const section = (title, list, tone) => !list.length ? null : el('div', { style: 'margin-bottom:2rem' },
+    el('h3', {}, `${title} (${list.length})`),
+    el('div', { class: 'grid grid--2' }, list.map((e) => el('div', { class: 'card' },
+      el('div', { class: 'badge-row' }, el('span', { class: `badge badge--${tone}` }, e.university_name || e.university_id || 'General')),
+      el('h4', { style: 'margin:0 0 .3rem;font-size:1rem' }, e.faculty_or_program),
+      el('p', { class: 'small muted', style: 'margin:0' }, e.notes)))));
+
+  return el('div', {},
+    section('Could not verify', groups.could_not_verify, 'bad'),
+    section('Partly verified', groups.partially_verified, 'warn'),
+    section('Verified findings', groups.verified, 'good'));
+});
+</script>
+</body>
+</html>

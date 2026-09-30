@@ -1,0 +1,11 @@
+{
+  "name": "Studypath",
+  "short_name": "Studypath",
+  "description": "Work out which South African universities you can actually get into.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf9f5",
+  "theme_color": "#2f3e9e",
+  "lang": "en-ZA",
+  "icons": [{ "src": "/assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}

@@ -1,0 +1,20 @@
+name = "studypath"
+main = "src/index.js"
+compatibility_date = "2025-09-01"
+
+# Static site + API are served by this one Worker. Assets are tried first;
+# anything under /api/* falls through to the Worker script.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+not_found_handling = "404-page"
+run_worker_first = ["/api/*"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pathwise"
+database_id = "2cfc439e-fa19-4213-bba2-88255be8202d"
+
+[vars]
+# Placeholder until the real domain is bought. Used for canonical URLs and sitemap.
+SITE_ORIGIN = "https://studypath.example"

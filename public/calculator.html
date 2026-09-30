@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en-ZA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>APS Calculator — work out your score at every South African university | Studypath</title>
+<meta name="description" content="Enter your subjects and marks once. Studypath works out your score the way each South African university actually calculates it — Wits APS, UP APS, UCT FPS, Stellenbosch aggregate, Rhodes points — and shows which degrees you qualify for, with a link to every official source.">
+<link rel="canonical" href="https://studypath.example/calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Studypath">
+<meta property="og:title" content="APS Calculator for South African universities">
+<meta property="og:description" content="One set of marks. A separate, correctly-calculated score for each university — because their formulas are not the same.">
+<meta property="og:url" content="https://studypath.example/calculator.html">
+<meta name="theme-color" content="#2f3e9e">
+<link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does Studypath give me a different APS for each university?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Because South African universities genuinely calculate it differently. Wits counts your best 7 subjects including Life Orientation and gives English and Maths a bonus. UP and UJ count 6 subjects and exclude Life Orientation. UCT adds percentages out of 600. Stellenbosch uses a percentage average and no APS at all. Rhodes adds percentages and divides by 10. A score from one university means nothing at another, so we never put them on one scale." }
+    },
+    {
+      "@type": "Question",
+      "name": "What is an APS?",
+      "acceptedAnswer": { "@type": "Answer", "text": "APS stands for Admission Point Score. It is a number a university works out from your subject marks to decide whether you meet its entry requirements. Higher is better, and each university has its own formula and its own minimum per degree." }
+    },
+    {
+      "@type": "Question",
+      "name": "Are my marks stored anywhere?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Your marks are saved only in your own browser so you do not have to retype them. Studypath has no accounts and does not keep a copy of your marks." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does meeting the minimum mean I will get in?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Many degrees — medicine, engineering, law and most health sciences — are selection programmes, which means the university picks the strongest applicants from everyone who met the minimum. The real cut-off is usually higher than the published minimum, and we flag those programmes." }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="logo" href="/"><span class="logo__mark">SP</span> Studypath</a>
+    <nav class="nav" aria-label="Main">
+      <a href="/careers.html">Careers</a>
+      <a href="/universities.html">Universities</a>
+      <a href="/nbt.html">The NBT</a>
+      <a href="/bursaries.html">Bursaries</a>
+      <a href="/study-abroad.html">Study abroad</a>
+      <a href="/data-sources.html">Where our data comes from</a>
+      <a class="nav__cta" href="/calculator.html">Check my marks</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap wrap--narrow">
+    <p class="eyebrow">Takes about two minutes · No account needed</p>
+    <h1>What do your marks actually get you?</h1>
+    <p class="lead">
+      Put in your subjects and your latest percentages. We'll work out your score at each
+      university the way that university does it, and show you which degrees you qualify for.
+    </p>
+  </section>
+
+  <section class="wrap wrap--narrow">
+    <div class="callout">
+      <h3>Before you start — two things worth knowing</h3>
+      <p>
+        <strong>Use your most recent real marks.</strong> Your Grade 11 final or latest Grade 12
+        report is fine. Most universities let you apply on Grade 11 results.
+      </p>
+      <p>
+        <strong>There is no single "APS".</strong> Each university counts different subjects in a
+        different way, so you'll get a separate score for each one. That's not a bug — putting
+        them on one scale would give you the wrong answer.
+      </p>
+    </div>
+  </section>
+
+  <section class="section wrap wrap--narrow">
+    <form id="calc-form">
+      <h2>Your subjects and marks</h2>
+      <p class="hint">
+        Add every subject you take, including Life Orientation — some universities count it and
+        some don't, and we handle that for you. Percentages, not levels.
+      </p>
+
+      <div class="table-scroll">
+        <table class="marks-table">
+          <thead>
+            <tr>
+              <th scope="col" style="width:60%">Subject</th>
+              <th scope="col">Mark</th>
+              <th scope="col"><span class="sr-only">Remove</span></th>
+            </tr>
+          </thead>
+          <tbody id="marks-body"></tbody>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn--ghost" id="add-subject">+ Add another subject</button>
+        <button type="button" class="btn btn--ghost" id="reset-marks">Clear my marks</button>
+      </div>
+
+      <div id="calc-errors" aria-live="polite"></div>
+
+      <div class="btn-row">
+        <button type="submit" class="btn btn--primary">See what I qualify for</button>
+      </div>
+
+      <p class="hint" style="margin-top:1rem">
+        Your marks are saved in this browser only so you don't have to type them again.
+        We don't have accounts and we don't keep a copy.
+      </p>
+    </form>
+  </section>
+
+  <section class="wrap" id="calc-results" aria-live="polite"></section>
+
+  <section class="section wrap wrap--narrow">
+    <h2>How to read your results</h2>
+    <div class="stack">
+      <div class="card">
+        <h3><span class="badge badge--good">✓</span> You meet the published requirements</h3>
+        <p>Your score and every subject requirement we can check are satisfied. If the programme is also marked <strong>Selection programme</strong>, that still doesn't guarantee a place — the university chooses from everyone who qualified.</p>
+      </div>
+      <div class="card">
+        <h3>You are close</h3>
+        <p>You're within a few points, or a few percent in one subject. These are the ones worth pushing for this year — we tell you exactly what's missing, like "2% to go in Maths".</p>
+      </div>
+      <div class="card">
+        <h3>We cannot tell you yet</h3>
+        <p>These need something we can't work out from marks alone — an NBT result, a portfolio, an audition, or a cut-off the university simply doesn't publish. We'd rather say so than guess.</p>
+      </div>
+    </div>
+    <p style="margin-top:1.5rem">
+      Still confused by a word? <a href="/#jargon">We explain the jargon here</a>, and
+      <a href="/nbt.html">the NBT has its own page</a>.
+    </p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="/careers.html">Careers</a>
+      <a href="/calculator.html">Calculator</a>
+      <a href="/universities.html">Universities</a>
+      <a href="/nbt.html">The NBT</a>
+      <a href="/bursaries.html">Bursaries</a>
+      <a href="/study-abroad.html">Study abroad</a>
+      <a href="/data-sources.html">Data &amp; sources</a>
+    </nav>
+    <p class="small">Always confirm on the university's own page before you rely on anything — that's why we link to it every time.</p>
+  </div>
+</footer>
+
+<script type="module" src="/assets/js/calculator.js"></script>
+</body>
+</html>
