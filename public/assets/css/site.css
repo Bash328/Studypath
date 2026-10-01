@@ -255,7 +255,7 @@ strong { font-weight: 700; }
 .pill-list { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
 .pill-list li { padding: 5px 12px; border-radius: 99px; background: var(--brand-soft); color: var(--brand-ink); font-weight: 600; font-size: .9rem; }
 
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 8px; font-size: .76rem; font-weight: 700; line-height: 1.5; }
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 8px; font-size: .76rem; font-weight: 700; line-height: 1.5; text-decoration: none; }
 .badge--info { background: var(--info-soft); color: var(--info); }
 .badge--warn { background: var(--warn-soft); color: var(--warn); }
 .badge--good { background: var(--good-soft); color: var(--good); }
