@@ -60,6 +60,7 @@ export function careersIndex(data) {
       <a class="card card--link career-card" href="/careers/${esc(c.id)}" data-name="${esc(c.name.toLowerCase())}" data-text="${esc((c.name + ' ' + c.description).toLowerCase())}" data-sector="${esc(sector)}">
         <h3>${esc(c.name)}</h3>
         <p>${esc(c.description)}</p>
+        ${(c.specializations || []).length ? `<div class="badge-row"><span class="badge badge--info">${plural(c.specializations.length, 'specialty', 'specialties')} inside</span></div>` : ''}
         <p class="card__meta">${counts[c.id].programs ? `${plural(counts[c.id].programs, 'degree', 'degrees')} at ${plural(counts[c.id].unis, 'university', 'universities')}` : 'Degrees being added'}</p>
       </a>`).join('')}
     </div>
@@ -92,6 +93,7 @@ export function careerPages(data) {
     <p class="eyebrow"><a href="/careers">Careers</a> › ${esc(career.sector)}</p>
     <h1>${iconOrEmoji(SECTOR_EMOJI[career.sector] || '')} How to become a ${esc(career.name)}</h1>
     <p class="lead">${esc(career.description)}</p>
+    ${(career.specializations || []).length ? `<p><a class="badge badge--info" href="#specializations">${plural(career.specializations.length, 'specialty', 'specialties')} once you qualify →</a></p>` : ''}
   </div>
 </section>
 
@@ -119,7 +121,7 @@ ${career.urgent ? `<section class="section wrap wrap--narrow" style="padding-bot
   </details>
 </section>
 
-${(career.specializations || []).length ? `<section class="section wrap wrap--narrow">
+${(career.specializations || []).length ? `<section class="section wrap wrap--narrow" id="specializations">
   <details class="card career-more">
     <summary><h2 class="h3">Specialising after the ${esc(career.name)} degree</h2><span class="career-more__hint">${plural(career.specializations.length, 'specialty', 'specialties')} <span class="career-more__chevron" aria-hidden="true">▾</span></span></summary>
     <div class="career-more__body">
