@@ -39,6 +39,7 @@ export function careersIndex(data) {
     <p class="eyebrow">Start here if you’re not sure yet</p>
     <h1>What could you do?</h1>
     <p class="lead">Browse ${careers.length} careers by the kind of work they are. Each one shows the real degrees that lead there – with the requirements from the university’s own page.</p>
+    <p class="small muted">${iconOrEmoji('🔜')} More degrees and careers are added every week – we only publish one once we’ve verified it against its official source, so this list keeps growing.</p>
     <div class="searchbar">
       <label class="sr-only" for="career-search">Search careers</label>
       <input type="search" id="career-search" placeholder="Try “nurse”, “engineer”, “law”…" autocomplete="off">
@@ -117,6 +118,22 @@ ${career.urgent ? `<section class="section wrap wrap--narrow" style="padding-bot
     </div>
   </details>
 </section>
+
+${(career.specializations || []).length ? `<section class="section wrap wrap--narrow">
+  <details class="card career-more">
+    <summary><h2 class="h3">Specialising after the ${esc(career.name)} degree</h2><span class="career-more__hint">${plural(career.specializations.length, 'specialty', 'specialties')} <span class="career-more__chevron" aria-hidden="true">▾</span></span></summary>
+    <div class="career-more__body">
+      ${career.specializationPath ? `<p>${md(career.specializationPath)}</p>` : ''}
+      ${Object.entries(career.specializations.reduce((groups, s) => {
+        (groups[s.category || 'Specialties'] ||= []).push(s);
+        return groups;
+      }, {})).map(([category, items]) => `
+      <h4>${esc(category)}</h4>
+      <ul class="specialty-list">${items.map((s) => `<li><strong>${esc(s.name)}</strong> <span class="muted">– ${esc(s.duration)}</span><br>${esc(s.description)}</li>`).join('')}</ul>`).join('')}
+      ${claim({ level: 'general', text: career.specializationsNote || 'This is our general description of this field’s specialities, not from an official source.' })}
+    </div>
+  </details>
+</section>` : ''}
 
 <section class="section wrap wrap--narrow">
   <div class="card">

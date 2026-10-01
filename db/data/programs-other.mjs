@@ -69,12 +69,16 @@ const ujPrograms = [
 // =====================================================================
 // University of the Western Cape - weighted points (out of 65).
 // The scoring rule is read from UWC's own official APS calculator (see
-// src/scoring-audit.js), so the calculator computes it. What we could NOT read is the
-// per-subject minimums for each programme - those pages did not render - so the rows
-// stay flagged [unverified] for that reason only.
+// src/scoring-audit.js), so the calculator computes it. A follow-up pass (2026-10-01)
+// found LLB's and BCom (Law)'s own per-subject minimums via web search, surfacing their
+// official law.uwc.ac.za pages - the page itself was not raw-fetched (this environment's
+// network egress blocks direct fetches to university domains), so this is the same
+// "search-engine indexed text of an official page" confidence tier used elsewhere in
+// this file (see UJ_CAVEAT), not a full page read.
 // =====================================================================
 const UWC_POINTS = 'https://www.uwc.ac.za/admission-point-score-calculator/south-african-aps-calculator';
-const UWC_CAVEAT = 'UWC counts seven subjects (English, an additional language, Mathematics or Mathematical Literacy, Life Orientation and your three best others) with English and Mathematics weighted most, for a total out of 65. The points total shown is what UWC publishes; its subject-by-subject minimums for this programme could not be read, so check them with UWC. Scoring rule: ' + UWC_POINTS;
+const UWC_CAVEAT = 'UWC counts seven subjects (English, an additional language, Mathematics or Mathematical Literacy, Life Orientation and your three best others) with English and Mathematics weighted most, for a total out of 65. Scoring rule: ' + UWC_POINTS;
+const UWC_SUBJECTS_CAVEAT = 'Subject minimums were found via a web search surfacing UWC’s own law.uwc.ac.za programme page, not a raw fetch of the full page (blocked in this environment) - re-check against the live page before relying on it. ' + UWC_CAVEAT;
 
 const uwcBase = {
   university_id: 'uwc',
@@ -87,12 +91,15 @@ const uwcBase = {
 const uwcPrograms = [
   { ...uwcBase, id: 'uwc-llb', career_id: 'lawyer', name: 'LLB (4-year)', faculty: 'Law', duration_years: 4, min_aps: 37,
     source_url: 'https://law.uwc.ac.za/programme/bachelor-of-laws/',
-    subject_requirements: [manual('Subject minimums', 'UWC’s per-subject minimums for LLB could not be read - the programme page did not render for our research pass.')],
-    notes: flag('unverified', UWC_CAVEAT) },
+    subject_requirements: [lvl('English', 4), manual('Additional language', 'Another official language (Home or First Additional Language) at level 3.'),
+      anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 5)),
+      manual('Bachelor’s pass', 'NSC Bachelor’s Degree pass with an achievement rating of at least level 4 in four subjects.')],
+    notes: flag(['partially-verified', 'unverified'], UWC_SUBJECTS_CAVEAT) },
   { ...uwcBase, id: 'uwc-bcom-law', career_id: 'lawyer', name: 'BCom (Law)', faculty: 'Law', duration_years: null, min_aps: 30,
     source_url: 'https://law.uwc.ac.za/programme/bachelor-of-commerce-in-law/',
-    subject_requirements: [manual('Subject minimums', 'UWC’s per-subject minimums for this programme could not be read.')],
-    notes: flag('unverified', UWC_CAVEAT) },
+    subject_requirements: [lvl('English', 4), manual('Additional language', 'Another official language (Home or First Additional Language) at level 3.'), lvl('Mathematics', 4),
+      manual('Bachelor’s pass', 'NSC Bachelor’s Degree pass with an achievement rating of at least level 4 in four subjects.')],
+    notes: flag(['partially-verified', 'unverified'], UWC_SUBJECTS_CAVEAT) },
 ];
 
 // =====================================================================
@@ -368,8 +375,9 @@ const ufhPrograms = [
 
 // =====================================================================
 // Tshwane University of Technology - strong coverage, two official PDFs read in full.
-// Formula confirmed (best 6 excl. LO, and a levelled-1 subject is also dropped) but that
-// second nuance is not yet implemented, so TUT_APS is registered non-computable for now.
+// Formula confirmed (best 6 excl. LO, and a levelled-1 subject is also dropped) and
+// TUT_APS is computable: both the exclusion of Life Orientation and the drop-any-
+// level-1-subject nuance are implemented in src/scoring.js.
 // =====================================================================
 const tutBase = {
   university_id: 'tut',
@@ -462,8 +470,9 @@ const tutPrograms = [
 
 // =====================================================================
 // Vaal University of Technology - one official 2027 PDF read in full. Formula
-// confirmed (best 6 excl. LO), but several programmes layer their own additional
-// selection rules on top, so VUT_APS is registered non-computable for now.
+// confirmed (best 6 excl. LO) and VUT_APS is computable. Several programmes layer
+// their own additional selection rules on top (e.g. a combined Mathematics + Physical
+// Science threshold), which are shown as a note rather than computed.
 // =====================================================================
 const vutBase = {
   university_id: 'vut',
@@ -516,9 +525,9 @@ const vutPrograms = [
 
 // =====================================================================
 // Durban University of Technology - two official PDFs read in full. Formula
-// confirmed (best 6 excl. LO), but several programmes layer their own additional
-// selection rules on top (e.g. a combined Maths + Physical Science threshold), so
-// DUT_APS is registered non-computable for now. Applications go through the CAO.
+// confirmed (best 6 excl. LO) and DUT_APS is computable. Several programmes layer
+// their own additional selection rules on top (e.g. a combined Maths + Physical
+// Science threshold), shown as a note rather than computed. Applications go through the CAO.
 // =====================================================================
 const dutBase = {
   university_id: 'dut',
@@ -571,12 +580,12 @@ const dutPrograms = [
 ];
 
 // =====================================================================
-// Cape Peninsula University of Technology - the weakest of this batch. CPUT's own
-// explanation of its "Method 1/2/3" APS calculation could not be found in official
-// text (only an unread image, plus third-party claims we are not treating as
-// confirmed), so CPUT_APS is registered non-computable. Only the programmes whose
-// subject requirements were read directly from CPUT's own course pages are included -
-// Accounting, IT, Hospitality and Nursing are explicitly left out (see research-log.mjs).
+// Cape Peninsula University of Technology - a follow-up pass found CPUT's own
+// explanation of its "Method 1/2/3" APS calculation on page 3 of its official 2027
+// Undergraduate Prospectus (an Issuu-hosted flipbook), and CPUT_APS is now computable
+// for all three methods (see src/scoring.js). Only the programmes whose subject
+// requirements were read directly from CPUT's own course pages are included -
+// Accounting, IT and Hospitality are still left out (see research-log.mjs).
 // =====================================================================
 const cputBase = {
   university_id: 'cput',
@@ -585,24 +594,24 @@ const cputBase = {
   intake_year: 2027,
   document_date: null,
 };
-const CPUT_CAVEAT = 'CPUT states this programme’s APS target as calculated "using Method 2", but we could not find CPUT’s own official explanation of what that method actually is - only an unread image on its site and unconfirmed third-party claims. Treat the APS number as real but the underlying arithmetic as unexplained for now.';
+const CPUT_CAVEAT = 'CPUT calculates this programme’s APS using one of three methods, confirmed from page 3 of CPUT’s own 2027 Undergraduate Prospectus - see CPUT_APS for the arithmetic.';
 
 const cputPrograms = [
   { ...cputBase, id: 'cput-dip-mechanical', career_id: 'mechanical-engineer', name: 'Diploma in Mechanical Engineering', faculty: 'Engineering, Bellville Campus',
-    duration_years: null, min_aps: 30,
+    duration_years: null, min_aps: 30, aps_method: 'method2',
     source_url: 'https://prospectus.cput.ac.za/index.php/course-details?q=D3MCHE&f=140',
     subject_requirements: [pct('English', 50), anyOf(pct('Mathematics', 50), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 60))],
-    notes: flag(['partially-verified', 'unverified'], 'ECSA-accredited. ' + CPUT_CAVEAT) },
+    notes: flag('partially-verified', 'Calculated on CPUT’s "Method 2" (required subjects plus your next-best subject, doubling Mathematics and Physical Sciences - see CPUT_APS). ECSA-accredited. ' + CPUT_CAVEAT) },
   { ...cputBase, id: 'cput-dip-civil', career_id: 'civil-engineer', name: 'Diploma in Civil Engineering', faculty: 'Civil Engineering and Geomatics, Bellville Campus',
-    duration_years: null, min_aps: 30,
+    duration_years: null, min_aps: 30, aps_method: 'method2',
     source_url: 'https://prospectus.cput.ac.za/index.php/course-details?q=D3CIVL&f=140',
     subject_requirements: [pct('English', 50), anyOf(pct('Mathematics', 50), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 60))],
-    notes: flag(['partially-verified', 'unverified'], 'ECSA-accredited. ' + CPUT_CAVEAT) },
+    notes: flag('partially-verified', 'Calculated on CPUT’s "Method 2" (required subjects plus your next-best subject, doubling Mathematics and Physical Sciences - see CPUT_APS). ECSA-accredited. ' + CPUT_CAVEAT) },
   { ...cputBase, id: 'cput-dip-electrical', career_id: 'electrical-engineer', name: 'Diploma in Engineering Technology in Electrical Engineering', faculty: 'Electrical, Electronic and Computer Engineering, Bellville Campus',
-    duration_years: null, min_aps: 30,
+    duration_years: null, min_aps: 30, aps_method: 'method2',
     source_url: 'https://prospectus.cput.ac.za/index.php/course-details?q=D2ETEE&f=140',
     subject_requirements: [pct('English', 50), anyOf(pct('Mathematics', 50), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 60), pct('Electrical Technology', 50))],
-    notes: flag(['partially-verified', 'unverified'], 'ECSA-accredited. ' + CPUT_CAVEAT) },
+    notes: flag('partially-verified', 'Calculated on CPUT’s "Method 2" (required subjects plus your next-best subject, doubling Mathematics and Physical Sciences - see CPUT_APS). ECSA-accredited. ' + CPUT_CAVEAT) },
   { ...cputBase, id: 'cput-bed-foundation', career_id: 'teacher', name: 'BEd Foundation Phase Teaching', faculty: 'Foundation Phase Studies, Mowbray & Wellington',
     duration_years: null, min_aps: null,
     source_url: 'https://prospectus.cput.ac.za/index.php/course-details?q=BEFNPT&f=100',
@@ -620,8 +629,10 @@ const cputPrograms = [
 // Central University of Technology - APS formula and Civil Engineering confirmed from
 // raw HTML; Electrical/Mechanical Engineering, Accountancy and BEd Foundation Phase
 // came through an AI-summarized fetch rather than a raw page read (same caveat tier as
-// UJ above) - flagged accordingly. A URL/content mismatch for CUT's IT programme page
-// made that one unreliable, so it is left out rather than published as a guess.
+// UJ above) - flagged accordingly. A follow-up pass (2026-10-01) found a working
+// National Diploma: Information Technology page via web search (cut.ac.za/programmes/
+// information-technology), resolving the earlier URL/content mismatch - see cut-dip-it
+// below, same search-synthesis caveat tier as the UWC additions above.
 // =====================================================================
 const cutBase = {
   university_id: 'cut',
@@ -658,6 +669,11 @@ const cutPrograms = [
     source_url: 'https://www.cut.ac.za/programmes/foundation-phase-teaching',
     subject_requirements: [pct('English', 50), manual('Additional SA language', 'Another official South African language at 50%.'), manual('Bachelor’s endorsement', 'NSC with Bachelor’s Degree endorsement required.')],
     notes: flag(['partially-verified', 'no-cutoff-published'], 'CUT did not state a numeric APS for this programme on the page we read. ' + CUT_SUMMARY_CAVEAT) },
+  { ...cutBase, id: 'cut-dip-it', career_id: 'software-engineer', name: 'National Diploma: Information Technology', faculty: 'Engineering, Built Environment & IT',
+    duration_years: 3, min_aps: 27,
+    source_url: 'https://www.cut.ac.za/programmes/information-technology',
+    subject_requirements: [pct('English', 50), anyOf(pct('Mathematics', 40), pct('Information Technology', 40), pct('Mathematical Literacy', 60))],
+    notes: flag(['partially-verified', 'unverified'], 'Found via web search surfacing CUT’s own programme page, not a raw fetch of the full page (blocked in this environment) - re-check against cut.ac.za before relying on it. This resolves an earlier gap where CUT’s IT page returned content for a different qualification. ' + CUT_SUMMARY_CAVEAT) },
 ];
 
 // =====================================================================

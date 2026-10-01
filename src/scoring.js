@@ -303,11 +303,28 @@ const SYSTEMS = {
 
   WSU_APS: {
     label: 'WSU APS',
-    unit: 'points out of 48',
-    computable: false,
+    unit: 'points out of 48 (56 for Education programmes)',
+    max: 48,
+    nearMargin: 3,
     explanation:
-      'WSU adds your best six subjects (seven for Education programmes, which also count Life Orientation) on an 8-point scale (90-100% = 8 down to 0-29% = 1): two slots are reserved for languages and the rest for the subjects your programme requires. We have confirmed the full rule from WSU’s own 2027 admissions brochure but have not yet built and tested that two-category logic, so each programme shows its published minimum APS as reference only.',
-    reason: 'WSU’s formula is confirmed but not yet implemented in our calculator - see the published minimum on each programme instead.',
+      'WSU reserves two subject slots for your best two languages, and four more for the subjects your programme requires (then your best of the rest) - each scored on an 8-point scale (90-100% = 8 down to 0-29% = 1), excluding Life Orientation. Education programmes also count Life Orientation as a 7th subject, out of 56 instead of 48.',
+    compute(marks, { required = [], faculty = '' } = {}) {
+      const languages = withoutLO(marks).filter((m) => m.group === 'Languages').sort((a, b) => witsLevel(b.percent) - witsLevel(a.percent));
+      if (languages.length < 2) return cannot('WSU reserves two subject slots for your languages - add a second language.');
+      const chosenLangs = languages.slice(0, 2);
+      const rest = withoutLO(marks).filter((m) => !chosenLangs.includes(m));
+      const chosenRest = choose(rest, 4, (m) => witsLevel(m.percent), required);
+      if (!chosenRest) return cannot('WSU counts six subjects in total excluding Life Orientation - add the rest of yours.');
+      const isEducation = /education/i.test(faculty);
+      const lo = marks.find(isLifeOrientation);
+      if (isEducation && !lo) return cannot('WSU also counts Life Orientation as a 7th subject for Education programmes - add it to see your score.');
+      const loPoints = isEducation ? witsLevel(lo.percent) : 0;
+      const total = sum(chosenLangs, (m) => witsLevel(m.percent)) + sum(chosenRest, (m) => witsLevel(m.percent)) + loPoints;
+      const working = say(chosenLangs, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`) + ', ' +
+        say(chosenRest, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`) +
+        (isEducation ? `, Life Orientation ${lo.percent}% = ${loPoints}` : '') + countedNote(required);
+      return ok(total, isEducation ? 56 : 48, working);
+    },
   },
 
   UFH_APS: {
@@ -376,20 +393,52 @@ const SYSTEMS = {
 
   CPUT_APS: {
     label: 'CPUT APS',
-    unit: '',
-    computable: false,
+    unit: 'points (method varies by programme)',
+    max: null,
+    nearMargin: 3,
     explanation:
-      'CPUT uses one of three methods depending on the programme, each dividing a sum of percentages by 10 (so e.g. "30" means an average around 50-60% across the counted subjects, not an NSC level sum): Method 1 sums your best six subjects, including any the programme requires, excluding Life Orientation. Method 2 (used for CPUT’s Engineering diplomas) also doubles Mathematics and Physical Sciences. Method 3 (used for some Commerce programmes) doubles Mathematics and Accounting instead. We know which method each programme we’ve captured uses, but have not yet implemented the arithmetic, so each programme shows its published minimum APS as reference only.',
-    reason: 'CPUT’s three calculation methods are now confirmed but not yet implemented in our calculator - see the published minimum and method noted on each programme instead.',
+      'CPUT uses one of three methods depending on the programme, each dividing a sum of percentages by 10 (so e.g. "30" means an average around 50-60% across the counted subjects, not an NSC level sum). Method 1 (most programmes) sums your best six subjects, including any the programme requires, excluding Life Orientation. Method 2 (CPUT’s Engineering diplomas) sums the subjects the programme requires plus your next-best subject, doubling Mathematics (or Technical Mathematics) and Physical Sciences (or Technical Sciences). Method 3 (some Commerce programmes) sums English plus your best three others, doubling Mathematics and Accounting.',
+    compute(marks, { required = [], cputMethod = 'method1' } = {}) {
+      const value = (m) => m.percent;
+      if (cputMethod === 'method2') {
+        const chosen = choose(withoutLO(marks), 4, value, required);
+        if (!chosen) return cannot('CPUT Method 2 counts four subjects - add the rest of yours.');
+        const isDoubled = (m) => m.base === 'Mathematics' || m.base === 'Technical Mathematics' || m.base === 'Physical Sciences' || m.base === 'Technical Sciences';
+        const total = sum(chosen, (m) => (isDoubled(m) ? value(m) * 2 : value(m)));
+        return ok(total / 10, 60, say(chosen, (m) => `${m.name} ${value(m)}${isDoubled(m) ? ' x 2' : ''}`) + ', / 10' + countedNote(required));
+      }
+      if (cputMethod === 'method3') {
+        const maths = findBase(marks, 'Mathematics');
+        const accounting = findBase(marks, 'Accounting');
+        const english = findBase(marks, 'English');
+        if (!maths || !accounting) return cannot('CPUT Method 3 doubles Mathematics and Accounting - add both marks.');
+        if (!english) return cannot('CPUT Method 3 always counts your English mark, so we need it to work out your score.');
+        const rest = withoutLO(marks).filter((m) => m !== maths && m !== accounting && m !== english).sort(byPercentDesc).slice(0, 3);
+        if (rest.length < 3) return cannot('CPUT Method 3 also counts your best three other subjects - add the rest of yours.');
+        const total = value(maths) * 2 + value(accounting) * 2 + value(english) + sum(rest, value);
+        return ok(total / 10, 80, `${english.name} ${value(english)} + Mathematics ${value(maths)} x 2 + Accounting ${value(accounting)} x 2 + ${say(rest, (m) => `${m.name} ${value(m)}`)}, / 10`);
+      }
+      const chosen = choose(withoutLO(marks), 6, value, required);
+      if (!chosen) return cannot('CPUT counts six subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, value) / 10, 60, say(chosen, (m) => `${m.name} ${value(m)}`) + ' / 10' + countedNote(required));
+    },
   },
 
   CUT_APS: {
     label: 'CUT APS',
-    unit: '',
-    computable: false,
+    unit: 'points out of 49',
+    max: 49,
+    nearMargin: 3,
     explanation:
-      'CUT adds the achievement points (8-point scale, 90-100% = 8) of your six academic subjects, plus Life Orientation capped at 1 point no matter how high your LO mark is. A score of 21 or less is not admitted; 22-26 needs a selection test; 27 or more is CUT’s general floor (some programmes, like Engineering, require more). We have confirmed this rule from CUT’s own page but have not yet implemented it, so each programme shows its published minimum APS as reference only.',
-    reason: 'CUT’s formula is confirmed but not yet implemented in our calculator - see the published minimum on each programme instead.',
+      'CUT adds the achievement points (8-point scale, 90-100% = 8 down to 0-29% = 1) of your six best academic subjects, excluding Life Orientation, then adds Life Orientation capped at 1 point no matter how high your mark is. A score of 21 or less is not admitted; 22-26 needs a selection test; 27 or more is CUT’s general floor (some programmes, like Engineering, require more).',
+    compute(marks, { required = [] } = {}) {
+      const chosen = choose(withoutLO(marks), 6, (m) => witsLevel(m.percent), required);
+      if (!chosen) return cannot('CUT counts six academic subjects excluding Life Orientation - add the rest of yours.');
+      const lo = marks.find(isLifeOrientation);
+      if (!lo) return cannot('CUT also counts Life Orientation, capped at 1 point - add it to see your score.');
+      return ok(sum(chosen, (m) => witsLevel(m.percent)) + 1, 49,
+        say(chosen, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`) + ', Life Orientation = 1' + countedNote(required));
+    },
   },
 
   MUT_APS: {
@@ -403,11 +452,16 @@ const SYSTEMS = {
 
   NMU_AS: {
     label: 'NMU Applicant Score (AS)',
-    unit: 'out of 600 (+7 bonus in some cases)',
-    computable: false,
+    unit: 'out of 600',
+    max: 600,
+    nearMargin: 20,
     explanation:
-      'NMU does not use a 1-7 level-based APS at all - its Applicant Score (AS) sums your best six subjects’ raw percentages (not achievement levels), excluding Life Orientation, out of 600. Applicants from quintile 1-3 schools who score 50%+ in Life Orientation get a 7-point bonus. We have confirmed this formula from NMU’s own page but have not yet captured any NMU programme to check it against.',
-    reason: 'We have not yet captured an NMU programme with a published AS minimum to check your score against.',
+      'NMU does not use a 1-7 level-based APS at all - its Applicant Score (AS) sums your best six subjects’ raw percentages (not achievement levels), excluding Life Orientation, out of 600. Applicants from quintile 1-3 schools who score 50%+ in Life Orientation get a 7-point bonus, which we do not add - so our number can only undersell, never oversell, a qualifying applicant.',
+    compute(marks, { required = [] } = {}) {
+      const chosen = choose(withoutLO(marks), 6, (m) => m.percent, required);
+      if (!chosen) return cannot('NMU counts six subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => m.percent), 600, say(chosen, (m) => `${m.name} ${m.percent}%`) + countedNote(required));
+    },
   },
 
   UL_APS: {
@@ -526,7 +580,11 @@ export function scoreForProgram(systemId, marks, program) {
   const system = SCORING_SYSTEMS[systemId];
   if (!system) return cannot('Unknown scoring system.');
   if (!system.computable) return cannot(system.reason);
-  return system.compute(marks, { required: requirementGroups(program.subject_requirements || program.subjectRequirements) });
+  return system.compute(marks, {
+    required: requirementGroups(program.subject_requirements || program.subjectRequirements),
+    faculty: program.faculty,
+    cputMethod: program.aps_method,
+  });
 }
 
 /**
