@@ -30,6 +30,7 @@ const S = {
   ufs: src('UFS Undergraduate Programmes 2024 (AP score)', 'https://www.ufs.ac.za/docs/librariesprovider23/ems-documents/e3_ufs-undergraduade-programme-2024.pdf?sfvrsn=71432920_3'),
   ufsApply: src('UFS applications page', 'https://apply.ufs.ac.za/Application/Start'),
   nbt: src('NBT Project FAQ', 'https://www.nbt.ac.za/content/faq-0'),
+  nbtCost: src('NBT Project - NBT cost', 'https://www.nbt.ac.za/content/nbt-cost'),
   nsfas: src('Minister Buti Manamela: launch of the NSFAS 2027 application cycle (gov.za)', 'https://www.gov.za/news/speeches/minister-buti-manamela-launch-nsfas-2027-application-cycle-18-sep-2026'),
   sanews: src('SAnews: NSFAS 2027 application cycle opens', 'https://www.sanews.gov.za/south-africa/nsfas-2027-application-cycle-opens'),
   ukznApply: src('UKZN how to apply', 'https://studyatukzn.ukzn.ac.za/apply-at-ukzn/how-to-apply/'),
@@ -174,10 +175,10 @@ export const faq = [
     id: 'nbt-fee', category: 'nbt',
     question: 'How much does the NBT cost?',
     answer: [
-      g('We have not confirmed the current fee. The NBT FAQ we read does not state an amount, so we are not going to guess one. The fee is shown when you book.'),
+      v('For the current test cycle, the NBT costs **R195** to write the AQL on its own, or **R390** to write the AQL and MAT together. Fees are paid through Lesaka EasyPay; international applicants, and those in countries bordering South Africa without EasyPay facilities, pay by EFT or direct deposit to the NBT Project\'s Standard Bank (UCT) account instead. A re-mark costs extra; a make-up test after a hospital or police report is free.', [S.nbtCost]),
+      g('We have not found an official page stating whether this fee is waived for NSFAS-qualifying learners - some bursary and school-guidance sites claim it is, but we are not going to repeat that without seeing it on nbt.ac.za ourselves. Ask when you book.'),
     ],
     checks: [{ label: 'Book a test at nbt.ac.za - the fee is shown before you pay', url: 'https://www.nbt.ac.za' }],
-    unverifiedNote: 'No fee amount found on an official page.',
   },
 
   // ======================================================================= Applying

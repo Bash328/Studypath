@@ -11,6 +11,16 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 //    (maximum 48): 90-100% = 8, 80-89% = 7 ... 0-29% = 1. That table was read from
 //    UKZN's own 2026 College handbook, so the calculator now computes it - see
 //    src/scoring-audit.js for the sources.
+//
+// Spot-check pass (2026-10-01, see ukzn-2027-table in research-log.mjs): MBChB, LLB and
+// BCom Accounting were re-checked against their live ukzn.ac.za pages (direct fetches
+// succeeded for chs.ukzn.ac.za and commerce.ukzn.ac.za; the School of Computer Science's
+// own subdomain did not resolve, so that one is a web-search check instead) and found
+// unchanged in APS - MBChB and BCom Accounting are now cited to those current pages.
+// BSc Computer Science & IT's English/Life Orientation levels turned out to be higher
+// (level 5, not 4) on its own school's page than in the 2026 brochure - a genuine
+// conflict, shown via flag('conflict', ...) rather than silently resolved. Engineering
+// and BCom General were not re-checked this pass.
 
 const BROCHURE = 'https://studyatukzn.ukzn.ac.za/wp-content/uploads/2026/02/Study@UKZN-BROCHURE-2026.pdf';
 
@@ -49,16 +59,18 @@ export const ukznPrograms = [
 
   { ...base, id: 'ukzn-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science & Information Technology',
     faculty: 'Agriculture, Engineering & Science', duration_years: 3, min_aps: 30,
-    subject_requirements: [lvl('Mathematics', 5), lvl('English', 4), lvl('Life Orientation', 4),
-      manual('A science subject', 'One science subject at level 4.')],
-    notes: flag('dated-document', 'The published APS range is 48-30. ' + DATED) },
+    source_url: 'https://wp-smscs.ukzn.ac.za/computer-science/',
+    subject_requirements: [lvl('Mathematics', 5), lvl('English', 5), lvl('Life Orientation', 5),
+      manual('A science subject', 'Agricultural Science, Life Sciences or Physical Science at level 4.')],
+    notes: flag(['conflict', 'dated-document'], 'CONFLICT found in a 2026-10-01 spot-check: UKZN’s own School of Mathematics, Statistics & Computer Science page (via web search, not a raw fetch - its domain did not resolve for this pass’s fetch tool) states English and Life Orientation at level 5, not the level 4 the 2026 Study@UKZN brochure gives - Mathematics (level 5) and the APS range (48-30) are unchanged between the two sources. We show the school page’s level 5 figures as the more specific, programme-level source. ' + DATED) },
 
   // ---------------- Health Sciences ----------------
   { ...base, id: 'ukzn-mbchb', career_id: 'doctor', name: 'MBChB (Medicine)', faculty: 'Health Sciences',
     duration_years: 6, min_aps: null,
+    source_url: 'https://chs.ukzn.ac.za/undergraduate-progra/bachelor-of-medicine-and-bachelor-of-surgery-mbchb/',
     subject_requirements: [lvl('Mathematics', 5), lvl('Physical Sciences', 5), lvl('Life Sciences', 5), lvl('English', 5),
       lvl('Life Orientation', 4), manual('Aggregate', 'An overall aggregate of 65% is required.')],
-    notes: flag(['dated-document', 'no-cutoff-published'], 'UKZN publishes no APS for MBChB - entry is by the subject levels and aggregate shown. Applications close 30 June. Also stated at https://chs.ukzn.ac.za/undergraduate-progra/bachelor-of-medicine-and-bachelor-of-surgery-mbchb/ . ' + DATED) },
+    notes: flag('no-cutoff-published', 'UKZN publishes no APS for MBChB - entry is by the subject levels and aggregate shown. Applications close 30 June. Confirmed unchanged by a direct fetch of UKZN’s own College of Health Sciences page (2026-10-01 spot-check).') },
 
   { ...base, id: 'ukzn-pharmacy', career_id: 'pharmacist', name: 'Bachelor of Pharmacy', faculty: 'Health Sciences',
     duration_years: 4, min_aps: 33,
@@ -82,11 +94,12 @@ export const ukznPrograms = [
   { ...base, id: 'ukzn-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law & Management Studies',
     duration_years: 4, min_aps: 32,
     subject_requirements: [engLvl(5, 6), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 5)), lvl('Life Orientation', 4)],
-    notes: flag('dated-document', 'The published APS range is 48-32. ' + DATED) },
+    notes: flag('dated-document', 'A 2026-10-01 spot-check via web search found these same figures (APS 32, subject levels) still quoted, plus a lower 28-31 extended-programme band not previously captured - no change found to the standard entry, but this is not a raw page read. ' + DATED) },
   { ...base, id: 'ukzn-bcom-accounting', career_id: 'chartered-accountant', name: 'BCom Accounting', faculty: 'Law & Management Studies',
     duration_years: 3, min_aps: 32,
+    source_url: 'https://commerce.ukzn.ac.za/undergraduate/bachelor-of-commerce-in-accounting/',
     subject_requirements: [lvl('Mathematics', 5), lvl('English', 4), lvl('Life Orientation', 4)],
-    notes: flag('dated-document', 'The published APS range is 48-32. ' + DATED) },
+    notes: 'Confirmed unchanged by a direct fetch of UKZN’s own School of Commerce page (2026-10-01 spot-check): "National senior certificate degree with Mathematics level 5, English and Life Orientation level 4. Minimum, 32 NSC points." An Extended Curriculum version also exists at APS 28.' },
   { ...base, id: 'ukzn-bcom-general', career_id: 'business-manager', name: 'BCom General', faculty: 'Law & Management Studies',
     duration_years: 3, min_aps: 30,
     subject_requirements: [lvl('English', 4), lvl('Life Orientation', 4), lvl('Mathematics', 4)],

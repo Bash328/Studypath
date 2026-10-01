@@ -8,7 +8,17 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 // Two sources. Source A is the Wits schools-liaison Grade 12 guide, which is headed
 // "prospective students for 2026" - every row that rests on it alone is flagged
 // [dated-document]. Source B is the individual 2027 course-finder pages, which are
-// current. Where both give a figure, they agree.
+// current. Where both give a figure, they usually agree.
+//
+// Spot-check pass (2026-10-01, see wits-slo-2026-label in research-log.mjs): Civil,
+// Chemical and Electrical Engineering, BCom (General), BSc Computer Science and MBBCh
+// were each re-checked against their live course-finder pages (direct fetches succeeded
+// for wits.ac.za in this pass) and found unchanged - moved onto Source B. LLB (4-year)
+// was also re-checked and is APS-unchanged but has a genuine Mathematics-level conflict
+// with the schools-liaison guide, shown via flag('conflict', ...) rather than silently
+// resolved. BCom with Law was spot-checked by search only (no working course-finder URL
+// found) and is unchanged; the remaining Engineering disciplines (Metallurgy,
+// Aeronautical, Industrial, Mining) were not re-checked this pass.
 
 const SLO = 'https://www.wits.ac.za/media/wits-university/study/schools-liaison/documents/Wits%20SLO%20Grade%2012_100125.pdf';
 const CF = 'https://www.wits.ac.za/course-finder/undergraduate';
@@ -38,12 +48,25 @@ const eng = (id, career_id, name) => ({
   notes: flag('dated-document', engNote + ' ' + datedNote),
 });
 
+// Spot-check pass (2026-10-01, see wits-slo-2026-label in research-log.mjs): Chemical,
+// Civil and Electrical Engineering were each confirmed unchanged by a direct fetch of
+// their own 2027 course-finder pages (APS 42+, English/Mathematics/Physical Sciences
+// all Level 5, a Level 5-only applicant is wait-listed). Metallurgy, Aeronautical,
+// Industrial and Mining were not individually re-checked and remain on the dated guide.
+const engCF = (id, career_id, name, slug) => ({
+  ...base, id, career_id, name,
+  faculty: 'Engineering & the Built Environment', duration_years: 4, min_aps: 42,
+  source_url: `https://www.wits.ac.za/course-finder/undergraduate/ebe/${slug}/`,
+  subject_requirements: ENG_APS,
+  notes: engNote + ' Confirmed unchanged by a direct fetch of the 2027 course-finder page (2026-10-01 spot-check).',
+});
+
 export const witsPrograms = [
   // ---------------- Engineering & the Built Environment ----------------
-  eng('wits-beng-chemical', 'chemical-engineer', 'BSc (Eng) Chemical Engineering'),
+  engCF('wits-beng-chemical', 'chemical-engineer', 'BSc (Eng) Chemical Engineering', 'chemical-engineering'),
   eng('wits-beng-metallurgy', 'mining-engineer', 'BSc (Eng) Metallurgy'),
-  eng('wits-beng-civil', 'civil-engineer', 'BSc (Eng) Civil Engineering'),
-  eng('wits-beng-electrical', 'electrical-engineer', 'BSc (Eng) Electrical Engineering'),
+  engCF('wits-beng-civil', 'civil-engineer', 'BSc (Eng) Civil Engineering', 'civil-engineering'),
+  engCF('wits-beng-electrical', 'electrical-engineer', 'BSc (Eng) Electrical Engineering', 'electrical-engineering'),
   eng('wits-beng-aeronautical', 'aeronautical-engineer', 'BSc (Eng) Aeronautical Engineering'),
   eng('wits-beng-industrial', 'industrial-engineer', 'BSc (Eng) Industrial Engineering'),
   eng('wits-beng-mining', 'mining-engineer', 'BSc (Eng) Mining Engineering'),
@@ -112,10 +135,11 @@ export const witsPrograms = [
   })),
 
   // ---------------- Commerce, Law & Management ----------------
-  { ...sourceA, id: 'wits-bcom-general', career_id: 'business-manager', name: 'BCom General / Information Systems / PPE',
+  { ...base, id: 'wits-bcom-general', career_id: 'business-manager', name: 'BCom General / Information Systems / PPE',
     faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 38,
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/bcom/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
-    notes: flag('dated-document', datedNote) },
+    notes: 'Confirmed unchanged by a direct fetch of the 2027 course-finder page (2026-10-01 spot-check). An APS of 35-37 with English and Mathematics Level 6 may be wait-listed.' },
 
   { ...base, id: 'wits-bcom-finance', career_id: 'financial-manager', name: 'BCom Finance',
     faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 38,
@@ -138,11 +162,17 @@ export const witsPrograms = [
   { ...sourceA, id: 'wits-bcom-law', career_id: 'lawyer', name: 'BCom with Law',
     faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 43,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
-    notes: flag('dated-document', datedNote) },
-  { ...sourceA, id: 'wits-llb', career_id: 'lawyer', name: 'LLB (4-year stream)',
+    notes: flag('dated-document', 'A 2026-10-01 spot-check via web search (the exact course-finder URL could not be located) found APS 43+, English Level 5 and Mathematics Level 5 still quoted for this programme - no change found, but this is not a raw page read. ' + datedNote) },
+  // CONFLICT found in the 2026-10-01 Wits spot-check: a direct fetch of the 2027
+  // course-finder page confirms APS 46+ (unchanged) but gives Mathematics at Level 5,
+  // not the Level 4 the 2026 schools-liaison guide states - we show the course-finder's
+  // Level 5 since it is the current, directly-fetched official source, and flag the
+  // discrepancy rather than silently dropping the older figure.
+  { ...base, id: 'wits-llb', career_id: 'lawyer', name: 'LLB (4-year stream)',
     faculty: 'Commerce, Law & Management', duration_years: 4, min_aps: 46,
-    subject_requirements: [engLvl(6, 6), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 6))],
-    notes: flag('dated-document', datedNote) },
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/llb-law/',
+    subject_requirements: [engLvl(6, 6), anyOf(lvl('Mathematics', 5), lvl('Mathematical Literacy', 6))],
+    notes: flag('conflict', 'CONFLICT: a direct fetch of the 2027 LLB (LFA14) course-finder page gives Mathematics at Level 5 (or Mathematical Literacy Level 6), but the 2026 schools-liaison guide this row previously rested on states Mathematics Level 4. APS (46+) and the English requirement (Level 6) are unchanged between the two sources. We show the course-finder’s Level 5 as the current, directly-verified figure. An APS of 40-45 with English Level 6 and Mathematics Level 5 (or Mathematical Literacy Level 6) may be wait-listed.') },
 
   // ---------------- Science (NBT required) ----------------
   { ...base, id: 'wits-bsc-general', career_id: 'biologist', name: 'BSc (General)',
@@ -150,10 +180,11 @@ export const witsPrograms = [
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/science/bsc/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), manual('NBT', 'The NBT is required for Science.')],
     notes: '' },
-  { ...sourceA, id: 'wits-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science',
+  { ...base, id: 'wits-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science',
     faculty: 'Science', duration_years: 3, min_aps: 44,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6), manual('NBT', 'The NBT is required for Science.')],
-    notes: flag('dated-document', datedNote) },
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/science/computer-science/',
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6), manual('NBT', 'The NBT (AL, QL and Mathematics, in one sitting by 31 October 2026) is required for all Faculty of Science applicants.')],
+    notes: 'Confirmed unchanged by a direct fetch of the 2027 course-finder page (2026-10-01 spot-check). An APS of 41-43 may be wait-listed.' },
   { ...sourceA, id: 'wits-bsc-applied-maths', career_id: 'mathematician', name: 'BSc Computational & Applied Mathematics',
     faculty: 'Science', duration_years: 3, min_aps: 44,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6), manual('NBT', 'The NBT is required for Science.')],

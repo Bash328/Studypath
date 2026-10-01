@@ -7,8 +7,9 @@ const g = (text) => ({ level: 'general', text, sources: [] });
 // Everything on this page is general guidance about a PROCESS. None of it comes from an
 // official source we verified, so every paragraph is marked that way and each section
 // points the student at places to confirm it. The one exception is REAL_EXAMPLES below:
-// a short list of foreign universities whose own page we actually read and quoted, kept
-// deliberately small so every row stays something we checked ourselves.
+// a short list of foreign universities whose own page we actually read and quoted (UK:
+// Edinburgh x2, Sheffield, Manchester; Australia: UNSW Sydney, UWA), kept deliberately
+// small so every row stays something we checked ourselves.
 
 // Each requirement is quoted from the university's own international-admissions page
 // (fetched and read directly), not from an agent site or forum. "NSC Grade 7/80%" etc
@@ -33,6 +34,16 @@ const REAL_EXAMPLES = [
     name: 'University of Manchester (England)', field: 'Guide, varies by course',
     need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.',
     url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/',
+  },
+  {
+    name: 'UNSW Sydney (Australia)', field: 'Guide, 2027 entry, varies by degree',
+    need: 'Publishes an NSC-to-degree table: your NSC average (best 4 subjects, excluding Life Orientation) needs to be around 62% for most Arts/Science/Social Science degrees, 70% for Engineering (Hons), 72% for Commerce or Combined Law, up to 77% for the Medical Studies/MD pathway and 79% for Actuarial Studies.',
+    url: 'https://www.unsw.edu.au/content/dam/pdfs/future-students/2027-int-ug-entry-table.pdf',
+  },
+  {
+    name: 'University of Western Australia (Australia)', field: 'Guide, varies by course',
+    need: 'Converts your NSC average (achievement level of your best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98 – the course itself then sets its own ATAR cut-off.',
+    url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate',
   },
 ];
 

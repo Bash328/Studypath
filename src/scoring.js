@@ -298,7 +298,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'Univen publishes a minimum APS of 26 for a bachelor’s degree, worked from your best six or seven subjects excluding Life Orientation (subjects under 40% are not counted). Univen’s own published scoring table did not clearly match a standard NSC achievement-level scale when we checked, so we have not implemented the exact arithmetic - each programme shows its published minimum APS as reference only.',
-    reason: 'We could not confirm Univen’s exact APS arithmetic well enough to compute your score yet - see the published minimum on each programme instead.',
+    reason: 'We could not confirm Univen’s exact APS arithmetic well enough to compute your score yet - see the published minimum on each programme instead. Contact Univen’s admissions office directly (see Contacts on Univen’s page) to confirm where you stand.',
   },
 
   WSU_APS: {
@@ -333,7 +333,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'UFH states a general minimum APS of 26 or higher "depending on the programme", and UFH’s own online APS calculator sums standard NSC achievement levels (1-7) across seven subject slots including Life Orientation. No UFH programme page we checked states its own numeric APS minimum, so there is nothing published yet to compute or compare your score against.',
-    reason: 'UFH does not publish a numeric APS minimum on its programme pages, so there is no cut-off for us to check your score against yet.',
+    reason: 'UFH does not publish a numeric APS minimum on its programme pages, so there is no cut-off for us to check your score against yet. Contact UFH’s admissions office directly (see Contacts on UFH’s page) to confirm where you stand.',
   },
 
   UNIZULU_APS: {
@@ -447,7 +447,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'MUT’s own pages disagree on the basic rule: its general admissions page says APS is "the best five subjects"; its IT programme page says "a minimum of 24 points in the best six subjects excluding Life Orientation". We show both rather than pick one - see each programme’s note. MUT_APS is non-computable until this is resolved with MUT directly.',
-    reason: 'MUT’s own pages disagree on whether APS uses five or six subjects, so we cannot safely compute a score.',
+    reason: 'MUT’s own pages disagree on whether APS uses five or six subjects, so we cannot safely compute a score. Contact MUT’s admissions office directly (see Contacts on MUT’s page) to confirm where you stand.',
   },
 
   NMU_AS: {
@@ -484,7 +484,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'SPU publishes a minimum APS of 30 for a Bachelor’s degree and 25 for a Diploma, with English at NSC level 4 (Home Language) or level 5 (First Additional Language). We could not extract SPU’s prospectus PDF to confirm the exact points-per-subject formula, so each programme shows its published minimum APS as reference only.',
-    reason: 'We could not confirm SPU’s exact APS arithmetic from an official source yet - see the published minimum on each programme instead.',
+    reason: 'We could not confirm SPU’s exact APS arithmetic from an official source yet - see the published minimum on each programme instead. Contact SPU’s admissions office directly (see Contacts on SPU’s page) to confirm where you stand.',
   },
 
   UMP_APS: {
@@ -493,7 +493,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'UMP appears to add seven subjects on a 7-point scale, with Life Orientation’s points halved rather than excluded - distinctive if accurate, but we have not independently confirmed this on an official UMP page, so we are not treating it as settled. Each programme shows its published minimum APS as reference only.',
-    reason: 'We could not fully confirm UMP’s APS formula from an official source yet - see the published minimum on each programme instead.',
+    reason: 'We could not fully confirm UMP’s APS formula from an official source yet - see the published minimum on each programme instead. Contact UMP’s admissions office directly (see Contacts on UMP’s page) to confirm where you stand.',
   },
 
   UNISA_APS: {
@@ -516,7 +516,7 @@ const SYSTEMS = {
     computable: false,
     explanation:
       'SMU converts marks to points on its own scale (A = 12 points down to F = 3 points) via a published conversion table, which is different from the standard 1-7 NSC achievement level scale used elsewhere on this site. We have the resulting APS minimums per programme but not the full conversion table itself, so each programme shows its published minimum APS as reference only, and subject minimums are described in SMU’s own points rather than converted to our usual level/percentage fields.',
-    reason: 'SMU uses its own points scale, which we have not fully confirmed from an official source yet - see the published minimum on each programme instead.',
+    reason: 'SMU uses its own points scale, which we have not fully confirmed from an official source yet - see the published minimum on each programme instead. Contact SMU’s admissions office directly (see Contacts on SMU’s page) to confirm where you stand.',
   },
 
   UFS_AP: {

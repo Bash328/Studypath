@@ -5,8 +5,9 @@
 // A list of unverified "opportunities" would do more harm than an empty one - bursary
 // scams are common and students are exactly who they target.
 //
-// Researching bursaries is ONGOING. NSFAS is `verified` (read directly off two government
-// sources this pass). The rest are `reported` - sourced to the provider's own page by an
+// Researching bursaries is ONGOING. NSFAS, Eskom, the FirstRand Empowerment Foundation
+// bursary and Vodacom's are `verified` (each one's provider/administrator page was fetched
+// directly this pass). The rest are `reported` - sourced to the provider's own page by an
 // earlier Studypath research pass, not re-fetched by us this pass. Do not add a bursary here
 // without at least a provider page for `source_url`.
 //
@@ -27,6 +28,51 @@ export const bursaries = [
     active: 1,
     // Not a D1 column - shown on the page:
     note: 'Applications opened 18 September 2026 and close 18 November 2026; funding outcomes are communicated in December. One other website gave 31 October - the Minister’s launch speech and the SAnews report both say 18 November.',
+    verification: 'verified',
+  },
+  {
+    id: 'eskom-bursary-2027',
+    name: 'Eskom Bursary Programme (Engineering Diploma)',
+    provider: 'Eskom',
+    field_of_study: 'Engineering diplomas at a university of technology (electrical, mechanical, civil, chemical, measurement control & instrumentation, BEng Tech)',
+    deadline: '2026-09-22',
+    amount_covers: null, // Eskom's wider bursary scheme is reported elsewhere to cover tuition and more, but the page we read (the diploma stream's own application page) does not itemise what it covers, so we do not state one
+    eligibility:
+      'South African citizen, not already holding another bursary, with Grade 11 final or Grade 12 results showing English level 4, Mathematics level 4 and Physical Science level 4, and conditional acceptance to an engineering diploma at a University of Technology.',
+    apply_url: 'https://eskomcareers.ci.hr',
+    source_url: 'https://eskomcareers.ci.hr/?amp=&amp=&bursaryid=c1f1088a-71ee-4f15-a51c-73c194f5542e&controller=Bursaries&method=view',
+    active: 1,
+    note: 'This is Eskom\'s Engineering Diploma stream specifically - the page we read states Grade 11 year-end results will be considered but the final decision depends on 2026 matric results. Eskom also runs an Engineering Degree stream and a Non-Technical stream (accounting, law, nursing, psychology, data science, supply chain) covering the same 22 September 2026 closing date per secondary sources, but we have not independently fetched those pages, so only the Diploma stream is shown here.',
+    verification: 'verified',
+  },
+  {
+    id: 'firstrand-empowerment-2027',
+    name: 'FirstRand Empowerment Foundation Undergraduate Bursary',
+    provider: 'FirstRand Empowerment Foundation (administered by StudyTrust)',
+    field_of_study: 'Commerce, Engineering, Science and Technology',
+    deadline: '2026-09-30',
+    amount_covers: 'Tuition fees, accommodation, meals, learning resources, a monthly stipend, and a computer for first-year students',
+    eligibility:
+      'Black South African citizens as defined by the B-BBEE Act; Grade 12 Mathematics (not Maths Literacy) at least level 5; not older than 21 in their first year of study; provisionally admitted to a South African public traditional university to start a first degree in 2027; combined family gross annual income up to R700,000.',
+    apply_url: 'https://studytrust.org.za/fref-bursary/',
+    source_url: 'https://studytrust.org.za/fref-bursary/',
+    active: 1,
+    note: 'Application season runs 1 June to 30 September each year.',
+    verification: 'verified',
+  },
+  {
+    id: 'vodacom-external-2027',
+    name: 'Vodacom External Bursary Programme',
+    provider: 'Vodacom',
+    field_of_study: 'Science, Technology, Engineering, Mathematics (STEM), Business and Commercial fields',
+    deadline: '2026-08-31',
+    amount_covers: 'Full registration and tuition, full university accommodation (or a capped amount for private accommodation), textbooks, a meal allowance, a laptop and a cellphone',
+    eligibility:
+      'South African citizen by birth; full-time undergraduate study at a South African tertiary institution; Matric with exemption and an average of 70% or higher for new applicants, or 65% or higher if already at tertiary level.',
+    apply_url: 'https://www.vodacom.com/bursary-programme.php',
+    source_url: 'https://www.vodacom.com/bursary-programme.php',
+    active: 1,
+    note: null,
     verification: 'verified',
   },
   // The five below come from a prior Studypath research pass (sourced to each provider's own

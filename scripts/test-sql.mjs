@@ -37,9 +37,16 @@ ok('careers?sector=Health', r.b.careers.length > 10 && r.b.careers.every(c => c.
 r = await get('/api/careers?q=engineer');
 ok('careers?q=engineer', r.b.careers.length >= 8);
 r = await get('/api/coverage');
-// conflict count dropped from 3 to 2 in a 2026-10-01 follow-up pass that resolved the
-// wits-bas-architecture conflict (see research-log.mjs) - mut-dip-it and wits-bsc-maths remain.
-ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 2, JSON.stringify(r.b.flagCounts));
+// conflict count rose from 2 to 5 in a 2026-10-01 research pass that brought UJ, UWC, RU,
+// NWU and UFS above the 15-programme floor (see research-log.mjs) - mut-dip-it and
+// wits-bsc-maths were already there; uj-social-work, a UWC nursing entry and an NWU BEd
+// Foundation Phase entry are the three new genuine conflicts disclosed by that pass.
+// Rose again from 5 to 7 in a later 2026-10-01 UCT/UJ/UFS/Wits/UKZN research pass: a
+// Wits LLB spot-check found the 2027 course-finder's Mathematics level (5) disagrees
+// with the 2026 schools-liaison guide's (4), and a UKZN BSc Computer Science & IT
+// spot-check found its own school page's English/Life Orientation levels (5) disagree
+// with the 2026 Study@UKZN brochure's (4) - both shown rather than silently resolved.
+ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 7, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
 ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
 r = await get('/api/meta');
@@ -52,11 +59,13 @@ DB.raw.exec(`INSERT INTO bursaries (id,name,provider,field_of_study,deadline,app
  ('b3','No date','P','Law',NULL,'https://c.ac.za','https://c.ac.za',1),
  ('b4','Inactive','P','Engineering','2026-10-01','https://d.ac.za','https://d.ac.za',0)`);
 r = await get('/api/bursaries');
+// Order includes 3 new verified entries added in a 2026-10-01 pass (Eskom, FirstRand
+// Empowerment Foundation/StudyTrust, Vodacom) - see research-log.mjs - slotted in by deadline.
 ok('bursaries: soonest first, undated last, inactive hidden',
-  r.b.bursaries.map(b => b.id).join() === 'allan-gray-orbis-2027,sasol-mainstream-2027,sasol-foundation-2027,investec-tertiary-2027,b2,nsfas-2027,b1,saica-thuthuka-2027,b3',
+  r.b.bursaries.map(b => b.id).join() === 'allan-gray-orbis-2027,sasol-mainstream-2027,sasol-foundation-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,investec-tertiary-2027,b2,nsfas-2027,b1,saica-thuthuka-2027,b3',
   r.b.bursaries.map(b=>b.id).join());
 r = await get('/api/bursaries?field=Engineering');
-ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'sasol-mainstream-2027,b2,b1', r.b.bursaries.map(b=>b.id).join());
+ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'sasol-mainstream-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,b2,b1', r.b.bursaries.map(b=>b.id).join());
 
 // reminders: stored, and a second sign-up for the same address updates rather than errors
 const post = (body) => get('/api/reminders', { method: 'POST', body: JSON.stringify(body) });
