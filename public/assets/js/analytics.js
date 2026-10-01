@@ -11,7 +11,7 @@
 // Riot wants funnels and audiences later.
 
 export const ANALYTICS = {
-  ga4MeasurementId: '',
+  ga4MeasurementId: 'G-EEP9NMYLF9',
   cloudflareWebAnalyticsToken: '',
   /** GA4 sets cookies, so it waits for consent. Cloudflare Web Analytics does not. */
   requireConsentForGa4: true,
