@@ -2,6 +2,7 @@
 // renderPage(), so a navigation change is made in exactly one place.
 
 import { esc } from './html.mjs';
+import { sweepEmojiIcons } from './icons.mjs';
 
 export const ORIGIN = (process.env.SITE_ORIGIN || 'https://studypath.co.za').replace(/\/$/, '');
 export const SITE_NAME = 'Studypath';
@@ -69,7 +70,7 @@ export function renderPage({ path, title, description, body, scripts = [], jsonL
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
   const ld = [...jsonLd, breadcrumbs ? breadcrumbLd(breadcrumbs) : null];
 
-  return `<!doctype html>
+  const html = `<!doctype html>
 <html lang="en-ZA">
 <head>
 <meta charset="utf-8">
@@ -142,4 +143,6 @@ ${scripts.map((s) => `<script type="module" src="${s}"></script>`).join('\n')}
 </body>
 </html>
 `;
+
+  return sweepEmojiIcons(html);
 }

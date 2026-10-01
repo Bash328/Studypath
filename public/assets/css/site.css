@@ -296,6 +296,10 @@ a.card--link h3 { color: var(--brand-ink); }
    narrow screen. A nowrap pill inside a plain paragraph (as opposed to a table cell
    inside .table-scroll) doesn't get clipped by anything and blows out the page's
    horizontal scroll width - this cost real mobile-overflow bugs once already. */
+/* Inline Lucide icons (site/lib/icons.mjs) always take their size from the font-size of
+   whatever they sit in, so dropping one into an existing emoji slot just works. */
+svg.icon { width: 1em; height: 1em; vertical-align: -0.15em; flex: none; stroke-width: 2.25; }
+
 .tag { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px; border-radius: 99px; font-size: .74rem; font-weight: 750; line-height: 1.5; max-width: 100%; }
 .tag--verified { background: var(--good-soft); color: var(--good); }
 .tag--reported { background: var(--info-soft); color: var(--info); }
@@ -479,6 +483,15 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .group--collapsible > summary h4 { display: inline-flex; align-items: center; gap: 6px; }
 .group--collapsible > summary h4::after { content: "\25be"; font-size: 1rem; color: var(--brand); transition: rotate .15s; }
 .group--collapsible[open] > summary h4::after { rotate: 180deg; }
+
+.career-more summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; }
+.career-more summary::-webkit-details-marker { display: none; }
+.career-more summary h2 { margin: 0; }
+.career-more__hint { font-size: .82rem; font-weight: 700; color: var(--brand-ink); display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; flex: none; }
+.career-more__chevron { transition: rotate .15s; }
+.career-more[open] .career-more__chevron { rotate: 180deg; }
+.career-more__body { margin-top: 1rem; }
+.career-more .pill-list { margin-top: .5rem; }
 .prow__head { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; }
 .prow__name { font-weight: 700; margin: 0; }
 .prow__meta { font-size: .85rem; color: var(--ink-faint); margin: 0; }

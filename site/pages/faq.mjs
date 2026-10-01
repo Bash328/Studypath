@@ -1,6 +1,7 @@
 import { esc, claims, checksBox, tag, weakestLevel } from '../lib/html.mjs';
 import { FAQ_CATEGORIES } from '../lib/data.mjs';
 import { sectionHead } from '../lib/components.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 export const plain = (s) => String(s || '').replace(/\*\*/g, '');
 export const answerText = (f) => f.answer.map((p) => plain(p.text)).join(' ');
@@ -33,7 +34,7 @@ export function faqPage(data) {
     </div>
     <div class="chip-row" id="faq-cats" role="group" aria-label="Topic">
       <button class="chip" type="button" data-cat="" aria-pressed="true">All</button>
-      ${FAQ_CATEGORIES.map((c) => `<button class="chip" type="button" data-cat="${esc(c.id)}" aria-pressed="false">${c.emoji} ${esc(c.label)}</button>`).join('')}
+      ${FAQ_CATEGORIES.map((c) => `<button class="chip" type="button" data-cat="${esc(c.id)}" aria-pressed="false">${iconOrEmoji(c.emoji)} ${esc(c.label)}</button>`).join('')}
     </div>
   </div>
 </section>

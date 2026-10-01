@@ -6,6 +6,8 @@
 // on an official page, took it from our research, or are only offering general knowledge -
 // and anything not checked comes with places the student can check it themselves.
 
+import { badgeIcon } from './icons.mjs';
+
 export const esc = (s) =>
   String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -39,7 +41,7 @@ export const LEVELS = {
 
 export const tag = (level, text) => {
   const l = LEVELS[level] || LEVELS.general;
-  return `<span class="tag tag--${l.cls}"><span aria-hidden="true">${l.icon}</span> ${esc(text || l.short)}</span>`;
+  return `<span class="tag tag--${l.cls}"><span aria-hidden="true">${badgeIcon(level) || l.icon}</span> ${esc(text || l.short)}</span>`;
 };
 
 /** A list of source links, e.g. "Source: UCT guidelines, Wits entry requirements". */

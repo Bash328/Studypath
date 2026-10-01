@@ -1,6 +1,7 @@
 import { claims, tag } from '../lib/html.mjs';
 import { sectionHead } from '../lib/components.mjs';
 import { ORIGIN } from '../lib/layout.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 export function calculator(data) {
   const { faq } = data;
@@ -28,7 +29,7 @@ export function calculator(data) {
     <p class="loading">Loading the calculator…</p>
   </div>
 
-  <p class="hint calc__privacy">🔒 Your marks are worked out in your browser and saved only on this device, so you don’t have to type them again. We have no accounts and keep no copy.</p>
+  <p class="hint calc__privacy">${iconOrEmoji('🔒')} Your marks are worked out in your browser and saved only on this device, so you don’t have to type them again. We have no accounts and keep no copy.</p>
 </section>
 
 <section class="section wrap wrap--narrow" aria-labelledby="read">

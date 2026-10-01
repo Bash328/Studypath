@@ -2,6 +2,7 @@ import { esc, tag, link, hostOf } from '../lib/html.mjs';
 import { CYCLE, OPEN_DAY_PAGES } from '../lib/data.mjs';
 import { dateRow, sectionHead, verificationTag } from '../lib/components.mjs';
 import { prettyDate } from '../lib/html.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 export function datesPage(data) {
   const { dates, uniById, universities, fees } = data;
@@ -37,10 +38,10 @@ export function datesPage(data) {
   <div class="filters" role="group" aria-label="Filter dates">
     <div class="chip-row" id="kind-chips">
       <button class="chip" type="button" data-kind="" aria-pressed="true">All</button>
-      <button class="chip" type="button" data-kind="close" aria-pressed="false">⏰ Closing dates</button>
-      <button class="chip" type="button" data-kind="open_day" aria-pressed="false">🏫 Open days</button>
-      <button class="chip" type="button" data-kind="nbt" aria-pressed="false">✍️ NBT</button>
-      <button class="chip" type="button" data-kind="funding" aria-pressed="false">💰 Funding</button>
+      <button class="chip" type="button" data-kind="close" aria-pressed="false">${iconOrEmoji('⏰')} Closing dates</button>
+      <button class="chip" type="button" data-kind="open_day" aria-pressed="false">${iconOrEmoji('🏫')} Open days</button>
+      <button class="chip" type="button" data-kind="nbt" aria-pressed="false">${iconOrEmoji('✍️')} NBT</button>
+      <button class="chip" type="button" data-kind="funding" aria-pressed="false">${iconOrEmoji('💰')} Funding</button>
     </div>
     <div class="filters__row">
       <label class="sr-only" for="uni-filter">University</label>
