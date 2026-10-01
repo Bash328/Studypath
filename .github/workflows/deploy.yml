@@ -41,6 +41,9 @@ jobs:
       # if it ever fails to resolve rather than blocking the site build.
       - run: npm install --no-audit --no-fund || true
 
+      - name: Generate db/seed.sql
+        run: npm run seed:generate
+
       - name: Run the test suite
         run: npm test
 
