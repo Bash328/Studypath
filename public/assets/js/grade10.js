@@ -3,6 +3,10 @@
 
 import { $, el, set, getJson } from './core.js';
 
+// Same Lucide "graduation-cap" icon the server inlines for 🎓 elsewhere (site/lib/icons.mjs) -
+// hardcoded here since this file is a plain static asset, not something the build step touches.
+const GRADUATION_ICON = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></svg>';
+
 const box = $('#planner');
 const select = $('#planner-career');
 const addBtn = $('#planner-add');
@@ -32,7 +36,8 @@ function careerBlock(career) {
   const list = programs.filter((p) => p.career && p.career.id === career.id);
   return el('div', { class: 'card plan-card' },
     el('h3', {},
-      `🎓 ${career.name}`,
+      el('span', { 'aria-hidden': 'true', html: GRADUATION_ICON }),
+      ` ${career.name}`,
       el('button', { class: 'chip', type: 'button', 'aria-label': `Remove ${career.name}`, onclick: () => { picked = picked.filter((p) => p.id !== career.id); render(); } }, 'Remove ×')),
     list.length
       ? el('div', { class: 'table-scroll' }, el('table', { class: 'data' },
@@ -40,7 +45,7 @@ function careerBlock(career) {
           el('tbody', {}, list.map((p) => el('tr', {},
             el('th', { scope: 'row' }, p.university.name),
             el('td', {}, el('a', { href: `/careers/${career.id}#${p.id}` }, p.name)),
-            el('td', {}, (p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map(reqText).join('; ') || '–'))))))
+            el('td', {}, (p.subjectRequirements || []).map(reqText).join('; ') || '–'))))))
       : el('p', { class: 'muted' }, 'No degrees captured for this career yet.'),
     el('p', { class: 'small' }, el('a', { href: `/careers/${career.id}` }, `Full page for ${career.name} →`)));
 }

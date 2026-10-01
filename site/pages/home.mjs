@@ -92,7 +92,7 @@ export function home(data) {
 <section class="section wrap" aria-labelledby="jargon">
   ${sectionHead('📖', 'The words everyone uses and nobody explains', 'If you’ve been told to “check your ' + 'APS” and had no idea what that meant, you’re not behind. Tap one.')}
   <div class="grid grid--2">${jargonCards}</div>
-  <p class="small muted">Each answer is tagged: ${tag('verified')} we read it on the official page · ${tag('reported')} from our research · ${tag('general')} common knowledge we couldn’t source.</p>
+  <p class="small muted jargon-key">Each answer is tagged: ${tag('verified')} we read it on the official page · ${tag('reported')} from our research · ${tag('general')} common knowledge we couldn’t source.</p>
 </section>
 
 <section class="section wrap" aria-labelledby="trust">

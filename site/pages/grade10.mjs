@@ -10,7 +10,7 @@ function reqTable(programs) {
   <tbody>${programs.map((p) => `<tr>
     <th scope="row">${esc(p.university.name)}</th>
     <td data-label="Degree">${esc(p.name)}</td>
-    <td data-label="What it asks for">${(p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map((r) => esc(requirementText(r))).join('; ') || '<span class="muted">see the source</span>'}</td>
+    <td data-label="What it asks for">${(p.subjectRequirements || []).map((r) => esc(requirementText(r))).join('; ') || '<span class="muted">see the source</span>'}</td>
     <td data-label="Source">${link(p.sourceUrl, hostOf(p.sourceUrl))}</td>
   </tr>`).join('')}</tbody></table></div>`;
 }

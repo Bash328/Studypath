@@ -96,7 +96,10 @@ strong { font-weight: 700; }
 
 /* ---------------------------------------------------------------- layout */
 .wrap { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: 20px; }
-.wrap--narrow { max-width: 780px; }
+/* Kept as a distinct class (rather than removed from every page) so a future narrow-column
+   need doesn't require re-adding it everywhere - but per feedback, pages should read as wide
+   and consistent as the careers/home/universities pages, so it currently matches .wrap. */
+.wrap--narrow { max-width: 1120px; }
 .section { padding-block: clamp(1.6rem, 4vw, 3rem); }
 .stack > * + * { margin-top: 14px; }
 .grid { display: grid; gap: 14px; }
@@ -290,6 +293,7 @@ a.card--link h3 { color: var(--brand-ink); }
 .jargon summary::after { content: "+"; font-size: 1.4rem; color: var(--brand); line-height: 1; }
 .jargon[open] summary::after { content: "\2212"; }
 .jargon .claim { margin-top: .8rem; }
+.jargon-key { margin-top: 1.4rem; }
 
 /* ---------------------------------------------------------------- trust markers */
 /* No white-space:nowrap here on purpose: the longer labels ("From our research –
