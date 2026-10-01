@@ -24,8 +24,10 @@ r = await get('/api/programs?q=nursing');
 ok('programs?q=nursing finds nursing degrees', r.s === 200 && r.b.programs.length >= 4, r.b.programs && r.b.programs.length);
 r = await get('/api/programs?career=doctor&university=su');
 ok('combined filters', r.b.programs.length === 1 && r.b.programs[0].id === 'su-mbchb');
-r = await get('/api/programs/wits-bas-architecture');
-ok('conflict programme carries the conflict flag', r.b.program.flags.some(f => f.id === 'conflict') && r.b.program.minScore === null);
+// wits-bas-architecture's old APS conflict was resolved in a 2026-10-01 follow-up pass
+// (see research-log.mjs) - wits-bsc-maths is the remaining genuine conflict to test against.
+r = await get('/api/programs/wits-bsc-maths');
+ok('conflict programme carries the conflict flag', r.b.program.flags.some(f => f.id === 'conflict') && r.b.program.minScore === 44);
 r = await get('/api/programs/uct-mbchb');
 ok('selection flag split out, note text clean', r.b.program.flags[0].id === 'selection' && !r.b.program.notes.startsWith('['));
 r = await get('/api/universities');
@@ -35,7 +37,9 @@ ok('careers?sector=Health', r.b.careers.length > 10 && r.b.careers.every(c => c.
 r = await get('/api/careers?q=engineer');
 ok('careers?q=engineer', r.b.careers.length >= 8);
 r = await get('/api/coverage');
-ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 3, JSON.stringify(r.b.flagCounts));
+// conflict count dropped from 3 to 2 in a 2026-10-01 follow-up pass that resolved the
+// wits-bas-architecture conflict (see research-log.mjs) - mut-dip-it and wits-bsc-maths remain.
+ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 2, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
 ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
 r = await get('/api/meta');

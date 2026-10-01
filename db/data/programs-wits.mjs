@@ -63,13 +63,16 @@ export const witsPrograms = [
     subject_requirements: ENG_APS,
     notes: flag('dated-document', datedNote) },
 
-  // Two official Wits sources give different numbers here. We show both and pick neither.
+  // RESOLVED 2026-10-01: Wits's own course-finder page (found via web search, not a raw
+  // fetch - this environment's network egress blocks direct fetches to university
+  // domains) reconciles the schools-liaison guide (APS 34+) and the BAS FAQ (APS 29) as
+  // two bands of the same rule, rather than a real conflict - see the note below.
   { ...base, id: 'wits-bas-architecture', career_id: 'architect', name: 'Bachelor of Architectural Studies',
-    faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: null,
-    source_url: 'https://www.wits.ac.za/soap/architecture/bas-application-exercise/',
+    faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 34,
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/ebe/architectural-studies/',
     subject_requirements: [lvl('Mathematics', 4), engLvl(4, 4),
-      manual('Application exercise', 'An application exercise and an interview are required. No NBT.')],
-    notes: flag('conflict', 'Two official Wits sources disagree. The schools-liaison Grade 12 guide gives APS 34+ with English level 4 and Maths level 4. The Bachelor of Architectural Studies application FAQ gives a minimum APS of 29 with Maths 50% and English 50%. We are not picking a side - check both with the School of Architecture before you rely on either. Guide: ' + SLO) },
+      manual('Application exercise', 'A written and graphic application exercise is required, and some applicants are invited to an interview; the exercise, interview and Wits APS score are weighted equally in the final decision. No NBT.')],
+    notes: flag(['selection', 'partially-verified'], 'Wits’s course-finder page resolves what earlier looked like a conflict between its schools-liaison guide (APS 34+) and the BAS application FAQ (APS 29): 34 is the standard threshold, but applicants scoring 29-33 who meet the other requirements may still be considered "under exceptional circumstances". Found via web search surfacing this official page, not a raw fetch of the full page (blocked in this environment) - re-check against the live page before fully relying on it.') },
 
   { ...sourceA, id: 'wits-urban-planning', career_id: 'urban-planner', name: 'Urban & Regional Planning',
     faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 36,

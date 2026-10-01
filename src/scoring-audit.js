@@ -222,7 +222,7 @@ export const SCORING_AUDIT = {
     status: 'partial',
     sources: [{ label: 'WSU 2027 Undergraduate Information Brochure & Admission Requirements', url: 'https://wsu.ac.za/media/attachments/2026/05/27/2027-information-brochure-admission-requirements.pdf' }],
     confirmed: ['Best six subjects (seven for Education programmes, which also count Life Orientation), excluding Life Orientation otherwise.', 'Points: 90-100% = 8 down to 0-29% = 1.', 'Two subjects reserved for languages (Category 1); four for the subjects the programme requires (Category 2).'],
-    gaps: ['We have confirmed the rule in full but have not yet built and tested the two-category (languages + required-subjects) selection logic, so each programme shows its published minimum APS as reference only, not computed.'],
+    gaps: ['RESOLVED 2026-10-01: the two-category (languages + required-subjects) selection logic is now implemented and computes a score. We pick the student’s best two languages for Category 1, which assumes WSU means "your two best languages" rather than one specific pair (e.g. English + home language) - the brochure does not spell out which, so this is our interpretation of "languages", not a word-for-word quote.'],
   },
   UFH_APS: {
     status: 'partial',
@@ -234,13 +234,13 @@ export const SCORING_AUDIT = {
     status: 'partial',
     sources: [{ label: 'CPUT 2027 Undergraduate Prospectus (p.3)', url: 'https://issuu.com/cput6/docs/2027_prospectus' }],
     confirmed: ['Method 1 (best of six subjects): six highest-scoring subjects, including any the programme requires, excluding Life Orientation; percentages summed and divided by 10.', 'Method 2 (double Maths and Science): required subjects plus the 4th-highest, excluding LO, with Mathematics and Physical Sciences doubled, divided by 10 - used for CPUT’s Engineering diplomas.', 'Method 3 (double Maths and Accounting): Mathematics and Accounting doubled, plus English and the next three best subjects excluding LO, divided by 10 - used for some Commerce programmes.'],
-    gaps: ['We have confirmed the three methods in full but have not implemented any of them, so no CPUT programme has a computed score - each shows its published minimum APS and the method it uses as reference only.'],
+    gaps: ['RESOLVED 2026-10-01: all three methods are now implemented and compute a score, checked against the published minimum APS on each captured programme (Method 1 for Nursing, Method 2 for the Engineering diplomas - both land exactly on the published minimum at the stated subject thresholds). Method 3 has no CPUT programme captured yet to check it against (CPUT’s Commerce pages still have not been fetched), so it is implemented from the confirmed rule but unverified against a real example. The underlying source (an Issuu-hosted flipbook, not a normal PDF) could not be re-read this pass, so this remains "partial" rather than "verified".'],
   },
   CUT_APS: {
     status: 'partial',
     sources: [{ label: 'CUT Admission Points (AP)', url: 'https://www.cut.ac.za/admission-points-ap' }],
     confirmed: ['"A candidate must score at least 27 or more points on the CUT scoring scale, for admission to CUT." Points 30-39%=2 up to 90-100%=8 for six academic subjects.', '"Life Orientation forms part of the final score, with a maximum value of one" regardless of the actual LO mark.', '21 or fewer points: not admitted. 22-26: a selection test is required.'],
-    gaps: ['It is not fully clear from the page whether every passing Life Orientation mark earns exactly 1 point or whether some marks earn 0 - we have not implemented this formula pending that clarification, so each programme shows its published minimum APS as reference only.'],
+    gaps: ['RESOLVED 2026-10-01: implemented and computing a score - we award Life Orientation 1 point whenever it is entered (treating "maximum value of one" as "scores 1", since the page never says a passing LO mark can score 0). The one remaining uncertainty is for a student who actually FAILS Life Orientation (under 30%) - the page does not say whether that still earns 1 point or 0, and we have not found a worked example to settle it.'],
   },
   MUT_APS: {
     status: 'unverified',
@@ -255,7 +255,7 @@ export const SCORING_AUDIT = {
     status: 'partial',
     sources: [{ label: 'NMU "How do I calculate my APS?"', url: 'https://www.mandela.ac.za/Apply/Frequently-asked-questions/Admissions/How-do-I-calculate-my-APS-' }],
     confirmed: ['NMU’s "Applicant Score" (AS) sums the raw percentages (not NSC achievement levels) of your best six 20-credit subjects, excluding Life Orientation, out of 600.', 'Applicants from quintile 1-3 schools who score 50%+ in Life Orientation get a 7-point bonus.', '16 programmes now captured, each with a published AS minimum consistent with this formula.'],
-    gaps: ['Most of the faculty guides those 16 programmes come from are dated/closing in 2024 (apparently the 2025 intake), not independently confirmed as current for 2027. The quintile 1-3 Life Orientation bonus is not modelled - we show the base AS only, which is always equal to or lower than a student’s true score, never higher.'],
+    gaps: ['RESOLVED 2026-10-01: implemented and computing a score - at the exact published subject thresholds for e.g. Bachelor of Information Technology (AS 370, Mathematics 50%), our formula lands within a few points of the published minimum, consistent with the confirmed rule. Most of the faculty guides those 16 programmes come from are dated/closing in 2024 (apparently the 2025 intake), not independently confirmed as current for 2027. The quintile 1-3 Life Orientation bonus is still not modelled - we show the base AS only, which is always equal to or lower than a student’s true score, never higher.'],
   },
   SMU_APS: {
     status: 'partial',

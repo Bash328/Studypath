@@ -121,7 +121,7 @@ console.log('\nRoutes');
   ok('meta lists all scoring systems', body.scoringSystems.length === 28, `got ${body.scoringSystems.length}`);
   // See the comment above the matching assertion in test-scoring.mjs: this count only
   // goes down as documented gaps (scoring-audit.js) get closed in a future pass.
-  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 11);
+  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 7);
   ok('meta carries an audit record for every system', body.scoringSystems.every((s) => s.audit && s.audit.status && s.audit.sources.length > 0));
 }
 {

@@ -395,6 +395,10 @@ input:focus, select:focus, textarea:focus { border-color: var(--brand); outline:
 .demand__bar { display: block; height: 8px; border-radius: 99px; background: var(--line); margin-top: 5px; overflow: hidden; }
 .demand__bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--brand), var(--accent)); border-radius: 99px; }
 
+.specialty-list { list-style: none; padding: 0; margin: .5rem 0 1.2rem; }
+.specialty-list li { padding: .5rem 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+.specialty-list li:last-child { border-bottom: none; }
+
 .contact__top { display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: space-between; align-items: center; margin-bottom: .5rem; }
 .contact__top h3 { margin: 0; }
 .contact__list { list-style: none; padding: 0; margin: 0 0 .6rem; }
