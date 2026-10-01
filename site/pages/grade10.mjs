@@ -84,7 +84,7 @@ export function grade10Page(data) {
     <p class="small muted">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each degree below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
   </div>
 
-  <div class="grid grid--2">${fieldCards}</div>
+  <div class="grid grid--2 field-cards">${fieldCards}</div>
   <div class="callout callout--good">${claim(GRADE10.maths.rule)}</div>
 
   <h3 class="uni-head">Degrees that accept Mathematical Literacy (from our data)</h3>

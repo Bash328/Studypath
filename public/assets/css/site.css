@@ -440,6 +440,7 @@ details.faq[open] summary { border-bottom: 1px solid var(--line); }
 .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
 .dot--maths { background: var(--brand); } .dot--lit { background: var(--sun); } .dot--none { background: var(--ink-faint); opacity: .5; }
 .field-card__verdict { font-weight: 700; color: var(--brand-ink); }
+.field-cards { margin-top: 1.6rem; }
 .more-table { margin-top: 1.4rem; }
 .more-table summary { cursor: pointer; font-weight: 700; color: var(--brand-ink); margin-bottom: .8rem; }
 .planner__add { display: flex; gap: 10px; }
