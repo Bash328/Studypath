@@ -15,4 +15,4 @@
 // While API_BASE is '' AND the site is on a static host with no /api, the two forms show
 // a friendly "not switched on yet" message instead of failing silently.
 
-export const API_BASE = '';
+export const API_BASE = 'https://studypath.cwakiku.workers.dev';
