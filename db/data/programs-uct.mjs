@@ -169,4 +169,27 @@ export const uctPrograms = [
       manual('Major-specific', 'An Economics major needs Maths 60%. A Psychology major needs Maths 50% or a Proficient NBT Quantitative Literacy result.'),
     ],
     notes: flag('unverified', 'The subject requirements here are confirmed from the UCT 2027 prospectus, but the numeric FPS cut-off was in the section of the PDF our research pass could not read. We will not show a points number we have not seen on an official page.') },
+  { ...base, id: 'uct-ba-psychology', career_id: 'clinical-psychologist', name: 'BA / BSocSc (with Psychology as a major)',
+    faculty: 'Humanities', duration_years: 3, min_aps: null, score_type: 'minimum',
+    subject_requirements: [
+      engPct(50, 60), pct('Life Orientation', 50),
+      pct('Mathematics', 50),
+      manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out. UCT’s own page says a Psychology major specifically accepts Maths 50% OR a Proficient NBT Quantitative Literacy result instead - we show the Maths route above since it’s the one we can check from marks alone.'),
+    ],
+    notes: flag('unverified', 'You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year - UCT is one of the few universities that publishes a major-specific subject note for Psychology, which is why the Maths requirement above is more specific than the general BA entry. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise. The numeric FPS cut-off was in the section of the prospectus our research pass could not read.') },
+  { ...base, id: 'uct-ba-psychology-counselling', career_id: 'counselling-educational-psychologist', name: 'BA / BSocSc (with Psychology as a major)',
+    faculty: 'Humanities', duration_years: 3, min_aps: null, score_type: 'minimum',
+    subject_requirements: [
+      engPct(50, 60), pct('Life Orientation', 50),
+      pct('Mathematics', 50),
+      manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out. UCT’s own page says a Psychology major specifically accepts Maths 50% OR a Proficient NBT Quantitative Literacy result instead - we show the Maths route above since it’s the one we can check from marks alone.'),
+    ],
+    notes: flag('unverified', 'You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise. The numeric FPS cut-off was in the section of the prospectus our research pass could not read.') },
+  { ...base, id: 'uct-ba-journalism', career_id: 'journalist-communications', name: 'BA / BSocSc (with a media/communications-related major)',
+    faculty: 'Humanities', duration_years: 3, min_aps: null, score_type: 'minimum',
+    subject_requirements: [
+      engPct(50, 60), pct('Life Orientation', 50),
+      manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
+    ],
+    notes: flag('unverified', 'UCT does not list Journalism as its own admission line - you’re admitted to the general BA/BSocSc and choose your major from second year. Confirm which specific major UCT offers in this area before relying on it. The numeric FPS cut-off was in the section of the prospectus our research pass could not read.') },
 ];

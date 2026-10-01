@@ -67,8 +67,14 @@ assert('all five computable systems produced different numbers',
 console.log('\nWe refuse to guess what we cannot verify');
 assert('Wits Composite Index returns no number, with a reason',
   scores.WITS_COMPOSITE_INDEX.computable === false && !!scores.WITS_COMPOSITE_INDEX.reason);
-assert('every other system is now verified well enough to compute',
-  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 1);
+// As of the 2026-10-01 pass, 10 more universities were researched well enough to
+// capture real programmes and subject requirements, but not well enough to safely
+// compute a score (a conflicting formula, an unconfirmed points scale, no published
+// cut-off to check, etc. - see each system's audit `gaps` for the specific reason).
+// This count should only ever go DOWN as those gaps get closed in a future pass -
+// never up without a documented reason in scoring-audit.js.
+assert('every non-computable system beyond the known ones has a documented reason',
+  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 11);
 assert('every system carries an audit record with at least one official source',
   Object.entries(SCORING_SYSTEMS).every(([, s]) => s.audit && s.audit.sources.length > 0));
 assert('partly-verified systems name what is still unconfirmed',

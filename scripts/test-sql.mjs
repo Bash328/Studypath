@@ -35,7 +35,7 @@ ok('careers?sector=Health', r.b.careers.length > 10 && r.b.careers.every(c => c.
 r = await get('/api/careers?q=engineer');
 ok('careers?q=engineer', r.b.careers.length >= 8);
 r = await get('/api/coverage');
-ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 2, JSON.stringify(r.b.flagCounts));
+ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 3, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
 ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
 r = await get('/api/meta');

@@ -118,8 +118,10 @@ console.log('\nRoutes');
   const { res, body } = await call('/api/meta');
   ok('GET /api/meta is 200', res.status === 200);
   ok('meta reports every programme', body.stats.programs === programs.length, `got ${body.stats && body.stats.programs}`);
-  ok('meta lists all scoring systems', body.scoringSystems.length === 12, `got ${body.scoringSystems.length}`);
-  ok('meta: only the Wits Composite Index is left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 1);
+  ok('meta lists all scoring systems', body.scoringSystems.length === 28, `got ${body.scoringSystems.length}`);
+  // See the comment above the matching assertion in test-scoring.mjs: this count only
+  // goes down as documented gaps (scoring-audit.js) get closed in a future pass.
+  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 11);
   ok('meta carries an audit record for every system', body.scoringSystems.every((s) => s.audit && s.audit.status && s.audit.sources.length > 0));
 }
 {
@@ -153,7 +155,7 @@ console.log('\nThe calculator');
   const marks = { 'english-hl': 78, mathematics: 82, 'physical-sciences': 76, 'life-sciences': 71, accounting: 68, geography: 74, 'life-orientation': 85 };
   const { res, body } = await call('/api/qualify', { method: 'POST', body: JSON.stringify({ marks }) });
   ok('POST /api/qualify is 200', res.status === 200);
-  ok('results are grouped per university', body.universities.length === 10, `got ${body.universities.length}`);
+  ok('results are grouped per university', body.universities.length === 26, `got ${body.universities.length}`);
   ok('the non-comparability warning is in the payload', /NOT comparable/.test(body.warning));
 
   const wits = body.universities.find((u) => u.university.id === 'wits');

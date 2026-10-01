@@ -174,6 +174,110 @@ export const SCORING_AUDIT = {
     ],
     gaps: ['The 2027 document points to the AP scale "in the official UFS Prospectus". The only scale we could read is from the 2024 prospectus, so we assume it is unchanged. Other UFS faculties may count subjects differently.'],
   },
+
+  TUT_APS: {
+    status: 'partial',
+    sources: [{ label: 'TUT General Information for First-Year Enrolment 2027', url: 'https://www.tut.ac.za/media/tshwane-interim/site-content/documents/General-Information-First-Year-Enrolment.pdf' }],
+    confirmed: ['Best six subjects, excluding Life Orientation and excluding any subject scored at achievement level 1.', 'Standard NSC achievement levels 1-7.'],
+    gaps: ['We have not independently confirmed whether the level-1 exclusion changes which six subjects are selected versus simply scoring a level-1 subject as 0 - we implement it as excluding that subject from the selection pool entirely.'],
+  },
+  VUT_APS: {
+    status: 'partial',
+    sources: [{ label: 'VUT 2027 Undergraduate Minimum Admission Requirements', url: 'https://vut.ac.za/wp-content/uploads/2026/03/2027-Undergraduate-Minimum-Admission-Requirements.pdf' }],
+    confirmed: ['Best six subjects, excluding Life Orientation.'],
+    gaps: ['VUT’s document did not spell out the exact points-per-percentage table, so we assume the standard NSC 1-7 achievement-level scale (no extra 90%+ band) used by UP, UJ and UL - VUT’s published programme APS figures are consistent with that scale. Several programmes also apply additional selection rules (e.g. a combined Mathematics + Physical Science threshold) we show as a note rather than compute.'],
+  },
+  DUT_APS: {
+    status: 'partial',
+    sources: [{ label: 'DUT Study Opportunities 2027', url: 'https://www.dut.ac.za/wp-content/uploads/2026/06/Study-Opportunities-2027.pdf' }],
+    confirmed: ['Best six subjects, excluding Life Orientation ("not a 20-credit subject").'],
+    gaps: ['DUT’s document did not spell out the exact points-per-percentage table; we assume the standard NSC 1-7 achievement-level scale, consistent with its published programme APS figures. Several programmes also apply additional selection rules (e.g. a combined Mathematics + Physical Science threshold) we show as a note rather than compute, and many DUT programmes publish no single APS cut-off at all.'],
+  },
+  UNIZULU_APS: {
+    status: 'partial',
+    sources: [{ label: 'UniZulu "Applying to Study"', url: 'https://www.unizulu.ac.za/wp-content/uploads/2022/10/ApplyingToStudy.pdf' }],
+    confirmed: ['Best six subjects, excluding Life Orientation.', 'Points: 90-100% = 8, 80-89% = 7, 70-79% = 6, 60-69% = 5, 50-59% = 4, 40-49% = 3, 30-39% = 2, 0-29% = 1 - the same scale as NWU and UKZN.'],
+    gaps: ['The source document’s URL and content carry no explicit 2027 label, so its currency for the 2027 intake is not independently confirmed (the arithmetic matches standard national practice). We have not yet captured a UniZulu programme with a published APS minimum to check this against.'],
+  },
+  UL_APS: {
+    status: 'partial',
+    sources: [{ label: 'UL Undergraduate Prospectus 2027', url: 'https://www.ul.ac.za/wp-content/uploads/2025/03/Undergraduate-Prospectus-2027.pdf' }],
+    confirmed: ['Best six subjects, excluding Life Orientation.', 'Points: NSC level 7 (80-99%) down to level 1 (0-29%) - the standard 1-7 scale.', 'Separately required: at least level 3 in Life Orientation and at least level 3 in the language of learning and teaching.'],
+    gaps: ['This document’s admissions content was diffed against an older edition and found unchanged, so treated as current rather than independently re-confirmed page by page. UL states meeting the minimum APS does not guarantee admission, which we cannot model.'],
+  },
+  UNISA_APS: {
+    status: 'verified',
+    sources: [{ label: 'Unisa General Admission Requirements', url: 'https://www.unisa.ac.za/sites/corporate/default/Apply-for-admission/Undergraduate-qualifications/Qualifications/General-admission-requirements' }],
+    confirmed: ['"The APS calculation is done by using the NSC 1 to 7 scale of achievement. It is based on your achievement in six recognised 20-credit subjects." Maximum 42. Life Orientation (a 10-credit subject) is explicitly excluded.', 'Scale: 7=80-100%, 6=70-79%, 5=60-69%, 4=50-59%, 3=40-49%, 2=30-39%, 1=0-29%.'],
+    gaps: ['Unisa states that meeting the APS and subject minimums does not guarantee a space for qualifications with limited places, which we cannot model - we only check the published minimum.'],
+  },
+
+  UNIVEN_APS: {
+    status: 'partial',
+    sources: [{ label: 'Univen 2027 Undergraduate Prospectus', url: 'https://www.univen.ac.za/wp-content/uploads/2026/09/UniVen-2027-Prospectus.pdf' }],
+    confirmed: ['"Points are calculated on the best six subjects excluding Life Orientation" (more than 7 subjects: best 7 are used); subjects under 40% are not counted; general Bachelor’s minimum is APS 26.'],
+    gaps: ['Univen’s own published scoring table (a 0-10 "A+ to G" style conversion) does not clearly match a standard NSC achievement-level scale, so we could not confirm the exact points-per-percentage arithmetic - we show each programme’s published "NSC XX" minimum as reference only, not computed.'],
+  },
+  WSU_APS: {
+    status: 'partial',
+    sources: [{ label: 'WSU 2027 Undergraduate Information Brochure & Admission Requirements', url: 'https://wsu.ac.za/media/attachments/2026/05/27/2027-information-brochure-admission-requirements.pdf' }],
+    confirmed: ['Best six subjects (seven for Education programmes, which also count Life Orientation), excluding Life Orientation otherwise.', 'Points: 90-100% = 8 down to 0-29% = 1.', 'Two subjects reserved for languages (Category 1); four for the subjects the programme requires (Category 2).'],
+    gaps: ['We have confirmed the rule in full but have not yet built and tested the two-category (languages + required-subjects) selection logic, so each programme shows its published minimum APS as reference only, not computed.'],
+  },
+  UFH_APS: {
+    status: 'partial',
+    sources: [{ label: 'UFH Admission requirements', url: 'https://www.ufh.ac.za/admission' }],
+    confirmed: ['General minimum APS of 26 or higher "depending on the programme".', 'UFH’s own online APS-calculator JavaScript sums standard NSC achievement levels (1-7) across seven subject slots (two languages, Mathematics/Mathematical Literacy, Life Orientation, three electives), with no exclusion or cap logic found in that code.'],
+    gaps: ['No UFH programme page we checked states its own numeric APS minimum, so there is nothing published yet to compute or compare a score against - min_aps is null on every UFH programme as a result.'],
+  },
+  CPUT_APS: {
+    status: 'partial',
+    sources: [{ label: 'CPUT 2027 Undergraduate Prospectus (p.3)', url: 'https://issuu.com/cput6/docs/2027_prospectus' }],
+    confirmed: ['Method 1 (best of six subjects): six highest-scoring subjects, including any the programme requires, excluding Life Orientation; percentages summed and divided by 10.', 'Method 2 (double Maths and Science): required subjects plus the 4th-highest, excluding LO, with Mathematics and Physical Sciences doubled, divided by 10 - used for CPUT’s Engineering diplomas.', 'Method 3 (double Maths and Accounting): Mathematics and Accounting doubled, plus English and the next three best subjects excluding LO, divided by 10 - used for some Commerce programmes.'],
+    gaps: ['We have confirmed the three methods in full but have not implemented any of them, so no CPUT programme has a computed score - each shows its published minimum APS and the method it uses as reference only.'],
+  },
+  CUT_APS: {
+    status: 'partial',
+    sources: [{ label: 'CUT Admission Points (AP)', url: 'https://www.cut.ac.za/admission-points-ap' }],
+    confirmed: ['"A candidate must score at least 27 or more points on the CUT scoring scale, for admission to CUT." Points 30-39%=2 up to 90-100%=8 for six academic subjects.', '"Life Orientation forms part of the final score, with a maximum value of one" regardless of the actual LO mark.', '21 or fewer points: not admitted. 22-26: a selection test is required.'],
+    gaps: ['It is not fully clear from the page whether every passing Life Orientation mark earns exactly 1 point or whether some marks earn 0 - we have not implemented this formula pending that clarification, so each programme shows its published minimum APS as reference only.'],
+  },
+  MUT_APS: {
+    status: 'unverified',
+    sources: [
+      { label: 'MUT Admission Requirements (general page)', url: 'https://www.mut.ac.za/admission-requirements/' },
+      { label: 'MUT Diploma in Information Technology (programme page)', url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf' },
+    ],
+    confirmed: [],
+    gaps: ['MUT’s own general admissions page states APS is calculated from the best FIVE subjects; its IT programme page states best SIX excluding Life Orientation. The two official sources disagree, so we show both without picking one and do not compute a score.'],
+  },
+  NMU_AS: {
+    status: 'partial',
+    sources: [{ label: 'NMU "How do I calculate my APS?"', url: 'https://www.mandela.ac.za/Apply/Frequently-asked-questions/Admissions/How-do-I-calculate-my-APS-' }],
+    confirmed: ['NMU’s "Applicant Score" (AS) sums the raw percentages (not NSC achievement levels) of your best six 20-credit subjects, excluding Life Orientation, out of 600.', 'Applicants from quintile 1-3 schools who score 50%+ in Life Orientation get a 7-point bonus.', '16 programmes now captured, each with a published AS minimum consistent with this formula.'],
+    gaps: ['Most of the faculty guides those 16 programmes come from are dated/closing in 2024 (apparently the 2025 intake), not independently confirmed as current for 2027. The quintile 1-3 Life Orientation bonus is not modelled - we show the base AS only, which is always equal to or lower than a student’s true score, never higher.'],
+  },
+  SMU_APS: {
+    status: 'partial',
+    sources: [
+      { label: 'SMU Medicine undergraduate admission requirements', url: 'https://www.smu.ac.za/schools/medicine/medicine-undergraduate-admission-requirements/' },
+      { label: 'SMU Health Care Sciences undergraduate admission requirements', url: 'https://www.smu.ac.za/schools/health-care-sciences/health-care-sciences-undergraduate-admission-requirements/' },
+    ],
+    confirmed: ['SMU Pharmacy and Health Care Sciences programmes (Dietetics, Nursing, OT, Physiotherapy, Speech-Language Pathology, Audiology) state subject minimums on the standard 1-7 NSC achievement-level scale.', 'SMU Medicine and Dentistry instead reference "Table 2: Admission Point Score (APS) Equivalency Conversion Table", converting marks to a different points scale (A = 12 points down to F = 3 points).'],
+    gaps: ['We could not obtain Table 2 itself (only an AI-summarized description, not the raw table), so Medicine/Dentistry subject minimums are described in SMU’s own words rather than converted to our usual level/percentage fields, and no score is computed for any SMU programme. Whether MBChB/BDS/Pharmacy require the NBT is unconfirmed and not stated.'],
+  },
+  SPU_APS: {
+    status: 'partial',
+    sources: [{ label: 'SPU Faculty of Natural & Applied Sciences programmes', url: 'https://www.spu.ac.za/index.php/spu-nas-programmes/' }],
+    confirmed: ['General minimums: Bachelor’s degree APS 30, Diploma APS 25.', 'English: NSC level 4 (Home Language) or level 5 (First Additional Language).'],
+    gaps: ['SPU’s prospectus PDF (which would hold the exact points-per-subject formula) returned only unreadable binary/stream data on fetch, so the precise arithmetic is unconfirmed - each programme shows its published minimum APS as reference only.'],
+  },
+  UMP_APS: {
+    status: 'unverified',
+    sources: [{ label: 'UMP Bachelor of Commerce (programme page)', url: 'https://www.ump.ac.za/Study-with-us/Faculties-and-Schools/Faculty-of-Economics,-Development-and-Business-Sci/School-of-Development-Studies/Bachelor-of-Commerce.aspx' }],
+    confirmed: ['This and UMP’s BEd Foundation Phase page confirm a numeric APS minimum is published per programme.'],
+    gaps: ['A candidate formula ("seven subjects, Life Orientation points halved rather than excluded") was found only via search-result synthesis, not on one specific official page we fetched ourselves, so it is not treated as confirmed. UMP’s consolidated programmes PDF returned only unreadable binary/stream data on fetch. Only 2 of UMP’s programmes have independently fetched admission requirements so far.'],
+  },
 };
 
 export const auditLabel = (status) => ({

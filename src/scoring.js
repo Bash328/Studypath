@@ -292,6 +292,179 @@ const SYSTEMS = {
     },
   },
 
+  UNIVEN_APS: {
+    label: 'Univen APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'Univen publishes a minimum APS of 26 for a bachelor’s degree, worked from your best six or seven subjects excluding Life Orientation (subjects under 40% are not counted). Univen’s own published scoring table did not clearly match a standard NSC achievement-level scale when we checked, so we have not implemented the exact arithmetic - each programme shows its published minimum APS as reference only.',
+    reason: 'We could not confirm Univen’s exact APS arithmetic well enough to compute your score yet - see the published minimum on each programme instead.',
+  },
+
+  WSU_APS: {
+    label: 'WSU APS',
+    unit: 'points out of 48',
+    computable: false,
+    explanation:
+      'WSU adds your best six subjects (seven for Education programmes, which also count Life Orientation) on an 8-point scale (90-100% = 8 down to 0-29% = 1): two slots are reserved for languages and the rest for the subjects your programme requires. We have confirmed the full rule from WSU’s own 2027 admissions brochure but have not yet built and tested that two-category logic, so each programme shows its published minimum APS as reference only.',
+    reason: 'WSU’s formula is confirmed but not yet implemented in our calculator - see the published minimum on each programme instead.',
+  },
+
+  UFH_APS: {
+    label: 'UFH APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'UFH states a general minimum APS of 26 or higher "depending on the programme", and UFH’s own online APS calculator sums standard NSC achievement levels (1-7) across seven subject slots including Life Orientation. No UFH programme page we checked states its own numeric APS minimum, so there is nothing published yet to compute or compare your score against.',
+    reason: 'UFH does not publish a numeric APS minimum on its programme pages, so there is no cut-off for us to check your score against yet.',
+  },
+
+  UNIZULU_APS: {
+    label: 'UniZulu APS',
+    unit: 'points out of 48',
+    max: 48,
+    nearMargin: 3,
+    explanation:
+      'UniZulu adds your best six subjects, excluding Life Orientation, on an 8-point scale (90-100% = 8 down to 0-29% = 1) - the same method as NWU and UKZN. We have not yet captured a UniZulu programme with a published APS minimum to check it against, but the formula itself is ready.',
+    compute(marks) {
+      const chosen = choose(withoutLO(marks), 6, (m) => witsLevel(m.percent));
+      if (!chosen) return cannot('UniZulu counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => witsLevel(m.percent)), 48, say(chosen, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`));
+    },
+  },
+
+  TUT_APS: {
+    label: 'TUT APS',
+    unit: 'points',
+    max: 42,
+    nearMargin: 3,
+    explanation:
+      'TUT adds the NSC achievement levels (1 to 7) of your best six subjects, excluding Life Orientation and excluding any subject scored at achievement level 1 (0-29%).',
+    compute(marks) {
+      const pool = withoutLO(marks).filter((m) => nscLevel(m.percent) > 1);
+      const chosen = choose(pool, 6, (m) => nscLevel(m.percent));
+      if (!chosen) return cannot('TUT counts 6 subjects, excluding Life Orientation and any subject scored at level 1 - add the rest of yours.');
+      return ok(sum(chosen, (m) => nscLevel(m.percent)), 42, say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`));
+    },
+  },
+
+  VUT_APS: {
+    label: 'VUT APS',
+    unit: 'points',
+    max: 42,
+    nearMargin: 3,
+    explanation: 'VUT adds the NSC achievement levels (1 to 7) of your best six subjects, excluding Life Orientation. Several programmes also apply their own additional selection rules on top (e.g. a combined Mathematics + Physical Science threshold) which we show in the programme’s own notes rather than compute.',
+    compute(marks) {
+      const chosen = choose(withoutLO(marks), 6, (m) => nscLevel(m.percent));
+      if (!chosen) return cannot('VUT counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => nscLevel(m.percent)), 42, say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`));
+    },
+  },
+
+  DUT_APS: {
+    label: 'DUT APS',
+    unit: 'points',
+    max: 42,
+    nearMargin: 3,
+    explanation: 'DUT adds the NSC achievement levels (1 to 7) of your best six subjects, excluding Life Orientation. DUT applications go through the CAO, not DUT directly, and several programmes also apply their own additional selection rules on top (e.g. a combined Mathematics + Physical Science threshold) which we show in the programme’s own notes rather than compute.',
+    compute(marks) {
+      const chosen = choose(withoutLO(marks), 6, (m) => nscLevel(m.percent));
+      if (!chosen) return cannot('DUT counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => nscLevel(m.percent)), 42, say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`));
+    },
+  },
+
+  CPUT_APS: {
+    label: 'CPUT APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'CPUT uses one of three methods depending on the programme, each dividing a sum of percentages by 10 (so e.g. "30" means an average around 50-60% across the counted subjects, not an NSC level sum): Method 1 sums your best six subjects, including any the programme requires, excluding Life Orientation. Method 2 (used for CPUT’s Engineering diplomas) also doubles Mathematics and Physical Sciences. Method 3 (used for some Commerce programmes) doubles Mathematics and Accounting instead. We know which method each programme we’ve captured uses, but have not yet implemented the arithmetic, so each programme shows its published minimum APS as reference only.',
+    reason: 'CPUT’s three calculation methods are now confirmed but not yet implemented in our calculator - see the published minimum and method noted on each programme instead.',
+  },
+
+  CUT_APS: {
+    label: 'CUT APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'CUT adds the achievement points (8-point scale, 90-100% = 8) of your six academic subjects, plus Life Orientation capped at 1 point no matter how high your LO mark is. A score of 21 or less is not admitted; 22-26 needs a selection test; 27 or more is CUT’s general floor (some programmes, like Engineering, require more). We have confirmed this rule from CUT’s own page but have not yet implemented it, so each programme shows its published minimum APS as reference only.',
+    reason: 'CUT’s formula is confirmed but not yet implemented in our calculator - see the published minimum on each programme instead.',
+  },
+
+  MUT_APS: {
+    label: 'MUT APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'MUT’s own pages disagree on the basic rule: its general admissions page says APS is "the best five subjects"; its IT programme page says "a minimum of 24 points in the best six subjects excluding Life Orientation". We show both rather than pick one - see each programme’s note. MUT_APS is non-computable until this is resolved with MUT directly.',
+    reason: 'MUT’s own pages disagree on whether APS uses five or six subjects, so we cannot safely compute a score.',
+  },
+
+  NMU_AS: {
+    label: 'NMU Applicant Score (AS)',
+    unit: 'out of 600 (+7 bonus in some cases)',
+    computable: false,
+    explanation:
+      'NMU does not use a 1-7 level-based APS at all - its Applicant Score (AS) sums your best six subjects’ raw percentages (not achievement levels), excluding Life Orientation, out of 600. Applicants from quintile 1-3 schools who score 50%+ in Life Orientation get a 7-point bonus. We have confirmed this formula from NMU’s own page but have not yet captured any NMU programme to check it against.',
+    reason: 'We have not yet captured an NMU programme with a published AS minimum to check your score against.',
+  },
+
+  UL_APS: {
+    label: 'UL APS',
+    unit: 'points',
+    max: 42,
+    nearMargin: 3,
+    explanation:
+      'UL adds the NSC achievement levels (1-7) of your best six subjects, excluding Life Orientation (though at least level 3 in Life Orientation and level 3 in your language of learning and teaching are separately required, which we show as a note rather than compute). UL states that meeting the minimum APS does not guarantee admission.',
+    compute(marks) {
+      const chosen = choose(withoutLO(marks), 6, (m) => nscLevel(m.percent));
+      if (!chosen) return cannot('UL counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => nscLevel(m.percent)), 42, say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`));
+    },
+  },
+
+  SPU_APS: {
+    label: 'SPU APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'SPU publishes a minimum APS of 30 for a Bachelor’s degree and 25 for a Diploma, with English at NSC level 4 (Home Language) or level 5 (First Additional Language). We could not extract SPU’s prospectus PDF to confirm the exact points-per-subject formula, so each programme shows its published minimum APS as reference only.',
+    reason: 'We could not confirm SPU’s exact APS arithmetic from an official source yet - see the published minimum on each programme instead.',
+  },
+
+  UMP_APS: {
+    label: 'UMP APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'UMP appears to add seven subjects on a 7-point scale, with Life Orientation’s points halved rather than excluded - distinctive if accurate, but we have not independently confirmed this on an official UMP page, so we are not treating it as settled. Each programme shows its published minimum APS as reference only.',
+    reason: 'We could not fully confirm UMP’s APS formula from an official source yet - see the published minimum on each programme instead.',
+  },
+
+  UNISA_APS: {
+    label: 'Unisa APS',
+    unit: 'points',
+    max: 42,
+    nearMargin: 3,
+    explanation:
+      'Unisa adds the NSC achievement levels (1 to 7) of your six best 20-credit subjects, excluding Life Orientation - the same method as UP. Unisa is distance-only: meeting a qualification’s APS and subject minimums does not guarantee a space for qualifications with limited places.',
+    compute(marks) {
+      const chosen = choose(withoutLO(marks), 6, (m) => nscLevel(m.percent));
+      if (!chosen) return cannot('Unisa counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => nscLevel(m.percent)), 42, say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`));
+    },
+  },
+
+  SMU_APS: {
+    label: 'SMU APS',
+    unit: '',
+    computable: false,
+    explanation:
+      'SMU converts marks to points on its own scale (A = 12 points down to F = 3 points) via a published conversion table, which is different from the standard 1-7 NSC achievement level scale used elsewhere on this site. We have the resulting APS minimums per programme but not the full conversion table itself, so each programme shows its published minimum APS as reference only, and subject minimums are described in SMU’s own points rather than converted to our usual level/percentage fields.',
+    reason: 'SMU uses its own points scale, which we have not fully confirmed from an official source yet - see the published minimum on each programme instead.',
+  },
+
   UFS_AP: {
     label: 'UFS AP score',
     unit: 'points out of 49',

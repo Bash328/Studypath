@@ -70,7 +70,7 @@ export function abroadPage() {
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
     <p class="eyebrow">Guide</p>
-    <h1>Studying abroad, honestly</h1>
+    <h1>Studying abroad</h1>
     <p class="lead">Studying overseas is a real option – and the area with the most confident-sounding wrong information online. This page explains how the process works and what to check.</p>
   </div>
 </section>
@@ -91,7 +91,7 @@ export function abroadPage() {
 </section>
 
 <section class="section wrap wrap--narrow" id="examples">
-  ${sectionHead('🎓', 'Real universities, with marks that are actually realistic', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
+  ${sectionHead('🎓', 'Universities, with marks that are actually realistic', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
   <div class="stack">
     ${REAL_EXAMPLES.map((e) => `
     <article class="card">
