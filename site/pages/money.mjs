@@ -69,7 +69,7 @@ export function moneyPage(data) {
 </section>
 
 <section class="section wrap wrap--narrow" id="reminders">
-  ${sectionHead('📧', 'Email me before deadlines', 'Be honest – do you check that inbox? We’ll send you a reminder before the deadlines that matter close.')}
+  ${sectionHead('', 'Email me before deadlines', 'Be honest – do you check that inbox? We’ll send you a reminder before the deadlines that matter close.')}
   <div class="card">
     <form id="reminder-form" novalidate>
       <div class="field">

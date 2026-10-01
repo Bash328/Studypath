@@ -273,7 +273,8 @@ a.card--link h3 { color: var(--brand-ink); }
 .card__meta { font-size: .85rem; color: var(--ink-faint); margin-bottom: .5rem; }
 .tool__i { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 16px; background: var(--brand-soft); font-size: 1.6rem; margin-bottom: .7rem; }
 .tool p { font-size: .94rem; color: var(--ink-soft); }
-.sec-head { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1rem; }
+.sec-head { display: flex; gap: 14px; align-items: flex-start; margin-top: 1.4rem; margin-bottom: 1rem; }
+.sec-head:first-child { margin-top: 0; }
 .sec-head__emoji { flex: none; display: grid; place-items: center; width: 46px; height: 46px; border-radius: 15px; background: var(--sun-soft); font-size: 1.5rem; }
 .sec-head h2 { margin-bottom: .15em; }
 .sec-head__sub { color: var(--ink-soft); margin: 0; max-width: 62ch; }
@@ -311,7 +312,7 @@ svg.icon { width: 1em; height: 1em; vertical-align: -0.15em; flex: none; stroke-
 .tag--general { background: var(--warn-soft); color: var(--warn); }
 .tag--unverified { background: var(--bad-soft); color: var(--bad); }
 .tag--conflict { background: var(--accent-soft); color: var(--accent-ink); }
-.claim { padding: 2px 0 2px 14px; margin: 0 0 12px; border-left: 4px solid var(--line); }
+.claim { padding: 2px 0 2px 14px; margin: 12px 0; border-left: 4px solid var(--line); }
 .claim p { margin-bottom: .35em; }
 .claim__meta { font-size: .82rem; color: var(--ink-faint); display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
 .claim--verified { border-left-color: var(--good); }

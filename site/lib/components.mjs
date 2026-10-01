@@ -12,7 +12,7 @@ export const verificationTag = (verification) => tag(levelOf(verification), VERI
 
 /** A heading with an emoji badge - gives every section a face. */
 export const sectionHead = (emoji, title, sub) => `<div class="sec-head">
-  <span class="sec-head__emoji" aria-hidden="true">${emoji}</span>
+  ${emoji ? `<span class="sec-head__emoji" aria-hidden="true">${emoji}</span>` : ''}
   <div><h2>${esc(title)}</h2>${sub ? `<p class="sec-head__sub">${md(sub)}</p>` : ''}</div>
 </div>`;
 

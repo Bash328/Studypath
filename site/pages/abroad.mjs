@@ -102,7 +102,7 @@ export function abroadPage() {
 </section>
 
 <section class="section wrap wrap--narrow" id="examples">
-  ${sectionHead('🎓', 'Universities, with marks that are actually realistic', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
+  ${sectionHead('🎓', 'Universities', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
   <div class="stack">
     ${REAL_EXAMPLES.map((e) => `
     <article class="card">
