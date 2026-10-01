@@ -3,7 +3,7 @@
 //
 // The static site does NOT depend on this: the calculator runs in the browser from the
 // same shared code (qualify-core.js), and content pages are generated at build time. The
-// Worker is for what a static host cannot do - storing a WhatsApp reminder sign-up or a
+// Worker is for what a static host cannot do - storing an email reminder sign-up or a
 // question - and for serving the live database if you want it.
 //
 // Because the site may live on a different host from this API (for example GitHub Pages
@@ -266,24 +266,23 @@ async function listBursaries({ env, url }) {
 }
 
 /**
- * WhatsApp deadline reminders. This endpoint only records consent and the number -
- * the actual sending reuses the existing WhatsApp sender rather than adding a second
- * notification system. See README: "WhatsApp reminders".
+ * Email deadline reminders. This endpoint only records consent and the address -
+ * the actual sending is a separate job against reminder_optins. See README: "Email reminders".
  */
 async function createReminder({ request, env }) {
   const body = await request.json().catch(() => null);
-  const phone = String((body && body.phone) || '').replace(/[^\d+]/g, '');
+  const email = String((body && body.email) || '').trim().toLowerCase();
   const field = (body && body.field) || null;
-  if (!/^\+?\d{9,15}$/.test(phone)) return fail(400, 'That does not look like a phone number. Use the format 0821234567.');
-  if (!body.consent) return fail(400, 'We need your okay before we can message you.');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail(400, 'That does not look like an email address.');
+  if (!body.consent) return fail(400, 'We need your okay before we can email you.');
 
   await env.DB.prepare(
-    `INSERT INTO reminder_optins (id, phone, field_of_study, consent, created_at)
+    `INSERT INTO reminder_optins (id, email, field_of_study, consent, created_at)
      VALUES (?, ?, ?, 1, datetime('now'))
-     ON CONFLICT(phone) DO UPDATE SET field_of_study = excluded.field_of_study, consent = 1`
-  ).bind(crypto.randomUUID(), phone, field).run();
+     ON CONFLICT(email) DO UPDATE SET field_of_study = excluded.field_of_study, consent = 1`
+  ).bind(crypto.randomUUID(), email, field).run();
 
-  return json({ ok: true, message: 'You are on the list. We will WhatsApp you before bursary deadlines close.' }, { maxAge: 0 });
+  return json({ ok: true, message: 'You are on the list. We will email you before bursary deadlines close.' }, { maxAge: 0 });
 }
 
 /**

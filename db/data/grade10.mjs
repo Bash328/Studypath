@@ -109,8 +109,8 @@ export const GRADE10 = {
     ],
     checks: [
       { label: 'Your school’s Life Orientation or guidance teacher', url: null },
-      { label: 'The faculty page of a degree you like - look at its subject requirements', url: '/universities.html' },
-      { label: 'Our "Ask a university" page', url: '/ask-a-university.html' },
+      { label: 'The faculty page of a degree you like - look at its subject requirements', url: '/universities' },
+      { label: 'Our "Ask a university" page', url: '/ask-a-university' },
     ],
   },
 };

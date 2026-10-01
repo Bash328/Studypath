@@ -14,7 +14,7 @@ export function askUniversityPage(data) {
   const rows = sorted.map((u) => {
     const c = primary(u.id);
     return `<tr>
-      <th scope="row"><a href="/universities/${esc(u.id)}.html#contact">${esc(u.name)}</a>${u.cao ? ' <span class="badge badge--info">CAO</span>' : ''}</th>
+      <th scope="row"><a href="/universities/${esc(u.id)}#contact">${esc(u.name)}</a>${u.cao ? ' <span class="badge badge--info">CAO</span>' : ''}</th>
       <td data-label="Email">${c && c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '<span class="muted">not confirmed</span>'}</td>
       <td data-label="Phone">${c && c.phone ? esc(c.phone) : '<span class="muted">not confirmed</span>'}</td>
       <td data-label="How sure?">${c ? verificationTag(c.verification) : ''}</td>
@@ -80,11 +80,11 @@ export function askUniversityPage(data) {
 </section>`;
 
   return [{
-    path: '/ask-a-university.html',
+    path: '/ask-a-university',
     title: 'Ask a university directly – admissions contacts for all 26 public universities',
     description: 'Find the right admissions email or phone number at any of South Africa’s 26 public universities, with a ready-to-send message – and how sure we are of each contact.',
     body,
     scripts: ['/assets/js/askuni.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Ask a university', path: '/ask-a-university.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Ask a university', path: '/ask-a-university' }],
   }];
 }

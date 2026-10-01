@@ -53,7 +53,7 @@ const ROUTES = [
     ],
     checks: [
       { label: 'Your university’s international office', url: null },
-      { label: 'Our Ask a university page (choose “I am an international student” for one example contact)', url: '/ask-a-university.html' },
+      { label: 'Our Ask a university page (choose “I am an international student” for one example contact)', url: '/ask-a-university' },
     ] },
 ];
 
@@ -133,15 +133,15 @@ export function abroadPage() {
   <div class="callout">
     <h3>${iconOrEmoji('🛡️')} A note on scams</h3>
     ${claims([g('Nobody legitimate guarantees admission, and nobody legitimate asks for a large payment to “secure your place” before the university has made you an offer in writing. If a claim can’t be found on the university’s own website, treat it as false.')])}
-    <p><a href="/universities.html">Meanwhile, see what South African universities actually require →</a></p>
+    <p><a href="/universities">Meanwhile, see what South African universities actually require →</a></p>
   </div>
 </section>`;
 
   return [{
-    path: '/study-abroad.html',
+    path: '/study-abroad',
     title: 'Studying abroad from South Africa – the two routes and what to check',
     description: 'An honest guide to studying overseas as a South African learner: applying direct vs starting here and going abroad, what to line up, and the questions to ask. No invented entry requirements.',
     body,
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Study abroad', path: '/study-abroad.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Study abroad', path: '/study-abroad' }],
   }];
 }

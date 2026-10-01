@@ -48,17 +48,19 @@ DB.raw.exec(`INSERT INTO bursaries (id,name,provider,field_of_study,deadline,app
  ('b3','No date','P','Law',NULL,'https://c.ac.za','https://c.ac.za',1),
  ('b4','Inactive','P','Engineering','2026-10-01','https://d.ac.za','https://d.ac.za',0)`);
 r = await get('/api/bursaries');
-ok('bursaries: soonest first, undated last, inactive hidden', r.b.bursaries.map(b => b.id).join() === 'b2,nsfas-2027,b1,b3', r.b.bursaries.map(b=>b.id).join());
+ok('bursaries: soonest first, undated last, inactive hidden',
+  r.b.bursaries.map(b => b.id).join() === 'allan-gray-orbis-2027,sasol-mainstream-2027,sasol-foundation-2027,investec-tertiary-2027,b2,nsfas-2027,b1,saica-thuthuka-2027,b3',
+  r.b.bursaries.map(b=>b.id).join());
 r = await get('/api/bursaries?field=Engineering');
-ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'b2,b1');
+ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'sasol-mainstream-2027,b2,b1', r.b.bursaries.map(b=>b.id).join());
 
-// reminders: stored, and a second sign-up for the same number updates rather than errors
+// reminders: stored, and a second sign-up for the same address updates rather than errors
 const post = (body) => get('/api/reminders', { method: 'POST', body: JSON.stringify(body) });
-r = await post({ phone: '082 123 4567', field: 'Nursing', consent: true });
+r = await post({ email: 'Learner@Example.com', field: 'Nursing', consent: true });
 ok('reminder stored', r.s === 200);
-r = await post({ phone: '0821234567', field: 'Law', consent: true });
-ok('same number again is an upsert, not an error', r.s === 200);
-const rows = DB.raw.prepare('SELECT phone, field_of_study FROM reminder_optins').all();
+r = await post({ email: 'learner@example.com', field: 'Law', consent: true });
+ok('same address again is an upsert, not an error', r.s === 200);
+const rows = DB.raw.prepare('SELECT email, field_of_study FROM reminder_optins').all();
 ok('one row, latest field wins', rows.length === 1 && rows[0].field_of_study === 'Law', JSON.stringify(rows));
 
 console.log(bad ? `\n${bad} FAILURE(S)\n` : '\nAll SQL endpoint checks passed.\n');

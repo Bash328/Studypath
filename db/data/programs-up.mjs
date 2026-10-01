@@ -91,6 +91,12 @@ export const upPrograms = [
     subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
     notes: flag('selection', 'A selection programme. ' + CLOSING) },
 
+  // ---------------- Veterinary Science ----------------
+  { ...base, id: 'up-bvsc', career_id: 'veterinarian', name: 'BVSc (Veterinary Science)', faculty: 'Veterinary Science',
+    duration_years: null, min_aps: 35,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)],
+    notes: flag('selection', 'The only BVSc offered by a South African public university. Closes 31 May - earlier than every other UP programme, including the rest of Health Sciences.') },
+
   // ---------------- Economic & Management Sciences ----------------
   { ...base, id: 'up-bcom-accounting-sciences', career_id: 'chartered-accountant', name: 'BCom Accounting Sciences',
     faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 34,

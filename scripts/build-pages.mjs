@@ -52,7 +52,7 @@ const pages = [
 ];
 
 for (const page of pages) {
-  const rel = page.path === '/' ? 'index.html' : page.path.replace(/^\//, '');
+  const rel = page.path === '/' ? 'index.html' : page.path.replace(/^\//, '') + '.html';
   write(rel, renderPage(page));
 }
 
@@ -85,7 +85,7 @@ for (const f of engine) copyFileSync(join(ROOT, 'src', f), join(PUBLIC, 'assets/
 
 // ---------------------------------------------------------------- sitemap + robots
 const today = new Date().toISOString().slice(0, 10);
-const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|careers|universities|dates|grade-10-subjects)\.html$/.test(p) ? '0.9' : /^\/(careers|universities)\//.test(p) ? '0.7' : '0.6');
+const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|careers|universities|dates|grade-10-subjects)$/.test(p) ? '0.9' : /^\/(careers|universities)\//.test(p) ? '0.7' : '0.6');
 const indexable = pages.filter((p) => !p.noindex);
 write('sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

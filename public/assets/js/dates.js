@@ -53,7 +53,7 @@ kindChips.forEach((chip) => chip.addEventListener('click', () => {
 uniFilter.addEventListener('change', apply);
 showPast.addEventListener('change', apply);
 
-// Deep links from other pages, e.g. /dates.html?kind=open_day or ?uni=uct
+// Deep links from other pages, e.g. /dates?kind=open_day or ?uni=uct
 const params = new URLSearchParams(location.search);
 if (params.get('kind')) {
   kind = params.get('kind');

@@ -38,11 +38,11 @@ function careerBlock(career) {
       ? el('div', { class: 'table-scroll' }, el('table', { class: 'data' },
           el('thead', {}, el('tr', {}, el('th', { scope: 'col' }, 'University'), el('th', { scope: 'col' }, 'Degree'), el('th', { scope: 'col' }, 'Asks for'))),
           el('tbody', {}, list.map((p) => el('tr', {},
-            el('th', { scope: 'row' }, p.university.shortName),
-            el('td', {}, el('a', { href: `/careers/${career.id}.html#${p.id}` }, p.name)),
+            el('th', { scope: 'row' }, p.university.name),
+            el('td', {}, el('a', { href: `/careers/${career.id}#${p.id}` }, p.name)),
             el('td', {}, (p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map(reqText).join('; ') || '–'))))))
       : el('p', { class: 'muted' }, 'No degrees captured for this career yet.'),
-    el('p', { class: 'small' }, el('a', { href: `/careers/${career.id}.html` }, `Full page for ${career.name} →`)));
+    el('p', { class: 'small' }, el('a', { href: `/careers/${career.id}` }, `Full page for ${career.name} →`)));
 }
 
 function render() {
@@ -71,6 +71,6 @@ addBtn.addEventListener('click', () => {
     const sorted = [...careers].sort((a, b) => a.name.localeCompare(b.name));
     select.append(...sorted.map((c) => el('option', { value: c.id }, c.name)));
   } catch {
-    set(out, el('p', { class: 'muted' }, 'Could not load the planner right now – browse ', el('a', { href: '/careers.html' }, 'careers'), ' directly instead.'));
+    set(out, el('p', { class: 'muted' }, 'Could not load the planner right now – browse ', el('a', { href: '/careers' }, 'careers'), ' directly instead.'));
   }
 })();

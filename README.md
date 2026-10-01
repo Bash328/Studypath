@@ -46,8 +46,8 @@ dates) carries a trust level:
   with suggestions for where the student can check it themselves.
 - **Could not be confirmed** / **Sources disagree** — shown rather than silently resolved.
 
-This is `site/lib/html.mjs`'s `claim()`/`tag()` machinery — see `/data-sources.html` and
-`/faq.html` for what it looks like rendered.
+This is `site/lib/html.mjs`'s `claim()`/`tag()` machinery — see `/data-sources` and
+`/faq` for what it looks like rendered.
 
 ---
 
@@ -60,7 +60,7 @@ Cloudflare Worker exists only for the two things a static host genuinely can't d
 |---|---|
 | The site | Static HTML/CSS/vanilla JS, generated into `public/` by `npm run build`. Works on any static host — GitHub Pages, Cloudflare Pages, a plain file server. |
 | The calculator | Runs **entirely in the browser**, using the same scoring engine the (optional) API uses — see "The shared engine" below. A student's marks never have to leave their device. |
-| The optional API | One small Cloudflare Worker (`src/index.js`) for two things only: WhatsApp reminder sign-ups and "ask us a question" submissions. Everything else works with no API at all. |
+| The optional API | One small Cloudflare Worker (`src/index.js`) for two things only: email reminder sign-ups and "ask us a question" submissions. Everything else works with no API at all. |
 | Database | D1 `pathwise` (id `2cfc439e-fa19-4213-bba2-88255be8202d`) — only used by the Worker, for `reminder_optins` and `questions`. The site's own data lives in `db/data/*.mjs` and does not need D1. |
 | Auth / payments | None. Free product, no accounts, by design. |
 
@@ -110,7 +110,7 @@ Everything under `npm test` and `npm run build` uses only Node's own built-ins (
 ## Deploying
 
 Two independent pieces. You can ship just the first and the whole site works; the second only
-unlocks the WhatsApp reminder and "ask a question" forms.
+unlocks the email reminder and "ask a question" forms.
 
 ### 1. The site → GitHub Pages (automatic)
 
@@ -182,11 +182,11 @@ the UI badges them instead of burying them in prose:
 
 | File | Powers |
 |---|---|
-| `db/data/contacts.mjs` | `/ask-a-university.html`, the contact card on each university page |
-| `db/data/dates.mjs` | `/dates.html`, the "coming up" widget on the home page |
-| `db/data/faq.mjs` | `/faq.html`, jargon cards on the home page, `/ask.html`'s suggestions |
-| `db/data/grade10.mjs` | `/grade-10-subjects.html` — the hand-written guidance; the maths-vs-Maths-Lit tables on that page are *computed* from `db/data/programs-*.mjs`, not typed |
-| `db/data/bursaries.mjs` | `/bursaries.html`. Only NSFAS is verified so far — see "Known gaps" |
+| `db/data/contacts.mjs` | `/ask-a-university`, the contact card on each university page |
+| `db/data/dates.mjs` | `/dates`, the "coming up" widget on the home page |
+| `db/data/faq.mjs` | `/faq`, jargon cards on the home page, `/ask`'s suggestions |
+| `db/data/grade10.mjs` | `/grade-10-subjects` — the hand-written guidance; the maths-vs-Maths-Lit tables on that page are *computed* from `db/data/programs-*.mjs`, not typed |
+| `db/data/bursaries.mjs` | `/bursaries`. Only NSFAS is verified so far — see "Known gaps" |
 
 Every row in these files carries a `verification`/`level` field (`verified` / `reported` /
 `unverified` / `general`) and a `source_url` where applicable, rendered the same way the
@@ -212,7 +212,7 @@ programme data is.
 "Partial" means the core rule is confirmed but a secondary detail isn't (e.g. UJ's rules were
 only seen as excerpts because its site blocks automated fetches). Full detail — what was
 checked, against which official page, and what's still open — is in `src/scoring-audit.js` and
-rendered on `/data-sources.html#scoring`.
+rendered on `/data-sources#scoring`.
 
 Stellenbosch also publishes two selection formulas (Engineering out of 800, Science
 `[(Maths×2)+5 others]/7`) which are computed as extra context, clearly labelled as selection
@@ -239,7 +239,7 @@ for parity) has a client-side equivalent that needs no server at all.
 
 | Route | Purpose |
 |---|---|
-| `POST /api/reminders` | WhatsApp deadline reminder opt-in (stores consent + number) |
+| `POST /api/reminders` | Email deadline reminder opt-in (stores consent + address) |
 | `POST /api/questions` | "Ask us a question" submissions, for building out the FAQ |
 | `GET /api/meta`, `/api/careers`, `/api/universities`, `/api/programs`, `/api/qualify`, `/api/bursaries`, `/api/research-log`, `/api/coverage` | Read-only mirrors of the static data, kept for any future server-rendered or native client |
 
@@ -278,13 +278,12 @@ choice bar, positioned above the mobile tab bar. Events tracked: `calculator_run
 `source_click` (the trust metric — are students actually checking our citations?),
 `bursary_apply_click`, `reminder_signup`, `question_submitted`, `ask_university`.
 
-## WhatsApp reminders
+## Email reminders
 
-`POST /api/reminders` records consent and the number in D1's `reminder_optins` table.
-**Sending is not implemented here on purpose** — reuse the existing WhatsApp sending pattern
-from elsewhere in this account rather than build a second notification system. To finish it,
-point a scheduled job at `reminder_optins` joined to upcoming bursary deadlines, and send
-through that existing sender. `last_sent_at` is there to stop duplicates.
+`POST /api/reminders` records consent and the address in D1's `reminder_optins` table.
+**Sending is not implemented here on purpose.** To finish it, point a scheduled job at
+`reminder_optins` joined to upcoming bursary deadlines, and send through whatever transactional
+email provider this account uses. `last_sent_at` is there to stop duplicates.
 
 ## Localisation
 
@@ -295,19 +294,19 @@ page modules and sourcing translated copy — not a rewrite.
 
 ## Known gaps
 
-Published on `/data-sources.html` rather than hidden, and in `db/data/research-log.mjs`. The
+Published on `/data-sources` rather than hidden, and in `db/data/research-log.mjs`. The
 ones worth acting on first:
 
-1. **Bursaries** — only NSFAS is verified. The finder, deadline countdown and WhatsApp opt-in
+1. **Bursaries** — only NSFAS is verified. The finder, deadline countdown and email opt-in
    are built and working; more bursaries need a provider page to cite before they're added.
 2. **16 universities** have no admission requirements captured yet (contacts and dates are
-   there for all 26 already) — see `/universities.html`'s "Coming soon" section.
+   there for all 26 already) — see `/universities`'s "Coming soon" section.
 3. **UJ** — every programme row came from search-indexed text rather than the full official
    page, because UJ's site and prospectus PDF both block automated fetches.
 4. **UCT Law, Science and Humanities numeric cut-offs** — the subject requirements are
    captured but the prospectus PDF was truncated before the numeric FPS figures for these
    three faculties.
 5. **NBT logistics** (registration, fees, test centres) — not sourced from the NBT Project
-   itself, so deliberately absent from `/nbt.html` beyond what each university states.
+   itself, so deliberately absent from `/nbt` beyond what each university states.
 6. **NSFAS eligibility thresholds** — the 2027 cycle's dates are confirmed from two government
-   sources, but household-income thresholds weren't, so `/bursaries.html` doesn't state one.
+   sources, but household-income thresholds weren't, so `/bursaries` doesn't state one.

@@ -49,22 +49,22 @@ export function faqPage(data) {
     ${items.map(item).join('')}
   </div>` : '';
   }).join('')}
-  <p class="empty" id="faq-empty" hidden>No answer matches that yet. <a href="/ask.html">Ask us</a> and we’ll add it.</p>
+  <p class="empty" id="faq-empty" hidden>No answer matches that yet. <a href="/ask">Ask us</a> and we’ll add it.</p>
 
   <div class="callout">
     <h3>Not in here?</h3>
     <p>Ask us a question, or ask a university directly – we’ll point you at the right person.</p>
-    <div class="btn-row"><a class="btn btn--primary" href="/ask.html">Ask us a question</a><a class="btn btn--ghost" href="/ask-a-university.html">Ask a university</a></div>
+    <div class="btn-row"><a class="btn btn--primary" href="/ask">Ask us a question</a><a class="btn btn--ghost" href="/ask-a-university">Ask a university</a></div>
   </div>
 </section>`;
 
   return [{
-    path: '/faq.html',
-    title: 'FAQ – APS, the NBT, applying and funding for South African universities',
+    path: '/faq',
+    title: 'FAQs – APS, the NBT, applying and funding for South African universities',
     description: 'Plain answers to the questions Grade 9–12 learners ask most: how APS works, who must write the NBT, when applications close, NSFAS, and more – each tagged with how well it is sourced.',
     body,
     scripts: ['/assets/js/faq.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'FAQ', path: '/faq.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'FAQs', path: '/faq' }],
     jsonLd: [{
       '@context': 'https://schema.org', '@type': 'FAQPage',
       mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: answerText(f) } })),
@@ -105,7 +105,7 @@ export function askPage() {
           <label for="contact">Your email or WhatsApp number</label>
           <input type="text" id="contact" name="contact" autocomplete="off" placeholder="name@example.com or 082 123 4567">
         </div>
-        <label class="check"><input type="checkbox" id="consent" name="consent"> <span>Yes, you may use these details to reply to this question. See our <a href="/privacy.html">privacy page</a>.</span></label>
+        <label class="check"><input type="checkbox" id="consent" name="consent"> <span>Yes, you may use these details to reply to this question. See our <a href="/privacy">privacy page</a>.</span></label>
       </details>
 
       <div class="btn-row"><button class="btn btn--primary btn--big" type="submit">Send my question</button></div>
@@ -116,16 +116,16 @@ export function askPage() {
   <div class="callout">
     <h3>What happens to it?</h3>
     <p>Your question is saved so we can add a <strong>checked</strong> answer to the FAQ. We don’t generate answers automatically – an invented answer about admissions could cost you a place. If you leave contact details we may reply, but we can’t promise a personal answer to every question.</p>
-    <p>For something about <em>your</em> application, <a href="/ask-a-university.html">ask the university directly</a> – they are the only ones who can answer it for sure.</p>
+    <p>For something about <em>your</em> application, <a href="/ask-a-university">ask the university directly</a> – they are the only ones who can answer it for sure.</p>
   </div>
 </section>`;
 
   return [{
-    path: '/ask.html',
+    path: '/ask',
     title: 'Ask us a question about studying in South Africa',
     description: 'Can’t find your question in the FAQ? Ask Studypath. We check every answer against official university sources before we publish it.',
     body,
     scripts: ['/assets/js/ask.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Ask us a question', path: '/ask.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Ask us a question', path: '/ask' }],
   }];
 }

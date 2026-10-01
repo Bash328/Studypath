@@ -95,7 +95,7 @@ export function badgeIcon(level) {
 /**
  * The calculator's own "good to go / more to it / nearly / can't tell" legend - a
  * deliberately different badge family from the verified/reported ones above, so the two
- * never look like the same system on a page that shows both (e.g. faq.html). Keyed
+ * never look like the same system on a page that shows both (e.g. /faq). Keyed
  * explicitly rather than by character, since its "✓" would otherwise collide with the
  * generic verified.svg mapping above.
  */

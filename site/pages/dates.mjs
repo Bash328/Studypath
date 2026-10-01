@@ -86,11 +86,11 @@ export function datesPage(data) {
 </section>`;
 
   return [{
-    path: '/dates.html',
+    path: '/dates',
     title: 'Application closing dates, open days and NBT dates for South African universities',
     description: 'When applications close, when to write the NBT, when NSFAS closes and when universities hold open days – with the official source and how sure we are of each date.',
     body,
     scripts: ['/assets/js/dates.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Dates', path: '/dates.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Dates', path: '/dates' }],
   }];
 }

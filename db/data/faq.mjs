@@ -34,7 +34,7 @@ const S = {
   sanews: src('SAnews: NSFAS 2027 application cycle opens', 'https://www.sanews.gov.za/south-africa/nsfas-2027-application-cycle-opens'),
   ukznApply: src('UKZN how to apply', 'https://studyatukzn.ukzn.ac.za/apply-at-ukzn/how-to-apply/'),
   uctContacts: src('UCT general contacts', 'https://www.uct.ac.za/general-contacts'),
-  audit: src('How each university scores you (Studypath)', '/data-sources.html#scoring'),
+  audit: src('How each university scores you (Studypath)', '/data-sources#scoring'),
   uctFaq: src('UCT applications & admissions FAQ', 'https://uct.ac.za/students/prospective-students-faqs/applications-admissions-faq'),
   witsHealth: src('Wits course finder: Medicine and Surgery', 'https://www.wits.ac.za/course-finder/undergraduate/health/medicine-and-surgery/'),
   witsSci: src('Wits course finder: BSc', 'https://www.wits.ac.za/course-finder/undergraduate/science/bsc/'),
@@ -190,7 +190,7 @@ export const faq = [
       g('Selection programmes such as Medicine and Dentistry usually close earlier than the rest - UFS, UKZN and Wits above all close their health programmes in May or June.'),
       g('Most of these dates have now passed for the 2027 intake. The 2028 dates have not been published, so do not assume they will match - check each university from early next year.'),
     ],
-    checks: [{ label: 'Our deadlines page, then the university’s own "how to apply" page', url: '/dates.html' }],
+    checks: [{ label: 'Our deadlines page, then the university’s own "how to apply" page', url: '/dates' }],
   },
   {
     id: 'not-meeting', category: 'applying',
@@ -250,7 +250,7 @@ export const faq = [
     answer: [
       v('Each university has its own financial aid office, separate from NSFAS. For example, UCT’s undergraduate financial aid is financialaid@uct.ac.za or +27 (0)21 650 3545.', [S.uctContacts]),
     ],
-    checks: [{ label: 'Our "Ask a university" page lists the contact we have for each one', url: '/ask-a-university.html' }],
+    checks: [{ label: 'Our "Ask a university" page lists the contact we have for each one', url: '/ask-a-university' }],
   },
 
   // ======================================================================= Words explained
@@ -292,13 +292,13 @@ export const faq = [
       v('Every admission requirement links to the official university page or document it came from, and we publish what we could **not** verify. You can see each scoring formula, the source we checked it against, and every gap or conflict on our data page.', [S.audit]),
       g('Universities change their requirements, and some of their websites block automated checks, so a few entries are marked "partly verified". Always confirm on the university’s own page before you rely on anything.'),
     ],
-    checks: [{ label: 'Our data & sources page', url: '/data-sources.html' }],
+    checks: [{ label: 'Our data & sources page', url: '/data-sources' }],
   },
   {
     id: 'marks-private', category: 'studypath',
     question: 'Does Studypath keep my marks?',
     answer: [
-      v('No. The marks you type into the calculator are worked out in your browser and saved only on your own device so you do not have to retype them. There are no accounts. See our privacy page for exactly what is and is not collected.', [src('Studypath privacy', '/privacy.html')]),
+      v('No. The marks you type into the calculator are worked out in your browser and saved only on your own device so you do not have to retype them. There are no accounts. See our privacy page for exactly what is and is not collected.', [src('Studypath privacy', '/privacy')]),
     ],
     checks: [],
   },

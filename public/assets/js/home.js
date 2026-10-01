@@ -33,7 +33,7 @@ async function loadUpcoming() {
       .slice(0, 5);
 
     if (!upcoming.length) {
-      set(box, el('p', { class: 'muted' }, 'Nothing open right now for the dates we track. ', el('a', { href: '/dates.html' }, 'See all dates →')));
+      set(box, el('p', { class: 'muted' }, 'Nothing open right now for the dates we track. ', el('a', { href: '/dates' }, 'See all dates →')));
       return;
     }
 
@@ -47,9 +47,9 @@ async function loadUpcoming() {
             el('p', { class: 'small muted', style: 'margin:0' }, prettyDate(d.date))),
           el('span', { class: 'pill' }, days === 0 ? 'Today' : `${days} day${days === 1 ? '' : 's'}`));
       }),
-      el('p', { class: 'small' }, el('a', { href: '/dates.html' }, 'See every date →')));
+      el('p', { class: 'small' }, el('a', { href: '/dates' }, 'See every date →')));
   } catch {
-    set(box, el('p', { class: 'muted' }, el('a', { href: '/dates.html' }, 'See all dates →')));
+    set(box, el('p', { class: 'muted' }, el('a', { href: '/dates' }, 'See all dates →')));
   }
 }
 loadUpcoming();

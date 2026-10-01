@@ -20,7 +20,7 @@ export function privacyPage() {
 
   ${sectionHead('📨', 'What you choose to send us')}
   <div class="stack">
-    <div class="card"><h3>WhatsApp reminders</h3><p>If you sign up, we store the <strong>phone number</strong> you give, the field of study you optionally type, and the fact that you agreed. We use it only to send you deadline reminders. You can stop any time – use the <a href="/ask.html">Ask us</a> page and tell us to remove your number.</p></div>
+    <div class="card"><h3>Email reminders</h3><p>If you sign up, we store the <strong>email address</strong> you give, the field of study you optionally type, and the fact that you agreed. We use it only to send you deadline reminders. You can stop any time – use the <a href="/ask">Ask us</a> page and tell us to remove your email.</p></div>
     <div class="card"><h3>Questions</h3><p>When you ask a question we store the text. Contact details are optional; if you add them, we use them only to reply to that question. Please don’t put an ID number or other private details in a question.</p></div>
     <div class="card"><h3>If you are under 18</h3><p>Please ask a parent or guardian before you give us your phone number or other contact details.</p></div>
   </div>
@@ -42,11 +42,11 @@ export function privacyPage() {
 </section>`;
 
   return [{
-    path: '/privacy.html',
+    path: '/privacy',
     title: 'Privacy – what Studypath does and doesn’t collect',
     description: 'Studypath has no accounts and no ads, and the marks you enter stay on your device. Here is exactly what is collected if you sign up for reminders or ask a question.',
     body,
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Privacy', path: '/privacy.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Privacy', path: '/privacy' }],
   }];
 }
 
@@ -57,11 +57,11 @@ export function notFoundPage() {
     <h1>We can’t find that page ${iconOrEmoji('🤔')}</h1>
     <p class="lead">It might have moved, or the link might be wrong. Here’s where most people are heading:</p>
     <div class="btn-row">
-      <a class="btn btn--primary btn--big" href="/calculator.html">What do I qualify for?</a>
-      <a class="btn btn--ghost btn--big" href="/careers.html">Browse careers</a>
-      <a class="btn btn--ghost btn--big" href="/faq.html">FAQ</a>
+      <a class="btn btn--primary btn--big" href="/calculator">What do I qualify for?</a>
+      <a class="btn btn--ghost btn--big" href="/careers">Browse careers</a>
+      <a class="btn btn--ghost btn--big" href="/faq">FAQs</a>
     </div>
   </div>
 </section>`;
-  return [{ path: '/404.html', title: 'Page not found', description: 'That page could not be found.', body, noindex: true }];
+  return [{ path: '/404', title: 'Page not found', description: 'That page could not be found.', body, noindex: true }];
 }

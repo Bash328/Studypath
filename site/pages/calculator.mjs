@@ -36,31 +36,31 @@ export function calculator(data) {
   ${sectionHead('📖', 'How to read your results')}
   <div class="stack">
     <div class="card result-key"><h3><span class="pill pill--good">${matchBadge('good')} Good to go</span></h3><p>Your score and every subject rule we can check are met, and nothing else is needed. If it also says <span class="badge badge--info">Selection programme</span>, meeting the minimum still doesn’t guarantee a place.</p></div>
-    <div class="card result-key"><h3><span class="pill pill--more">${matchBadge('more')} More to it</span></h3><p>Your marks are enough, but the degree also needs something marks can’t show – an <a href="/nbt.html">NBT</a>, a portfolio, an audition, an interview. The card lists exactly what.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--more">${matchBadge('more')} More to it</span></h3><p>Your marks are enough, but the degree also needs something marks can’t show – an <a href="/nbt">NBT</a>, a portfolio, an audition, an interview. The card lists exactly what.</p></div>
     <div class="card result-key"><h3><span class="pill pill--nearly">${matchBadge('nearly')} Nearly</span></h3><p>You’re within a few points, or a few percent in one subject. We tell you what’s missing, like “2% to go in Maths”.</p></div>
     <div class="card result-key"><h3><span class="pill pill--unknown">${matchBadge('unknown')} Can’t tell</span></h3><p>Either the university publishes no points cut-off for that degree, or we don’t calculate its score because we couldn’t confirm how. We’d rather say so than guess.</p></div>
   </div>
-  <p class="small muted">How sure are we of each formula? ${tag('verified')} means we read the rule on the official page – <a href="/data-sources.html#scoring">see every formula and its source</a>.</p>
+  <p class="small muted">How sure are we of each formula? ${tag('verified')} means we read the rule on the official page – <a href="/data-sources#scoring">see every formula and its source</a>.</p>
 </section>
 
 <section class="section wrap wrap--narrow" aria-labelledby="why">
   ${sectionHead('🤔', 'Why do I get a different score for each university?')}
   ${claims(pick('what-is-aps').answer)}
   ${claims(pick('life-orientation').answer.slice(0, 1))}
-  <p><a href="/faq.html">More answers in the FAQ →</a></p>
+  <p><a href="/faq">More answers in the FAQ →</a></p>
 </section>
 `;
 
   return [{
-    path: '/calculator.html',
+    path: '/calculator',
     title: 'What do I qualify for? – APS calculator for South African universities',
     description: 'Enter your subjects and marks once. Studypath works out your score the way each South African university does – UCT, Wits, UP, Stellenbosch, UKZN, Rhodes and more – and shows which degrees you qualify for.',
     body,
     scripts: ['/assets/js/calculator.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'What do I qualify for?', path: '/calculator.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'What do I qualify for?', path: '/calculator' }],
     jsonLd: [{
       '@context': 'https://schema.org', '@type': 'WebApplication', name: 'Studypath APS calculator',
-      url: `${ORIGIN}/calculator.html`, applicationCategory: 'EducationalApplication', operatingSystem: 'Any',
+      url: `${ORIGIN}/calculator`, applicationCategory: 'EducationalApplication', operatingSystem: 'Any',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'ZAR' }, inLanguage: 'en-ZA',
     }],
   }];

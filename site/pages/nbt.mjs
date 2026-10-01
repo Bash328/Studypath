@@ -74,7 +74,7 @@ export function nbtPage(data) {
     ${WHO.map((u) => `<article class="card"><h3>${esc(u.name)}</h3>${claims(u.paras)}</article>`).join('')}
   </div>
   ${claims(f('who-needs-nbt').answer.slice(-1))}
-  <p class="small muted">Universities not listed here: we haven’t captured their NBT rules from an official source yet, so we say nothing rather than guess. Ask them on our <a href="/ask-a-university.html">Ask a university</a> page.</p>
+  <p class="small muted">Universities not listed here: we haven’t captured their NBT rules from an official source yet, so we say nothing rather than guess. Ask them on our <a href="/ask-a-university">Ask a university</a> page.</p>
 </section>
 
 <section class="section wrap wrap--narrow" id="when">
@@ -82,7 +82,7 @@ export function nbtPage(data) {
   ${claims(f('nbt-when').answer)}
   ${claims(f('nbt-fee').answer)}
   ${checksBox(f('nbt-when').checks)}
-  <div class="btn-row"><a class="btn btn--primary" href="https://www.nbt.ac.za" target="_blank" rel="noopener">Book on nbt.ac.za</a><a class="btn btn--ghost" href="/dates.html?kind=nbt">NBT dates by university</a></div>
+  <div class="btn-row"><a class="btn btn--primary" href="https://www.nbt.ac.za" target="_blank" rel="noopener">Book on nbt.ac.za</a><a class="btn btn--ghost" href="/dates?kind=nbt">NBT dates by university</a></div>
 </section>
 
 <section class="section wrap wrap--narrow" id="contact">
@@ -104,11 +104,11 @@ export function nbtPage(data) {
 </section>`;
 
   return [{
-    path: '/nbt.html',
+    path: '/nbt',
     title: 'The NBT explained – who must write it, when, and what the bands mean',
     description: 'A plain-language guide to the National Benchmark Tests: what the AQL and MAT are, which universities require them (UCT, Wits, Stellenbosch, Rhodes, UP), when to write and how often – each claim tagged with its source.',
     body,
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'The NBT', path: '/nbt.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'The NBT', path: '/nbt' }],
     jsonLd: [{
       '@context': 'https://schema.org', '@type': 'FAQPage',
       mainEntity: ['what-is-nbt', 'who-needs-nbt', 'nbt-when'].map((id) => {

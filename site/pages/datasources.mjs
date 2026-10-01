@@ -35,7 +35,7 @@ export function dataSourcesPage(data) {
     const best = cs.some((c) => c.verification === 'verified') ? 'verified' : cs.length ? 'reported' : 'unverified';
     const nd = dates.filter((d) => d.university_id === u.id).length;
     return `<tr>
-      <th scope="row"><a href="/universities/${esc(u.id)}.html">${esc(u.name)}</a></th>
+      <th scope="row"><a href="/universities/${esc(u.id)}">${esc(u.name)}</a></th>
       <td data-label="Degrees captured">${u.hasRequirements ? plural(u.programCount, 'degree', 'degrees') : '<span class="muted">not yet</span>'}</td>
       <td data-label="Contact">${tag(best === 'verified' ? 'verified' : best === 'reported' ? 'reported' : 'unverified', best === 'verified' ? 'Contact checked' : best === 'reported' ? 'Contact from research' : 'No contact')}</td>
       <td data-label="Dates">${nd || '<span class="muted">–</span>'}</td>
@@ -110,14 +110,14 @@ export function dataSourcesPage(data) {
 
 <section class="section wrap wrap--narrow">
   ${sectionHead('🛠️', 'Found something wrong?')}
-  <p>Universities change their requirements and replace documents. If a figure here doesn’t match what the university’s own page says today, the university is right and we are wrong – please <a href="/ask.html">tell us</a> so we can fix it.</p>
+  <p>Universities change their requirements and replace documents. If a figure here doesn’t match what the university’s own page says today, the university is right and we are wrong – please <a href="/ask">tell us</a> so we can fix it.</p>
 </section>`;
 
   return [{
-    path: '/data-sources.html',
+    path: '/data-sources',
     title: 'Where our data comes from – sources, formulas checked, and what we don’t know',
     description: 'Studypath publishes admission requirements only from official university sources. See how each university’s score is calculated, what we checked it against, and every gap and conflict we haven’t resolved.',
     body,
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Data & sources', path: '/data-sources.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Data & sources', path: '/data-sources' }],
   }];
 }

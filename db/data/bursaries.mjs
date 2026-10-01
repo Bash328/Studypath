@@ -5,8 +5,10 @@
 // A list of unverified "opportunities" would do more harm than an empty one - bursary
 // scams are common and students are exactly who they target.
 //
-// Researching bursaries is ONGOING. Right now there is one verified entry (NSFAS, from two
-// government sources). Do not add a bursary here without a provider page for `source_url`.
+// Researching bursaries is ONGOING. NSFAS is `verified` (read directly off two government
+// sources this pass). The rest are `reported` - sourced to the provider's own page by an
+// earlier Studypath research pass, not re-fetched by us this pass. Do not add a bursary here
+// without at least a provider page for `source_url`.
 //
 // Fields match the D1 `bursaries` table.
 
@@ -26,5 +28,79 @@ export const bursaries = [
     // Not a D1 column - shown on the page:
     note: 'Applications opened 18 September 2026 and close 18 November 2026; funding outcomes are communicated in December. One other website gave 31 October - the Minister’s launch speech and the SAnews report both say 18 November.',
     verification: 'verified',
+  },
+  // The five below come from a prior Studypath research pass (sourced to each provider's own
+  // page or media release), not re-fetched by us this pass - several SA bursary sites block
+  // automated fetches, including Sasol's (confirmed live during this pass). They're `reported`,
+  // not `verified`, and link to the provider's main site rather than a guessed deep link.
+  {
+    id: 'sasol-mainstream-2027',
+    name: 'Sasol Bursary Programme (Mainstream)',
+    provider: 'Sasol',
+    field_of_study: 'Engineering and Science (full-time undergraduate)',
+    deadline: '2026-05-17',
+    amount_covers: 'Tuition, a living allowance, and psychosocial support',
+    eligibility: '"Exceptional young South African talent" studying full-time Engineering or Science. UNISA (distance) studies are not considered.',
+    apply_url: 'https://www.sasolbursaries.com',
+    source_url: 'https://www.sasolbursaries.com',
+    active: 1,
+    note: 'Applications opened 1 April 2026 and closed 17 May 2026, with outcomes by the end of September 2026. Sasol says recipients "can begin their careers at Sasol after completing their degrees" - the exact contractual work-back terms aren’t published on the page we found, so don’t assume specifics. Search "Sasol Bursaries" if the link above doesn’t take you straight there.',
+    verification: 'reported',
+  },
+  {
+    id: 'sasol-foundation-2027',
+    name: 'Sasol Foundation Bursary Programme',
+    provider: 'Sasol Foundation',
+    field_of_study: 'Mainly STEM, with limited places for some non-STEM fields (e.g. Accounting, Financial Sciences)',
+    deadline: '2026-08-23',
+    amount_covers: '"All-inclusive" undergraduate bursary (exact components not itemised on the page we found)',
+    eligibility: 'Academically talented learners/students from Sasol’s local communities, children of Sasol employees, and children of Sasol Khanyisa shareholders; aimed at low-income and "missing middle" households.',
+    apply_url: 'https://www.sasolbursaries.com',
+    source_url: 'https://www.sasolbursaries.com',
+    active: 1,
+    note: 'Window was 1-23 August 2026. This is a different, more targeted programme from the Mainstream bursary above - check which one you actually qualify for before applying.',
+    verification: 'reported',
+  },
+  {
+    id: 'allan-gray-orbis-2027',
+    name: 'Allan Gray Orbis Foundation University Fellowship',
+    provider: 'Allan Gray Orbis Foundation',
+    field_of_study: 'Any (the Fellowship funds the person, not a specific field)',
+    deadline: '2026-04-30',
+    amount_covers: 'Needs-based university funding, mentorship, and entrepreneurial development',
+    eligibility: 'Current Grade 12 learners, no older than 21, South African citizens.',
+    apply_url: 'https://www.allangrayorbis.org',
+    source_url: 'https://www.allangrayorbis.org',
+    active: 1,
+    note: 'Closed 30 April 2026 at 17h00 SAST, with an online interview around 31 July and a selection camp in September 2026. Unlike some corporate bursaries, the Foundation’s own announcement says Fellows "are not tied to working for a specific organisation" afterwards - there’s no employer work-back requirement.',
+    verification: 'reported',
+  },
+  {
+    id: 'investec-tertiary-2027',
+    name: 'Investec Tertiary Bursary Programme',
+    provider: 'Investec (with StudyTrust)',
+    field_of_study: 'Financial-sector-related degrees',
+    deadline: '2026-09-30',
+    amount_covers: null,
+    eligibility: 'Young South Africans with academic potential and financial need, from first year through to Honours.',
+    apply_url: 'https://www.investec.com',
+    source_url: 'https://www.investec.com',
+    active: 1,
+    note: 'Aggregator sites describe it as covering the "full cost" of study, but we could not confirm the exact coverage on Investec’s own page in this pass. Search "Investec Tertiary Bursary" if the link above doesn’t take you straight there.',
+    verification: 'reported',
+  },
+  {
+    id: 'saica-thuthuka-2027',
+    name: 'SAICA Thuthuka Bursary Fund',
+    provider: 'SAICA (South African Institute of Chartered Accountants)',
+    field_of_study: 'SAICA-accredited BCom Accounting (the CA(SA) route)',
+    deadline: null,
+    amount_covers: null,
+    eligibility: 'South African citizen; Black African or Coloured; in Grade 12 or no more than two years out of school; at least 60% (level 5) in Mathematics; combined family income of R350,000 a year or less; must apply for and write the National Benchmark Tests (NBTs) before the end of August.',
+    apply_url: 'https://www.saica.org.za',
+    source_url: 'https://www.saica.org.za',
+    active: 1,
+    note: 'The eligibility rules above are confirmed on SAICA’s own "Apply to the Thuthuka Bursary" page, but its closing date and time were not shown there - sources disagree on both the exact date and whether it’s an AM or PM cut-off, so we show no deadline rather than guess. Search "SAICA Thuthuka" and confirm the current closing date yourself.',
+    verification: 'reported',
   },
 ];

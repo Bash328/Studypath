@@ -9,37 +9,37 @@ export const SITE_NAME = 'Studypath';
 
 /** Main navigation on desktop. Kept short: it is what a 16-year-old actually needs. */
 export const NAV = [
-  ['/careers.html', 'Careers'],
-  ['/universities.html', 'Universities'],
-  ['/grade-10-subjects.html', 'Choose subjects'],
-  ['/dates.html', 'Dates'],
-  ['/nbt.html', 'The NBT'],
-  ['/bursaries.html', 'Costs & aid'],
-  ['/faq.html', 'FAQ'],
+  ['/careers', 'Careers'],
+  ['/universities', 'Universities'],
+  ['/grade-10-subjects', 'Choose subjects'],
+  ['/dates', 'Dates'],
+  ['/nbt', 'The NBT'],
+  ['/bursaries', 'Costs & aid'],
+  ['/faq', 'FAQs'],
 ];
 
 /** Everything else, for the "More" sheet on phones and the footer. */
 export const MORE = [
-  ['/universities.html', '\ud83c\udfeb', 'Universities'],
-  ['/grade-10-subjects.html', '\ud83e\udde0', 'Choose your subjects'],
-  ['/nbt.html', '\u270d\ufe0f', 'The NBT explained'],
-  ['/bursaries.html', '\ud83d\udcb0', 'Costs & aid'],
-  ['/faq.html', '\u2753', 'FAQ'],
-  ['/ask-a-university.html', '\ud83d\udcde', 'Ask a university'],
-  ['/ask.html', '\ud83d\udcac', 'Ask us a question'],
-  ['/study-abroad.html', '\ud83c\udf0d', 'Study abroad'],
-  ['/data-sources.html', '\ud83d\udd0e', 'Where our data comes from'],
-  ['/privacy.html', '\ud83d\udd12', 'Privacy'],
+  ['/universities', '\ud83c\udfeb', 'Universities'],
+  ['/grade-10-subjects', '\ud83e\udde0', 'Choose your subjects'],
+  ['/nbt', '\u270d\ufe0f', 'The NBT explained'],
+  ['/bursaries', '\ud83d\udcb0', 'Costs & aid'],
+  ['/faq', '\u2753', 'FAQs'],
+  ['/ask-a-university', '\ud83d\udcde', 'Ask a university'],
+  ['/ask', '\ud83d\udcac', 'Ask us a question'],
+  ['/study-abroad', '\ud83c\udf0d', 'Study abroad'],
+  ['/data-sources', '\ud83d\udd0e', 'Where our data comes from'],
+  ['/privacy', '\ud83d\udd12', 'Privacy'],
 ];
 
 const TABS = [
   ['/', '\ud83c\udfe0', 'Home'],
-  ['/careers.html', '\ud83e\udded', 'Careers'],
-  ['/calculator.html', '\ud83e\uddee', 'My marks', true],
-  ['/dates.html', '\ud83d\udcc5', 'Dates'],
+  ['/careers', '\ud83e\udded', 'Careers'],
+  ['/calculator', '\ud83e\uddee', 'My marks', true],
+  ['/dates', '\ud83d\udcc5', 'Dates'],
 ];
 
-const isHere = (path, href) => (href === '/' ? path === '/' : path === href || path.startsWith(href.replace(/\.html$/, '/')));
+const isHere = (path, href) => (href === '/' ? path === '/' : path === href || path.startsWith(href + '/'));
 const cur = (path, href) => (isHere(path, href) ? ' aria-current="page"' : '');
 
 function jsonLdScripts(blocks) {
@@ -57,7 +57,7 @@ export function breadcrumbLd(crumbs) {
 
 /**
  * @param {object} p
- * @param {string} p.path         e.g. "/faq.html"
+ * @param {string} p.path         e.g. "/faq" (the on-disk file gets a .html extension; see build-pages.mjs)
  * @param {string} p.title        <title> - keep it a real, specific phrase
  * @param {string} p.description  meta description (~150 chars)
  * @param {string} p.body         inner HTML of <main>
@@ -103,7 +103,7 @@ ${jsonLdScripts(ld)}
     <a class="logo" href="/" aria-label="Studypath home"><span class="logo__mark" aria-hidden="true">SP</span><span class="logo__text">Studypath</span></a>
     <nav class="nav" aria-label="Main">
       ${NAV.map(([href, label]) => `<a href="${href}"${cur(path, href)}>${esc(label)}</a>`).join('\n      ')}
-      <a class="nav__cta" href="/calculator.html"${cur(path, '/calculator.html')}>What do I qualify for?</a>
+      <a class="nav__cta" href="/calculator"${cur(path, '/calculator')}>What do I qualify for?</a>
     </nav>
   </div>
 </header>
@@ -117,6 +117,7 @@ ${body}
     <div class="site-footer__grid">
       <div>
         <p class="site-footer__brand">Studypath</p>
+        <p class="small"><em>Find your way.</em></p>
         <p class="small">Free and independent help for South African learners choosing what to study. We are not a university and cannot apply for you.</p>
         <p class="small"><strong>Always confirm on the university\u2019s own page before you rely on anything</strong> \u2013 that is why we link to it every time.</p>
       </div>

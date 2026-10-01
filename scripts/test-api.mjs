@@ -194,16 +194,16 @@ console.log('\nThe calculator');
 
 console.log('\nReminder opt-in');
 {
-  const { res, body } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ phone: '0821234567', consent: true }) });
+  const { res, body } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ email: 'learner@example.com', consent: true }) });
   ok('valid sign-up is accepted', res.status === 200 && body.ok === true);
 }
 {
-  const { res } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ phone: '0821234567', consent: false }) });
+  const { res } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ email: 'learner@example.com', consent: false }) });
   ok('sign-up without consent is refused', res.status === 400);
 }
 {
-  const { res } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ phone: 'nope', consent: true }) });
-  ok('a bad phone number is refused', res.status === 400);
+  const { res } = await call('/api/reminders', { method: 'POST', body: JSON.stringify({ email: 'nope', consent: true }) });
+  ok('a bad email address is refused', res.status === 400);
 }
 
 console.log('\nStatic assets fall through to the assets binding');

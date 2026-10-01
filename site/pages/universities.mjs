@@ -11,7 +11,7 @@ export function universitiesIndex(data) {
   const without = universities.filter((u) => !u.hasRequirements).sort((a, b) => a.name.localeCompare(b.name));
 
   const card = (u) => `
-  <a class="card card--link uni-card" href="/universities/${esc(u.id)}.html">
+  <a class="card card--link uni-card" href="/universities/${esc(u.id)}">
     <h3>${esc(u.name)}</h3>
     <p class="card__meta">${esc(u.type || '')}${u.cao ? ' · applies via the CAO' : ''}</p>
     <p>${u.hasRequirements ? `<strong>${plural(u.programCount, 'degree', 'degrees')}</strong> with requirements and sources` : 'Contacts and closing dates – requirements coming'}</p>
@@ -38,11 +38,11 @@ export function universitiesIndex(data) {
 </section>`;
 
   return [{
-    path: '/universities.html',
+    path: '/universities',
     title: 'South African university admission requirements, contacts and dates',
     description: 'Admission requirements, closing dates and contact details for South African universities – UCT, Wits, Stellenbosch, UP, UKZN, UJ, Rhodes and more – with the official source for every number.',
     body,
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities' }],
   }];
 }
 
@@ -78,7 +78,7 @@ export function universityPages(data) {
     const body = `
 <section class="hero hero--slim">
   <div class="wrap">
-    <p class="eyebrow"><a href="/universities.html">Universities</a></p>
+    <p class="eyebrow"><a href="/universities">Universities</a></p>
     <h1>${esc(u.name)}</h1>
     <p class="lead">${list.length
       ? `${plural(list.length, 'degree', 'degrees')} captured from ${esc(u.short_name)}’s own official sources, across ${plural(faculties.length, 'faculty', 'faculties')}.`
@@ -101,13 +101,13 @@ ${list.length ? `
   ${sectionHead('📅', 'Dates', 'For the 2027 intake. **2028 dates aren’t published yet.**')}
   ${myDates.length ? `<ul class="dates dates--plain">${myDates.map((d) => dateRow(d)).join('')}</ul>` : `<p class="empty">We haven’t found ${esc(u.short_name)}’s dates on an official page yet. Check its website, or ask below.</p>`}
   ${fee ? `<p class="small"><strong>Application fee:</strong> ${esc(fee.fee)} ${verificationTag(fee.verification)} ${link(fee.source_url, hostOf(fee.source_url))}</p>` : ''}
-  <p class="small"><a href="/dates.html?uni=${esc(u.id)}">All ${esc(u.short_name)} dates →</a> · <a href="/nbt.html">Do I need the NBT? →</a></p>
+  <p class="small"><a href="/dates?uni=${esc(u.id)}">All ${esc(u.short_name)} dates →</a> · <a href="/nbt">Do I need the NBT? →</a></p>
 </section>
 
 <section class="section wrap" id="contact">
   ${sectionHead('📞', `Who to contact at ${u.short_name}`)}
   ${myContacts.length ? `<div class="grid grid--2">${myContacts.map(contactCard).join('')}</div>` : '<p class="empty">No verified contact yet.</p>'}
-  <p class="small"><a href="/ask-a-university.html?uni=${esc(u.id)}">Get help writing your question →</a></p>
+  <p class="small"><a href="/ask-a-university?uni=${esc(u.id)}">Get help writing your question →</a></p>
 </section>
 
 ${list.length ? `
@@ -137,12 +137,12 @@ ${list.length ? `
   <div class="callout callout--good">
     <h3>Do your marks get you in here?</h3>
     <p>Enter your subjects once and we’ll check them against every ${esc(u.short_name)} degree above.</p>
-    <p><a class="btn btn--primary" href="/calculator.html">What do I qualify for?</a></p>
+    <p><a class="btn btn--primary" href="/calculator">What do I qualify for?</a></p>
   </div>
 </section>` : ''}`;
 
     return {
-      path: `/universities/${u.id}.html`,
+      path: `/universities/${u.id}`,
       title: list.length
         ? `${u.name} (${u.short_name}) admission requirements, APS, dates and contacts`
         : `${u.name} (${u.short_name}) – admissions contacts and closing dates`,
@@ -150,7 +150,7 @@ ${list.length ? `
         ? `${u.name} admission requirements for ${list.length} degrees: the score you need, subject minimums, closing dates and who to contact – with the official ${u.short_name} source for every number.`
         : `How to contact ${u.name} about applying, when applications close, and where to find its entry requirements.`,
       body,
-      breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities.html' }, { name: u.name, path: `/universities/${u.id}.html` }],
+      breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities' }, { name: u.name, path: `/universities/${u.id}` }],
       jsonLd: [{ '@context': 'https://schema.org', '@type': 'CollegeOrUniversity', name: u.name, alternateName: u.short_name, url: u.website, address: { '@type': 'PostalAddress', addressCountry: 'ZA' } }],
     };
   });

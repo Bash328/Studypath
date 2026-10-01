@@ -8,7 +8,7 @@ function reqTable(programs) {
   return `<div class="table-scroll"><table class="data">
   <thead><tr><th scope="col">University</th><th scope="col">Degree</th><th scope="col">What it asks for</th><th scope="col">Source</th></tr></thead>
   <tbody>${programs.map((p) => `<tr>
-    <th scope="row">${esc(p.university.shortName)}</th>
+    <th scope="row">${esc(p.university.name)}</th>
     <td data-label="Degree">${esc(p.name)}</td>
     <td data-label="What it asks for">${(p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map((r) => esc(requirementText(r))).join('; ') || '<span class="muted">see the source</span>'}</td>
     <td data-label="Source">${link(p.sourceUrl, hostOf(p.sourceUrl))}</td>
@@ -54,6 +54,7 @@ export function grade10Page(data) {
     <div class="chip-row" id="planner-picked" aria-live="polite"></div>
     <div id="planner-out"><p class="muted">Pick a career above to start. (This works out its answer in your browser from the same sourced data as the rest of the site.)</p></div>
   </div>
+  ${checksBox([{ label: 'Your school’s guidance teacher', url: null }, { label: 'Email the university to confirm its current subject requirements', url: '/ask-a-university' }])}
 </section>
 
 <section class="section wrap wrap--narrow" id="floor">
@@ -61,7 +62,7 @@ export function grade10Page(data) {
   ${claims(GRADE10.floor.paras)}
 </section>
 
-<section class="section wrap" id="maths">
+<section class="section wrap wrap--narrow" id="maths">
   ${sectionHead('➗', GRADE10.maths.title, GRADE10.maths.lead)}
   <div class="card card--accent">
     <h3>What our data says</h3>
@@ -91,9 +92,9 @@ export function grade10Page(data) {
   ${reqTable(g10.acceptsLit)}
 </section>
 
-<section class="section wrap" id="sciences">
+<section class="section wrap wrap--narrow" id="sciences">
   ${sectionHead('🧪', GRADE10.sciences.title)}
-  <div class="wrap--narrow" style="padding:0">${claims(GRADE10.sciences.paras)}</div>
+  ${claims(GRADE10.sciences.paras)}
 
   <h3 class="uni-head">Medicine (MBChB) at the universities we’ve captured</h3>
   ${reqTable(g10.medicine)}
@@ -115,15 +116,15 @@ export function grade10Page(data) {
   ${sectionHead('🗣️', GRADE10.official.title)}
   ${claims(GRADE10.official.paras)}
   ${checksBox(GRADE10.official.checks)}
-  <div class="btn-row"><a class="btn btn--primary" href="/ask-a-university.html">Ask a university</a><a class="btn btn--ghost" href="/careers.html">Explore careers</a></div>
+  <div class="btn-row"><a class="btn btn--primary" href="/ask-a-university">Ask a university</a><a class="btn btn--ghost" href="/careers">Explore careers</a></div>
 </section>`;
 
   return [{
-    path: '/grade-10-subjects.html',
+    path: '/grade-10-subjects',
     title: 'Choosing your Grade 10 subjects – Mathematics or Maths Literacy, and what each degree needs',
     description: 'Picking subjects for Grade 10? See which degrees need Mathematics, which accept Maths Literacy, and what Physical Sciences and Life Sciences open up – counted from real university requirements, each with its source.',
     body,
     scripts: ['/assets/js/grade10.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Choosing your subjects', path: '/grade-10-subjects.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Choosing your subjects', path: '/grade-10-subjects' }],
   }];
 }

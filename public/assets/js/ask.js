@@ -37,7 +37,7 @@ async function suggest() {
     .slice(0, 3);
 
   if (!hits.length) { suggestBox.hidden = true; return; }
-  set(suggestList, hits.map((h) => el('li', {}, el('a', { href: `/faq.html#${h.f.id}` }, h.f.question))));
+  set(suggestList, hits.map((h) => el('li', {}, el('a', { href: `/faq#${h.f.id}` }, h.f.question))));
   suggestBox.hidden = false;
 }
 

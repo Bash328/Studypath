@@ -32,7 +32,7 @@ CREATE TABLE questions (
   created_at TEXT DEFAULT (datetime('now')), answered_at TEXT
 );
 CREATE TABLE reminder_optins (
-  id TEXT PRIMARY KEY, phone TEXT NOT NULL UNIQUE, field_of_study TEXT,
+  id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, field_of_study TEXT,
   consent INTEGER NOT NULL DEFAULT 0, created_at TEXT DEFAULT (datetime('now')), last_sent_at TEXT
 );
 `;
