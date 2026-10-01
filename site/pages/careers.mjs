@@ -39,6 +39,7 @@ export function careersIndex(data) {
     <p class="eyebrow">Start here if you’re not sure yet</p>
     <h1>What could you do?</h1>
     <p class="lead">Browse ${careers.length} careers by the kind of work they are. Each one shows the real degrees that lead there – with the requirements from the university’s own page.</p>
+    <p class="small muted">${iconOrEmoji('🔜')} More degrees and careers are added every week – we only publish one once we’ve verified it against its official source, so this list keeps growing.</p>
     <div class="searchbar">
       <label class="sr-only" for="career-search">Search careers</label>
       <input type="search" id="career-search" placeholder="Try “nurse”, “engineer”, “law”…" autocomplete="off">
