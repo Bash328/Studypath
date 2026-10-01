@@ -3,9 +3,20 @@ node_modules/
 .dev.vars
 dist/
 db/seed.sql
-public/universities/
-public/careers/
-public/sitemap.xml
-.DS_Store
 db/chunks/
 db/seed-compact.sql
+.DS_Store
+
+# public/ is a mix of hand-written source (assets/css, assets/js/*.js except engine/,
+# assets/img, site.webmanifest, _headers) and build output (everything `npm run build`
+# generates from db/data/ + site/). Only the build output is ignored here - regenerate
+# it any time with `npm run build`.
+public/*.html
+public/data/
+public/careers/
+public/universities/
+public/assets/js/engine/
+public/sitemap.xml
+public/robots.txt
+public/CNAME
+public/.nojekyll

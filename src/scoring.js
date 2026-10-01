@@ -401,44 +401,37 @@ export function stellenboschSelection(marks, faculty) {
 
 /**
  * Check one requirement item against the student's marks.
- * Returns { label, status, detail, gap? } where status is one of:
+ * Returns { label, status, detail, gap?, usedBases? } where status is one of:
  *   met | not_met | missing (they don't take that subject) | manual (we can't judge it)
+ *
+ * `usedBases` (only set when status is 'met') names the subject(s) that actually
+ * satisfied this requirement - see checkAllRequirements for why that matters.
  */
-export function checkRequirement(req, marks, usedBases = new Set()) {
+export function checkRequirement(req, marks) {
   if (req.not_computable || req.label) {
     return { label: req.label || 'Other requirement', status: 'manual', detail: req.note || '' };
   }
 
   if (req.any_of) {
-    const results = req.any_of.map((r) => checkRequirement(r, marks, usedBases));
+    const results = req.any_of.map((r) => checkRequirement(r, marks));
     const met = results.find((r) => r.status === 'met');
     const label = results.map((r) => r.label).join(' OR ');
-    if (met) return { label, status: 'met', detail: met.detail };
+    if (met) return { label, status: 'met', detail: met.detail, usedBases: met.usedBases };
     const best = results.find((r) => r.status === 'not_met') || results[0];
     return { label, status: best.status, detail: best.detail, gap: best.gap };
   }
 
   if (req.all_of) {
-    const results = req.all_of.map((r) => checkRequirement(r, marks, usedBases));
+    const results = req.all_of.map((r) => checkRequirement(r, marks));
     const label = results.map((r) => r.label).join(' AND ');
     const bad = results.find((r) => r.status !== 'met');
-    if (!bad) return { label, status: 'met', detail: '' };
+    if (!bad) return { label, status: 'met', detail: '', usedBases: results.flatMap((r) => r.usedBases || []) };
     return { label, status: bad.status, detail: bad.detail, gap: bad.gap };
   }
 
-  // "Next 3 subjects at 70%" - UCT phrases some Health Sciences rules this way.
-  if (req.subject === 'Next 3 subjects') {
-    const pool = marks
-      .filter((m) => !isLifeOrientation(m) && !usedBases.has(m.base))
-      .sort(byPercentDesc)
-      .slice(0, 3);
-    const label = `Your next 3 best subjects at ${req.min_percent}%`;
-    if (pool.length < 3) return { label, status: 'missing', detail: 'Add more of your subjects so we can check this.' };
-    const worst = pool[pool.length - 1];
-    return worst.percent >= req.min_percent
-      ? { label, status: 'met', detail: pool.map((m) => `${m.name} ${m.percent}%`).join(', ') }
-      : { label, status: 'not_met', gap: req.min_percent - worst.percent, detail: `Your 3rd best other subject is ${worst.name} at ${worst.percent}%.` };
-  }
+  // "Next 3 subjects" needs to know which bases the OTHER requirements actually used,
+  // which checkAllRequirements works out in a first pass - see nextThreeSubjects().
+  if (req.subject === 'Next 3 subjects') return nextThreeSubjects(req, marks, new Set());
 
   const mark = findBase(marks, req.subject);
 
@@ -452,7 +445,7 @@ export function checkRequirement(req, marks, usedBases = new Set()) {
     const shown = needPct != null ? `${needPct}%` : `level ${needLvl}`;
     const label = `${mark.name} at ${shown}`;
     return mark.percent >= threshold
-      ? { label, status: 'met', detail: `You have ${mark.percent}%.` }
+      ? { label, status: 'met', detail: `You have ${mark.percent}%.`, usedBases: ['English'] }
       : { label, status: 'not_met', gap: threshold - mark.percent, detail: `You have ${mark.percent}%.` };
   }
 
@@ -462,26 +455,42 @@ export function checkRequirement(req, marks, usedBases = new Set()) {
 
   if (!mark) return { label, status: 'missing', detail: `You have not entered a mark for ${req.subject}.` };
   return mark.percent >= threshold
-    ? { label, status: 'met', detail: `You have ${mark.percent}%.` }
+    ? { label, status: 'met', detail: `You have ${mark.percent}%.`, usedBases: [req.subject] }
     : { label, status: 'not_met', gap: threshold - mark.percent, detail: `You have ${mark.percent}%.` };
 }
 
-/** Which subject bases a programme names explicitly, so "next 3 subjects" excludes them. */
-function namedBases(requirements) {
-  const set = new Set();
-  const walk = (r) => {
-    if (!r) return;
-    if (r.any_of) return r.any_of.forEach(walk);
-    if (r.all_of) return r.all_of.forEach(walk);
-    if (r.subject && r.subject !== 'Next 3 subjects') set.add(r.subject);
-  };
-  requirements.forEach(walk);
-  return set;
+/** "Next 3 subjects at N%" - UCT phrases some Health Sciences rules this way. */
+function nextThreeSubjects(req, marks, usedBases) {
+  const pool = marks
+    .filter((m) => !isLifeOrientation(m) && !usedBases.has(m.base))
+    .sort(byPercentDesc)
+    .slice(0, 3);
+  const label = `Your next 3 best subjects at ${req.min_percent}%`;
+  if (pool.length < 3) return { label, status: 'missing', detail: 'Add more of your subjects so we can check this.' };
+  const worst = pool[pool.length - 1];
+  return worst.percent >= req.min_percent
+    ? { label, status: 'met', detail: pool.map((m) => `${m.name} ${m.percent}%`).join(', '), usedBases: pool.map((m) => m.base) }
+    : { label, status: 'not_met', gap: req.min_percent - worst.percent, detail: `Your 3rd best other subject is ${worst.name} at ${worst.percent}%.` };
 }
 
+/**
+ * Check every requirement on a programme. Two passes: first everything except "Next 3
+ * subjects", so we know exactly which subject each requirement actually consumed - for
+ * an "any_of" like Physical Sciences OR Life Sciences, that's only the ONE that matched,
+ * even if the student takes both, so the other stays available to count towards the
+ * "next 3 best other subjects" that some UCT Health Sciences degrees also require.
+ * (An earlier version excluded every alternative named in an any_of, which wrongly
+ * shrank that pool for students who happened to take both Physical and Life Sciences.)
+ */
 export function checkAllRequirements(requirements, marks) {
-  const used = namedBases(requirements);
-  return (requirements || []).map((r) => checkRequirement(r, marks, used));
+  const reqs = requirements || [];
+  const isNext3 = (r) => r && r.subject === 'Next 3 subjects';
+
+  const prelim = reqs.map((r) => (isNext3(r) ? null : checkRequirement(r, marks)));
+  const usedBases = new Set();
+  prelim.forEach((r) => { if (r && r.usedBases) r.usedBases.forEach((b) => usedBases.add(b)); });
+
+  return reqs.map((r, i) => (isNext3(r) ? nextThreeSubjects(r, marks, usedBases) : prelim[i]));
 }
 
 // ---------------------------------------------------------------------------

@@ -16,5 +16,8 @@ database_name = "pathwise"
 database_id = "2cfc439e-fa19-4213-bba2-88255be8202d"
 
 [vars]
-# Placeholder until the real domain is bought. Used for canonical URLs and sitemap.
+# Used for the Worker's CORS allow-list (see src/index.js). The static site's own
+# canonical/OG/sitemap URLs come from this same value via SITE_ORIGIN at build time
+# (see scripts/build-pages.mjs and .github/workflows/deploy.yml), not from this file -
+# the site doesn't have to be deployed through this Worker to use it.
 SITE_ORIGIN = "https://studypath.co.za"

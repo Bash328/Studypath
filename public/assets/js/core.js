@@ -28,6 +28,21 @@ export function el(tag, attrs = {}, ...children) {
 
 export const clear = (node) => { while (node.firstChild) node.removeChild(node.firstChild); return node; };
 
+/**
+ * clear(node) and then append children, with the same rules el() uses: arrays are
+ * flattened and null/false are skipped. Use this instead of clear(x).append(...) -
+ * the native .append() does NOT flatten arrays (it stringifies them) or skip null
+ * (it inserts the text "null"), which is an easy and silent mistake to make.
+ */
+export function set(node, ...children) {
+  clear(node);
+  for (const child of children.flat(Infinity)) {
+    if (child == null || child === false) continue;
+    node.append(child.nodeType ? child : document.createTextNode(String(child)));
+  }
+  return node;
+}
+
 // ---------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------

@@ -1,6 +1,0 @@
-# Studypath
-User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://studypath.co.za/sitemap.xml

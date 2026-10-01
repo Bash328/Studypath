@@ -82,7 +82,8 @@ function maybeAskConsent() {
   bar.setAttribute('role', 'region');
   bar.setAttribute('aria-label', 'Cookie choice');
   bar.style.cssText =
-    'position:fixed;left:16px;right:16px;bottom:16px;z-index:60;max-width:640px;margin:auto;' +
+    'position:fixed;left:16px;right:16px;bottom:calc(var(--tabbar-h, 0px) + env(safe-area-inset-bottom) + 16px);' +
+    'z-index:60;max-width:640px;margin:auto;' +
     'background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow)';
   bar.innerHTML =
     '<p style="margin:0 0 10px">We would like to use analytics cookies to see which parts of Studypath help students. ' +

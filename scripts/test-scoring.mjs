@@ -141,6 +141,24 @@ const mathsGap = suCs.subjectGaps.find((g) => g.label.startsWith('Mathematics'))
 assert('SU Computer Science reports the exact Maths shortfall', mathsGap && mathsGap.gap === 2,
   mathsGap ? `gap was ${mathsGap.gap}` : 'no Maths gap found');
 
+console.log('\nAn any_of requirement only consumes the alternative that actually matched');
+{
+  // UCT BSc Physiotherapy needs: Maths 60%, (Physical Sciences 65% OR Life Sciences 65%),
+  // English, and "next 3 best other subjects" at 60%. STRONG has BOTH Physical Sciences
+  // (76%) and Life Sciences (71%) above the 65% bar, plus Accounting and Geography.
+  // A student with both sciences should still have exactly enough other subjects: whichever
+  // science wasn't "used" for the any_of, plus Accounting and Geography.
+  const physio = find('uct-bsc-physio');
+  const result = assessProgram(physio, STRONG, scores.UCT_FPS600);
+  const next3 = result.requirements.find((r) => r.label.startsWith('Your next 3 best'));
+  assert('next-3-subjects is NOT "missing" when both PS and LS are present', next3 && next3.status !== 'missing',
+    next3 ? `status was ${next3.status}` : 'no next-3 requirement found');
+  assert('the unused science (Life Sciences) counts towards it', next3 && /Life Sciences/.test(next3.detail || ''),
+    next3 ? next3.detail : '');
+  assert('Physiotherapy is not wrongly dumped in "cannot_tell" for this reason',
+    result.unknownSubjects.length === 0, JSON.stringify(result.unknownSubjects));
+}
+
 console.log('\nTest vectors from the universities own worked examples');
 {
   const mk = (o) => normaliseMarks(o);

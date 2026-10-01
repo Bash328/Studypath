@@ -289,7 +289,12 @@ a.card--link h3 { color: var(--brand-ink); }
 .jargon .claim { margin-top: .8rem; }
 
 /* ---------------------------------------------------------------- trust markers */
-.tag { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px; border-radius: 99px; font-size: .74rem; font-weight: 750; line-height: 1.6; white-space: nowrap; }
+/* No white-space:nowrap here on purpose: the longer labels ("From our research –
+   source cited, not re-checked yet") must be allowed to wrap onto a second line on a
+   narrow screen. A nowrap pill inside a plain paragraph (as opposed to a table cell
+   inside .table-scroll) doesn't get clipped by anything and blows out the page's
+   horizontal scroll width - this cost real mobile-overflow bugs once already. */
+.tag { display: inline-flex; align-items: center; gap: 5px; padding: 2px 10px; border-radius: 99px; font-size: .74rem; font-weight: 750; line-height: 1.5; max-width: 100%; }
 .tag--verified { background: var(--good-soft); color: var(--good); }
 .tag--reported { background: var(--info-soft); color: var(--info); }
 .tag--general { background: var(--warn-soft); color: var(--warn); }
