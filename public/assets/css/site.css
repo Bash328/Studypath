@@ -99,7 +99,9 @@ strong { font-weight: 700; }
 .section { padding-block: clamp(1.6rem, 4vw, 3rem); }
 .stack > * + * { margin-top: 14px; }
 .grid { display: grid; gap: 14px; }
-.grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+/* auto-fill (not auto-fit): a lone card in a row must stay card-sized, not stretch
+   into a big rectangle just because it has no neighbour this row. */
+.grid--2 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
 .grid--3 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
 .grid--4 { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
 .mini { margin-block: 1rem; }
@@ -363,7 +365,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--brand); outline:
 .req-list .detail { color: var(--ink-faint); }
 
 .demand { list-style: none; padding: 0; }
-.demand li { margin-bottom: .8rem; }
+.demand li { margin-bottom: 1.2rem; }
+.demand li:last-child { margin-bottom: 0; }
 .demand__bar { display: block; height: 8px; border-radius: 99px; background: var(--line); margin-top: 5px; overflow: hidden; }
 .demand__bar span { display: block; height: 100%; background: linear-gradient(90deg, var(--brand), var(--accent)); border-radius: 99px; }
 
@@ -466,8 +469,16 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .scorebox__n { font-size: 2.3rem; font-weight: 800; color: var(--brand-ink); line-height: 1; letter-spacing: -.03em; }
 .scorebox--none { background: var(--line); }
 .scorebox--none strong { color: var(--ink-soft); }
-.prow { border-top: 1px solid var(--line); padding: 12px 0; }
-.prow:first-of-type { border-top: 0; }
+.prow { border-top: 1px solid var(--line); padding: 20px 0; }
+.prow:first-of-type { border-top: 0; padding-top: 4px; }
+.prow:last-child { padding-bottom: 4px; }
+.group h4 { margin: 0 0 .3rem; }
+.group + .group { margin-top: 1.6rem; }
+.group--collapsible > summary { cursor: pointer; list-style: none; }
+.group--collapsible > summary::-webkit-details-marker { display: none; }
+.group--collapsible > summary h4 { display: inline-flex; align-items: center; gap: 6px; }
+.group--collapsible > summary h4::after { content: "\25be"; font-size: 1rem; color: var(--brand); transition: rotate .15s; }
+.group--collapsible[open] > summary h4::after { rotate: 180deg; }
 .prow__head { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; }
 .prow__name { font-weight: 700; margin: 0; }
 .prow__meta { font-size: .85rem; color: var(--ink-faint); margin: 0; }

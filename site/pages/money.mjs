@@ -2,9 +2,18 @@ import { esc, md, claim, claims, tag, link, hostOf, prettyDate, checksBox } from
 import { sectionHead, verificationTag } from '../lib/components.mjs';
 
 export function moneyPage(data) {
-  const { bursaries, faq, dates } = data;
+  const { bursaries, faq, dates, fees, uniById } = data;
   const f = (id) => faq.find((x) => x.id === id);
   const nsfas = dates.find((d) => d.id === 'nsfas-2027');
+
+  const feeRow = (row) => `
+  <li class="date">
+    <div class="date__when"><span class="date__day">${esc(uniById[row.university_id] ? uniById[row.university_id].short_name : row.university_id)}</span></div>
+    <div class="date__what">
+      <p class="date__title">${esc(row.fee)}</p>
+      <p class="small">${verificationTag(row.verification)} ${link(row.source_url, hostOf(row.source_url))}</p>
+    </div>
+  </li>`;
 
   const card = (b) => `
   <article class="card bursary" data-deadline="${esc(b.deadline || '')}">
@@ -23,9 +32,15 @@ export function moneyPage(data) {
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
     <p class="eyebrow">Paying for it</p>
-    <h1>Money: NSFAS and bursaries</h1>
+    <h1>Costs & aid: application fees, NSFAS and bursaries</h1>
     <p class="lead">The biggest reason learners miss out on funding isn’t their marks – it’s a deadline that went past while they were busy. Here’s what we’ve verified.</p>
   </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="fees">
+  ${sectionHead('💳', 'What it costs just to apply', 'Separate from tuition – this is the once-off fee most universities charge to process your application. A handful charge nothing.')}
+  ${fees.length ? `<ul class="dates dates--plain">${fees.slice().sort((a, b) => (uniById[a.university_id]?.short_name || '').localeCompare(uniById[b.university_id]?.short_name || '')).map(feeRow).join('')}</ul>` : ''}
+  <p class="small muted">Only the universities we’ve confirmed a fee for are listed. No fee here yet usually just means we haven’t checked it – not that it’s free. The university’s own page (linked on its page here) always has the current amount.</p>
 </section>
 
 <section class="section wrap wrap--narrow">
@@ -73,10 +88,10 @@ export function moneyPage(data) {
 
   return [{
     path: '/bursaries.html',
-    title: 'NSFAS and bursaries for South African students – dates and how to apply',
-    description: `NSFAS 2027 applications close ${prettyDate(nsfas.date_end)}. See what funding we have verified, how to stay safe from bursary scams, and sign up for WhatsApp deadline reminders.`,
+    title: 'Application fees, NSFAS and bursaries for South African students',
+    description: `What it costs to apply to each university, plus NSFAS (closes ${prettyDate(nsfas.date_end)}) and verified bursaries – with WhatsApp deadline reminders.`,
     body,
     scripts: ['/assets/js/bursaries.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Money', path: '/bursaries.html' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Costs & aid', path: '/bursaries.html' }],
   }];
 }

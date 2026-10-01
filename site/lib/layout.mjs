@@ -13,7 +13,7 @@ export const NAV = [
   ['/grade-10-subjects.html', 'Choose subjects'],
   ['/dates.html', 'Dates'],
   ['/nbt.html', 'The NBT'],
-  ['/bursaries.html', 'Money'],
+  ['/bursaries.html', 'Costs & aid'],
   ['/faq.html', 'FAQ'],
 ];
 
@@ -22,7 +22,7 @@ export const MORE = [
   ['/universities.html', '\ud83c\udfeb', 'Universities'],
   ['/grade-10-subjects.html', '\ud83e\udde0', 'Choose your subjects'],
   ['/nbt.html', '\u270d\ufe0f', 'The NBT explained'],
-  ['/bursaries.html', '\ud83d\udcb0', 'Money & bursaries'],
+  ['/bursaries.html', '\ud83d\udcb0', 'Costs & aid'],
   ['/faq.html', '\u2753', 'FAQ'],
   ['/ask-a-university.html', '\ud83d\udcde', 'Ask a university'],
   ['/ask.html', '\ud83d\udcac', 'Ask us a question'],

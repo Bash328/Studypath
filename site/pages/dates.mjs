@@ -40,7 +40,7 @@ export function datesPage(data) {
       <button class="chip" type="button" data-kind="close" aria-pressed="false">⏰ Closing dates</button>
       <button class="chip" type="button" data-kind="open_day" aria-pressed="false">🏫 Open days</button>
       <button class="chip" type="button" data-kind="nbt" aria-pressed="false">✍️ NBT</button>
-      <button class="chip" type="button" data-kind="funding" aria-pressed="false">💰 Money</button>
+      <button class="chip" type="button" data-kind="funding" aria-pressed="false">💰 Funding</button>
     </div>
     <div class="filters__row">
       <label class="sr-only" for="uni-filter">University</label>

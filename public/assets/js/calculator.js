@@ -179,9 +179,14 @@ function universityCard(block) {
       block.selectionScores.length ? el('div', { class: 'callout' },
         el('h4', {}, 'Extra selection scores this university publishes'),
         block.selectionScores.map((s) => el('p', { class: 'small' }, el('strong', {}, `${s.label}: ${s.value} ${s.unit}`), el('br'), el('span', { class: 'muted' }, s.note)))) : null,
-      ...groups.map(([title, list]) => el('div', { class: 'group' },
-        el('h4', { style: 'margin-top:1.2rem' }, `${title} (${list.length})`),
-        list.map((e) => programRow(e, byId[e.scoreId]))))));
+      ...groups.map(([title, list], i) => {
+        const rows = list.map((e) => programRow(e, byId[e.scoreId]));
+        const heading = el('h4', {}, `${title} (${list.length})`);
+        // The first two groups (what you qualify for, or nearly do) matter most - show them
+        // open. The rest is useful but can overwhelm, so it's tucked behind a toggle.
+        if (i < 2) return el('div', { class: 'group' }, heading, rows);
+        return el('details', { class: 'group group--collapsible' }, el('summary', {}, heading), rows);
+      })));
 }
 
 async function runCalculator() {

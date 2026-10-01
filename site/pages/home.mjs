@@ -62,7 +62,7 @@ export function home(data) {
     <div class="card card--accent grade-panel" data-for="12">
       <h3>⏰ Deadlines are the thing now</h3>
       <p>Check what you qualify for, then watch the closing dates. Don’t forget <strong>NSFAS</strong> is a separate application.</p>
-      <div class="btn-row"><a class="btn btn--primary" href="/dates.html">Closing dates</a><a class="btn btn--ghost" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/bursaries.html">Money</a></div>
+      <div class="btn-row"><a class="btn btn--primary" href="/dates.html">Closing dates</a><a class="btn btn--ghost" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/bursaries.html">Costs & aid</a></div>
     </div>
     <p class="small muted grade-hint">Pick a grade above. Not sure? Start with <a href="/calculator.html">What do I qualify for?</a></p>
   </div>
@@ -83,7 +83,7 @@ export function home(data) {
     <a class="card card--link tool" href="/grade-10-subjects.html"><span class="tool__i">🧠</span><h3>Choose your subjects</h3><p>Grade 9–10? Start here.</p></a>
     <a class="card card--link tool" href="/dates.html"><span class="tool__i">📅</span><h3>Dates</h3><p>Closing dates, open days and NBT sittings.</p></a>
     <a class="card card--link tool" href="/nbt.html"><span class="tool__i">✍️</span><h3>The NBT</h3><p>What it is, who needs it, when to write.</p></a>
-    <a class="card card--link tool" href="/bursaries.html"><span class="tool__i">💰</span><h3>Money</h3><p>NSFAS and bursaries, with deadline reminders.</p></a>
+    <a class="card card--link tool" href="/bursaries.html"><span class="tool__i">💰</span><h3>Costs & aid</h3><p>NSFAS, bursaries and what applying actually costs, with deadline reminders.</p></a>
     <a class="card card--link tool" href="/ask-a-university.html"><span class="tool__i">📞</span><h3>Ask a university</h3><p>The right email or phone number for your question.</p></a>
     <a class="card card--link tool" href="/faq.html"><span class="tool__i">❓</span><h3>FAQ</h3><p>Quick answers – and ask us what’s missing.</p></a>
   </div>

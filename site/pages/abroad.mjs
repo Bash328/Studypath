@@ -1,12 +1,39 @@
-import { claims, claim, checksBox, tag } from '../lib/html.mjs';
-import { sectionHead } from '../lib/components.mjs';
+import { esc, claims, claim, checksBox, tag, link, hostOf } from '../lib/html.mjs';
+import { sectionHead, verificationTag } from '../lib/components.mjs';
 
 const g = (text) => ({ level: 'general', text, sources: [] });
 
 // Everything on this page is general guidance about a PROCESS. None of it comes from an
 // official source we verified, so every paragraph is marked that way and each section
-// points the student at places to confirm it. We deliberately give NO foreign entry
-// requirements: we have not verified any.
+// points the student at places to confirm it. The one exception is REAL_EXAMPLES below:
+// a short list of foreign universities whose own page we actually read and quoted, kept
+// deliberately small so every row stays something we checked ourselves.
+
+// Each requirement is quoted from the university's own international-admissions page
+// (fetched and read directly), not from an agent site or forum. "NSC Grade 7/80%" etc
+// is the South African matric scale, not a percentage on a foreign exam.
+const REAL_EXAMPLES = [
+  {
+    name: 'University of Edinburgh (Scotland)', field: 'Arts, Humanities & Social Sciences',
+    need: 'Grade 6 (70%) in at least 4 NSC subjects (excluding Life Orientation), with Grade 4 (50%) in English Home/First Additional Language.',
+    url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa',
+  },
+  {
+    name: 'University of Edinburgh (Scotland)', field: 'Medicine (MBChB)',
+    need: '4 subjects at Grade 7 (80%) including Physical Sciences, Life Sciences and Maths, plus Grade 6 (70%) in English.',
+    url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa',
+  },
+  {
+    name: 'University of Sheffield (England)', field: 'Most undergraduate degrees',
+    need: '5 subjects at Grade 6 (70%), with any subject the specific degree requires at Grade 7 (80%).',
+    url: 'https://sheffield.ac.uk/international/entry-requirements/south-africa',
+  },
+  {
+    name: 'University of Manchester (England)', field: 'Guide, varies by course',
+    need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.',
+    url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/',
+  },
+];
 
 const ROUTES = [
   { emoji: '🌍', title: 'Route 1 – Apply straight to a foreign university',
@@ -49,9 +76,9 @@ export function abroadPage() {
 
 <section class="wrap wrap--narrow">
   <div class="callout callout--warn">
-    <h3>Why there are no entry requirements on this page</h3>
-    <p>Everywhere else on Studypath, every requirement links to the official page it came from. We haven’t verified any foreign university’s requirements, so rather than repeat what agents and forums say, <strong>we’ve left them out</strong>.</p>
-    <p>Everything below is ${tag('general', 'general guidance about the process')} – each paragraph is marked, and each section tells you where to check it.</p>
+    <h3>Why most of this page has no entry requirements</h3>
+    <p>Everywhere else on Studypath, every requirement links to the official page it came from. We’ve only verified a handful of foreign universities’ requirements so far (see below) – for everywhere else, rather than repeat what agents and forums say, <strong>we’ve left the numbers out</strong>.</p>
+    <p>Everything below is ${tag('general', 'general guidance about the process')} unless it’s tagged ${tag('verified', 'checked against the official source')} – each paragraph is marked, and each section tells you where to check it.</p>
   </div>
 </section>
 
@@ -60,6 +87,21 @@ export function abroadPage() {
   <div class="stack">
     ${ROUTES.map((r) => `<article class="card"><h3><span aria-hidden="true">${r.emoji}</span> ${r.title}</h3>${claims(r.paras)}${checksBox(r.checks)}</article>`).join('')}
   </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Real universities, with marks that are actually realistic', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
+  <div class="stack">
+    ${REAL_EXAMPLES.map((e) => `
+    <article class="card">
+      <div class="badge-row">${verificationTag('verified')}</div>
+      <h3>${esc(e.name)}</h3>
+      <p class="card__meta">${esc(e.field)}</p>
+      <p>${esc(e.need)}</p>
+      <p class="source"><span class="source__label">Source:</span> ${link(e.url, hostOf(e.url))}</p>
+    </article>`).join('')}
+  </div>
+  <p class="small muted">These are general undergraduate entry grades – the exact subjects and grade a specific degree needs (e.g. a science degree wanting Maths at a higher grade) can be stricter. Always check the course page itself before you plan around a number here.</p>
 </section>
 
 <section class="section wrap wrap--narrow">

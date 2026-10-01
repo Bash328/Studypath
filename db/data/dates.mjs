@@ -145,6 +145,10 @@ export const OPEN_DAY_PAGES = [
 
 // Application fees, per university (R = rand). Applying is free at some.
 export const APPLICATION_FEES = [
+  { university_id: 'wits', fee: 'R100', verification: 'verified', source_url: 'https://www.wits.ac.za/undergraduate/apply-to-wits/' },
+  { university_id: 'uct', fee: 'R100 (South Africa/SADC) – free for UCT students and graduates', verification: 'verified', source_url: 'https://uct.ac.za/students/applications-apply-undergraduate-qualifications/application-procedure' },
+  { university_id: 'su', fee: 'R100 (South African citizens, permanent residents, refugees)', verification: 'reported', source_url: 'https://www.sun.ac.za/english/maties/fees/application-fee' },
+  { university_id: 'up', fee: 'R300 – waived if household income is R150,000/year or less', verification: 'reported', source_url: 'https://www.up.ac.za/online-application/application-fee' },
   { university_id: 'ufs', fee: 'Free', verification: 'verified', source_url: 'https://apply.ufs.ac.za/Application/Start' },
   { university_id: 'ukzn', fee: 'R250 (paid to the CAO, non-refundable)', verification: 'verified', source_url: 'https://studyatukzn.ukzn.ac.za/apply-at-ukzn/how-to-apply/' },
   { university_id: 'uj', fee: 'Free when you apply online (a fee applies to paper applications)', verification: 'reported', source_url: 'https://www.uj.ac.za/wp-content/uploads/2021/09/uj-application-form-2025-1.pdf' },
