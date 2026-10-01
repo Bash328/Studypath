@@ -1,6 +1,7 @@
 import { esc, md, claim, tag, term } from '../lib/html.mjs';
 import { ORIGIN } from '../lib/layout.mjs';
 import { sectionHead } from '../lib/components.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 // The short "words explained" cards reuse the FAQ answers, so there is one source of truth.
 const JARGON = ['what-is-aps', 'levels', 'what-is-nbt', 'hl-fal', 'selection', 'bursary-vs-loan'];
@@ -49,17 +50,17 @@ export function home(data) {
   </div>
   <div class="grade-panels" id="grade-panels">
     <div class="card card--accent grade-panel" data-for="9 10">
-      <h3>🧠 Choosing your subjects is your big job</h3>
+      <h3>${iconOrEmoji('🧠')} Choosing your subjects is your big job</h3>
       <p>The subjects you pick at the end of Grade 9 decide which degrees are open in Grade 12. <strong>Mathematics vs Maths Literacy</strong> is the one that matters most.</p>
       <div class="btn-row"><a class="btn btn--primary" href="/grade-10-subjects.html">Help me choose</a><a class="btn btn--ghost" href="/careers.html">Explore careers first</a></div>
     </div>
     <div class="card card--accent grade-panel" data-for="11">
-      <h3>🎯 Test your marks and go see a campus</h3>
+      <h3>${iconOrEmoji('🎯')} Test your marks and go see a campus</h3>
       <p>Universities look at your <strong>Grade 11 results</strong>. Find out where you stand now, while you still have a year to push.</p>
       <div class="btn-row"><a class="btn btn--primary" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/dates.html?kind=open_day">Open days</a><a class="btn btn--ghost" href="/nbt.html">The NBT</a></div>
     </div>
     <div class="card card--accent grade-panel" data-for="12">
-      <h3>⏰ Deadlines are the thing now</h3>
+      <h3>${iconOrEmoji('⏰')} Deadlines are the thing now</h3>
       <p>Check what you qualify for, then watch the closing dates. Don’t forget <strong>NSFAS</strong> is a separate application.</p>
       <div class="btn-row"><a class="btn btn--primary" href="/dates.html">Closing dates</a><a class="btn btn--ghost" href="/calculator.html">Check my marks</a><a class="btn btn--ghost" href="/bursaries.html">Costs & aid</a></div>
     </div>

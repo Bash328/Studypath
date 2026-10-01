@@ -1,5 +1,6 @@
 import { esc, claims, claim, checksBox, tag, link, hostOf } from '../lib/html.mjs';
 import { sectionHead, verificationTag } from '../lib/components.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 const g = (text) => ({ level: 'general', text, sources: [] });
 
@@ -109,7 +110,7 @@ export function abroadPage() {
   ${claim(g('This is a rough order, not a rule – every country and university has its own calendar.'))}
   <div class="table-scroll"><table class="data">
     <thead><tr><th scope="col">When</th><th scope="col">What to sort out</th></tr></thead>
-    <tbody>${TIMELINE.map(([when, what]) => `<tr><th scope="row">${when}</th><td>${what}</td></tr>`).join('')}</tbody>
+    <tbody>${TIMELINE.map(([when, what]) => `<tr><th scope="row">${when}</th><td data-label="What to sort out">${what}</td></tr>`).join('')}</tbody>
   </table></div>
 </section>
 
@@ -130,7 +131,7 @@ export function abroadPage() {
 
 <section class="section wrap wrap--narrow">
   <div class="callout">
-    <h3>🛡️ A note on scams</h3>
+    <h3>${iconOrEmoji('🛡️')} A note on scams</h3>
     ${claims([g('Nobody legitimate guarantees admission, and nobody legitimate asks for a large payment to “secure your place” before the university has made you an offer in writing. If a claim can’t be found on the university’s own website, treat it as false.')])}
     <p><a href="/universities.html">Meanwhile, see what South African universities actually require →</a></p>
   </div>

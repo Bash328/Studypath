@@ -1,5 +1,6 @@
 import { esc, md, claim, claims, tag, link, hostOf, prettyDate, checksBox } from '../lib/html.mjs';
 import { sectionHead, verificationTag } from '../lib/components.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 export function moneyPage(data) {
   const { bursaries, faq, dates, fees, uniById } = data;
@@ -60,7 +61,7 @@ export function moneyPage(data) {
     { label: 'Your school’s guidance teacher', url: null },
   ])}
   <div class="callout">
-    <h3>🛡️ Stay safe</h3>
+    <h3>${iconOrEmoji('🛡️')} Stay safe</h3>
     <p>${tag('general', 'Advice, not from an official source')} Nobody legitimate charges you to apply for a bursary or to “secure” a place. If someone asks for money up front, it’s a scam.</p>
     ${claims(f('free').answer.slice(2))}
   </div>

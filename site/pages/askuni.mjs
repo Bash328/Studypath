@@ -15,9 +15,9 @@ export function askUniversityPage(data) {
     const c = primary(u.id);
     return `<tr>
       <th scope="row"><a href="/universities/${esc(u.id)}.html#contact">${esc(u.name)}</a>${u.cao ? ' <span class="badge badge--info">CAO</span>' : ''}</th>
-      <td>${c && c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '<span class="muted">not confirmed</span>'}</td>
-      <td>${c && c.phone ? esc(c.phone) : '<span class="muted">not confirmed</span>'}</td>
-      <td>${c ? verificationTag(c.verification) : ''}</td>
+      <td data-label="Email">${c && c.email ? `<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>` : '<span class="muted">not confirmed</span>'}</td>
+      <td data-label="Phone">${c && c.phone ? esc(c.phone) : '<span class="muted">not confirmed</span>'}</td>
+      <td data-label="How sure?">${c ? verificationTag(c.verification) : ''}</td>
     </tr>`;
   }).join('');
 

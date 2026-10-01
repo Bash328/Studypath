@@ -1,4 +1,5 @@
 import { sectionHead } from '../lib/components.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 export function privacyPage() {
   const body = `
@@ -53,7 +54,7 @@ export function notFoundPage() {
   const body = `
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
-    <h1>We can’t find that page 🤔</h1>
+    <h1>We can’t find that page ${iconOrEmoji('🤔')}</h1>
     <p class="lead">It might have moved, or the link might be wrong. Here’s where most people are heading:</p>
     <div class="btn-row">
       <a class="btn btn--primary btn--big" href="/calculator.html">What do I qualify for?</a>

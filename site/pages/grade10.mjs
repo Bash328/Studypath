@@ -9,9 +9,9 @@ function reqTable(programs) {
   <thead><tr><th scope="col">University</th><th scope="col">Degree</th><th scope="col">What it asks for</th><th scope="col">Source</th></tr></thead>
   <tbody>${programs.map((p) => `<tr>
     <th scope="row">${esc(p.university.shortName)}</th>
-    <td>${esc(p.name)}</td>
-    <td>${(p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map((r) => esc(requirementText(r))).join('; ') || '<span class="muted">see the source</span>'}</td>
-    <td>${link(p.sourceUrl, hostOf(p.sourceUrl))}</td>
+    <td data-label="Degree">${esc(p.name)}</td>
+    <td data-label="What it asks for">${(p.subjectRequirements || []).filter((r) => !(r.label || r.not_computable)).map((r) => esc(requirementText(r))).join('; ') || '<span class="muted">see the source</span>'}</td>
+    <td data-label="Source">${link(p.sourceUrl, hostOf(p.sourceUrl))}</td>
   </tr>`).join('')}</tbody></table></div>`;
 }
 
@@ -78,7 +78,7 @@ export function grade10Page(data) {
     </ul>
     <div class="table-scroll"><table class="data">
       <thead><tr><th scope="col">Area</th><th scope="col">Degrees</th><th scope="col">Need Maths</th><th scope="col">Accept Maths Lit</th></tr></thead>
-      <tbody>${groups.map(([name, c]) => `<tr><th scope="row">${esc(name)}</th><td>${c.total}</td><td>${c['needs-maths']}</td><td>${c['accepts-lit']}</td></tr>`).join('')}</tbody>
+      <tbody>${groups.map(([name, c]) => `<tr><th scope="row">${esc(name)}</th><td data-label="Degrees">${c.total}</td><td data-label="Need Maths">${c['needs-maths']}</td><td data-label="Accept Maths Lit">${c['accepts-lit']}</td></tr>`).join('')}</tbody>
     </table></div>
     <p class="small muted">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each degree below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
   </div>

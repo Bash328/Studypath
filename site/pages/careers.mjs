@@ -1,6 +1,7 @@
 import { esc, md, claim, checksBox, plural } from '../lib/html.mjs';
 import { programCard, sectionHead } from '../lib/components.mjs';
 import { requirementText } from '../lib/data.mjs';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 const SECTOR_EMOJI = {
   Engineering: '⚙️', 'Built environment': '🏗️', Technology: '💻', 'Business & finance': '💼',
@@ -44,7 +45,7 @@ export function careersIndex(data) {
     </div>
     <div class="chip-row" id="sector-filters" role="group" aria-label="Filter by area">
       <button class="chip" type="button" data-sector="" aria-pressed="true">All</button>
-      ${sectors.map((s) => `<button class="chip" type="button" data-sector="${esc(s)}" aria-pressed="false">${SECTOR_EMOJI[s] || ''} ${esc(s)}</button>`).join('')}
+      ${sectors.map((s) => `<button class="chip" type="button" data-sector="${esc(s)}" aria-pressed="false">${iconOrEmoji(SECTOR_EMOJI[s] || '')} ${esc(s)}</button>`).join('')}
     </div>
   </div>
 </section>
@@ -88,7 +89,7 @@ export function careerPages(data) {
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
     <p class="eyebrow"><a href="/careers.html">Careers</a> › ${esc(career.sector)}</p>
-    <h1>${SECTOR_EMOJI[career.sector] || ''} How to become a ${esc(career.name)}</h1>
+    <h1>${iconOrEmoji(SECTOR_EMOJI[career.sector] || '')} How to become a ${esc(career.name)}</h1>
     <p class="lead">${esc(career.description)}</p>
   </div>
 </section>

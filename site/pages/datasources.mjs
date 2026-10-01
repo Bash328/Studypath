@@ -36,9 +36,9 @@ export function dataSourcesPage(data) {
     const nd = dates.filter((d) => d.university_id === u.id).length;
     return `<tr>
       <th scope="row"><a href="/universities/${esc(u.id)}.html">${esc(u.name)}</a></th>
-      <td>${u.hasRequirements ? plural(u.programCount, 'degree', 'degrees') : '<span class="muted">not yet</span>'}</td>
-      <td>${tag(best === 'verified' ? 'verified' : best === 'reported' ? 'reported' : 'unverified', best === 'verified' ? 'Contact checked' : best === 'reported' ? 'Contact from research' : 'No contact')}</td>
-      <td>${nd || '<span class="muted">–</span>'}</td>
+      <td data-label="Degrees captured">${u.hasRequirements ? plural(u.programCount, 'degree', 'degrees') : '<span class="muted">not yet</span>'}</td>
+      <td data-label="Contact">${tag(best === 'verified' ? 'verified' : best === 'reported' ? 'reported' : 'unverified', best === 'verified' ? 'Contact checked' : best === 'reported' ? 'Contact from research' : 'No contact')}</td>
+      <td data-label="Dates">${nd || '<span class="muted">–</span>'}</td>
     </tr>`;
   }).join('');
 

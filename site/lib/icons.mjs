@@ -40,6 +40,20 @@ const EMOJI_ICON = {
   '🧰': 'toolbox-all', '🧭': 'careers-compass', '✍️': 'nbt-writing', '💰': 'money',
   '📞': 'phone-call', '❓': 'faq-help', '📖': 'glossary-book', '🤝': 'trust-handshake',
   '🔎': 'data-search', '🏠': 'home', '💬': 'ask-message', '🌍': 'study-abroad-globe',
+  // --- second batch: sector icons, and everything page-specific below ---
+  '🎨': 'careers-arts', '🏗️': 'careers-built-environment', '💻': 'careers-technology',
+  '🍎': 'careers-education', '⚙️': 'careers-engineering', '⚕️': 'careers-health',
+  '⚖️': 'careers-law', '🔬': 'careers-science', '💼': 'careers-business',
+  '✅': 'requirements-captured', '🔜': 'coming-soon',
+  '🧱': 'bare-minimum', '➗': 'maths-vs-mathlit', '🏛️': 'architecture-property',
+  '🧪': 'physical-life-sciences', '🪤': 'pitfalls', '🗣️': 'who-to-ask',
+  '🧾': 'application-cost', '✉️': 'email',
+  '💳': 'cost-to-apply', '📲': 'whatsapp-reminder', '🛡️': 'stay-safe',
+  '📝': 'applying',
+  '🤔': 'questions-to-ask', '📒': 'university-glance',
+  '🛤️': 'route', '🔁': 'route-alt', '🗓️': 'timeline',
+  '🏷️': 'data-label-tag', '📐': 'data-rules', '🗺️': 'data-coverage', '🛠️': 'report-issue',
+  '📨': 'privacy-send', '📊': 'privacy-analytics', '🌐': 'privacy-other',
 };
 
 /**
@@ -66,9 +80,29 @@ export function iconOrEmoji(emoji) {
   return name ? loadSvg('line', name) : emoji;
 }
 
-/** The custom verified/reported/general confidence badge for tag() in html.mjs, or null. */
-const BADGE = { verified: 'badge-checked', reported: 'badge-partial-research', general: 'badge-unverified' };
+/** The confidence badge for tag() in html.mjs, or null. Verified/reported/general are the
+ * three custom badges; conflict reuses the generic "sources disagree" line icon - there's
+ * no dedicated badge shape for it since sources disagreeing is rare enough not to need one. */
+const BADGE = {
+  verified: ['badges', 'badge-checked'], reported: ['badges', 'badge-partial-research'],
+  general: ['badges', 'badge-unverified'], conflict: ['line', 'sources-disagree'],
+};
 export function badgeIcon(level) {
-  const name = BADGE[level];
+  const entry = BADGE[level];
+  return entry ? loadSvg(...entry) : null;
+}
+
+/**
+ * The calculator's own "good to go / more to it / nearly / can't tell" legend - a
+ * deliberately different badge family from the verified/reported ones above, so the two
+ * never look like the same system on a page that shows both (e.g. faq.html). Keyed
+ * explicitly rather than by character, since its "✓" would otherwise collide with the
+ * generic verified.svg mapping above.
+ */
+const MATCH_BADGE = {
+  good: 'match-good-to-go', more: 'match-more-to-it', nearly: 'match-nearly', unknown: 'match-cant-tell',
+};
+export function matchBadge(key) {
+  const name = MATCH_BADGE[key];
   return name ? loadSvg('badges', name) : null;
 }

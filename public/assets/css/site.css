@@ -340,6 +340,22 @@ table.data th, table.data td { text-align: left; padding: 11px 13px; border-bott
 table.data thead th { font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-faint); background: var(--paper); }
 table.data tbody th { font-weight: 700; }
 
+/* Below ~640px a 3-4 column table never fits without horizontal scroll, and swiping over
+   a table reads as "the page scrolls sideways" even when it's actually just that one box -
+   so each row becomes its own stacked card instead, with each td's own column name as a
+   small label (every td that needs this carries data-label="..."). */
+@media (max-width: 640px) {
+  .table-scroll { overflow-x: visible; }
+  table.data { min-width: 0; }
+  table.data thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  table.data tbody tr { display: block; border: 1px solid var(--line); border-radius: var(--radius-sm); margin-bottom: 10px; padding: 4px 14px; }
+  table.data tbody tr:last-child { margin-bottom: 0; }
+  table.data th, table.data td { display: block; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  table.data tbody tr > :last-child { border-bottom: 0; }
+  table.data tbody th { font-size: 1rem; }
+  table.data td[data-label]::before { content: attr(data-label); display: block; font-size: .72rem; font-weight: 750; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-faint); margin-bottom: 3px; }
+}
+
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 1rem; }
 .field--hp { position: absolute; left: -9999px; }
 label { font-weight: 650; font-size: .95rem; }
