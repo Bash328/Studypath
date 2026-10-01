@@ -94,6 +94,17 @@ export function careerPages(data) {
 </section>
 
 <section class="wrap wrap--narrow">
+  <details class="card career-more">
+    <summary><h2 class="h3">What does a ${esc(career.name)} actually do?</h2><span class="career-more__hint">More about this career <span class="career-more__chevron" aria-hidden="true">▾</span></span></summary>
+    <div class="career-more__body">
+      ${career.whatTheyDo ? `<p>${md(career.whatTheyDo)}</p>` : ''}
+      ${(career.relatedRoles || []).length ? `<h4>Where this degree can take you</h4><ul class="pill-list">${career.relatedRoles.map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}
+      ${claim({ level: 'general', text: 'This is our general description of the role and related jobs, not from an official source – it’s here to give you a fuller picture, not as a careers-counselling guarantee.' })}
+    </div>
+  </details>
+</section>
+
+<section class="wrap wrap--narrow">
   <div class="card">
     <h2 class="h3">Subjects that usually help</h2>
     <ul class="pill-list">${career.typical_subjects.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
