@@ -1,4 +1,4 @@
-import { lvl, pct, engLvl, engPct, flag } from './_helpers.mjs';
+import { lvl, pct, engLvl, engPct, flag, anyOf, manual } from './_helpers.mjs';
 
 // University of Pretoria, 2027 intake.
 // UP APS = 6 subjects, EXCLUDING Life Orientation, on NSC achievement levels.
@@ -51,8 +51,37 @@ export const upPrograms = [
     faculty: 'Engineering, Built Environment & IT', duration_years: null, min_aps: 30,
     subject_requirements: [engLvl(4, 4), lvl('Mathematics', 6)], notes: CLOSING },
   { ...base, id: 'up-bit', career_id: 'information-systems', name: 'BIT (Information Technology)',
-    faculty: 'Engineering, Built Environment & IT', duration_years: null, min_aps: 30,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: CLOSING },
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
+    notes: 'Confirmed against the user-supplied EBIT 2027 Faculty Yearbook (programme code 12133215). ' + CLOSING },
+  { ...base, id: 'up-bis', career_id: 'information-systems', name: 'Bachelor of Information Science',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 28,
+    subject_requirements: [engLvl(4, 4), manual('Mathematics', 'No Mathematics minimum for the general stream - but if Informatics is chosen as a first-year elective, Mathematics level 5 is required.')],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12131012). ' + CLOSING },
+  { ...base, id: 'up-bis-multimedia', career_id: 'information-systems', name: 'Bachelor of Information Science specialising in Multimedia',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5)],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12131013). ' + CLOSING },
+  { ...base, id: 'up-bis-publishing', career_id: 'information-systems', name: 'Bachelor of Information Science specialising in Publishing',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 28,
+    subject_requirements: [engLvl(5, 5)],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12131014). ' + CLOSING },
+  { ...base, id: 'up-btrp', career_id: 'urban-planner', name: 'Bachelor of Town and Regional Planning',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 4, min_aps: 27,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4)],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12132026). ' + CLOSING },
+  { ...base, id: 'up-bsc-construction-management', career_id: 'quantity-surveyor', name: 'BSc Construction Management',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), anyOf(lvl('Physical Sciences', 4), lvl('Accounting', 4))],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12132034). ' + CLOSING },
+  { ...base, id: 'up-bsc-quantity-surveying', career_id: 'quantity-surveyor', name: 'BSc Quantity Surveying',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), anyOf(lvl('Physical Sciences', 4), lvl('Accounting', 4))],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12132032). ' + CLOSING },
+  { ...base, id: 'up-bsc-real-estate', career_id: 'quantity-surveyor', name: 'BSc Real Estate',
+    faculty: 'Engineering, Built Environment & IT', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), anyOf(lvl('Physical Sciences', 4), lvl('Accounting', 4))],
+    notes: 'From the user-supplied EBIT 2027 Faculty Yearbook (programme code 12132033) - leads to registration as a professional property valuer after an Honours year, not quantity surveying, but no dedicated career page exists for that yet. ' + CLOSING },
   { ...base, id: 'up-bcom-information-systems', career_id: 'information-systems', name: 'BCom specialising in Information Systems',
     faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
@@ -95,9 +124,9 @@ export const upPrograms = [
 
   // ---------------- Veterinary Science ----------------
   { ...base, id: 'up-bvsc', career_id: 'veterinarian', name: 'BVSc (Veterinary Science)', faculty: 'Veterinary Science',
-    duration_years: null, min_aps: 35,
+    duration_years: 6, min_aps: 35,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)],
-    notes: flag('selection', 'The only BVSc offered by a South African public university. Closes 31 May - earlier than every other UP programme, including the rest of Health Sciences.') },
+    notes: flag('selection', 'Confirmed against the user-supplied Veterinary Science 2027 Faculty Yearbook. The only BVSc offered by a South African public university. Closes 31 May - earlier than every other UP programme, including the rest of Health Sciences.') },
 
   // ---------------- Economic & Management Sciences ----------------
   // Cross-checked 2026-10-02 against the user-supplied EMS 2027 Faculty Brochure (see
@@ -152,25 +181,59 @@ export const upPrograms = [
     notes: 'UP is the only European Logistics Association National Certification Centre in Sub-Saharan Africa; students can earn a Level 4 cEJLog certificate alongside the degree. ' + EMS_CONFIRMED },
 
   // ---------------- Law ----------------
-  { ...base, id: 'up-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law', duration_years: null, min_aps: 35,
-    subject_requirements: [engLvl(6, 6)], notes: CLOSING },
+  { ...base, id: 'up-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law', duration_years: 4, min_aps: 35,
+    subject_requirements: [engLvl(6, 6)], notes: 'Confirmed against the user-supplied Law 2027 Faculty Yearbook - the only undergraduate qualification this faculty offers (everything else is postgraduate LLM/LLD). ' + CLOSING },
 
   // ---------------- Natural & Agricultural Sciences ----------------
+  // Cross-checked 2026-10-02 against the user-supplied Natural & Agricultural Sciences
+  // 2027 Faculty Yearbook (see up-sci-yearbook-2026-10-02 in research-log.mjs): the four
+  // rows already here all matched exactly. The yearbook names ~30 more undergraduate BSc/
+  // BScAgric streams; added below wherever an existing career page fits, skipped where
+  // none does (Consumer Science x2, Food Management x2, Food Science, Entomology, Human
+  // Genetics, Human Physiology/Genetics/Psychology, Medical Sciences, Meteorology).
   { ...base, id: 'up-bsc-actuarial', career_id: 'actuary', name: 'BSc Actuarial & Financial Mathematics',
-    faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 36,
+    faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 36,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 7)], notes: CLOSING },
   ...[
     ['up-bsc-chemistry', 'chemist', 'BSc Chemistry'],
     ['up-bsc-physics', 'physicist', 'BSc Physics'],
     ['up-bsc-geology', 'geologist', 'BSc Geology'],
   ].map(([id, career_id, name]) => ({
-    ...base, id, career_id, name, faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 34,
+    ...base, id, career_id, name, faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 34,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)],
     notes: 'The UP tables group Chemistry, Physics, Geology and similar BSc streams together at this level. ' + CLOSING,
   })),
   { ...base, id: 'up-bsc-biological', career_id: 'biologist', name: 'BSc Biological Sciences (Biochemistry, Genetics, Microbiology)',
-    faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 32,
+    faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 32,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)], notes: CLOSING },
+  ...[
+    ['up-bsc-applied-maths', 'mathematician', 'BSc Applied Mathematics', 34, [lvl('Mathematics', 6)]],
+    ['up-bsc-mathematical-stats', 'mathematician', 'BSc Mathematical Statistics', 34, [lvl('Mathematics', 6)]],
+    ['up-bsc-mathematics', 'mathematician', 'BSc Mathematics', 34, [lvl('Mathematics', 6)]],
+    ['up-bsc-zoology', 'biologist', 'BSc Zoology', 32, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-ecology', 'environmental-scientist', 'BSc Ecology', 32, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-plant-science', 'agricultural-scientist', 'BSc Plant Science', 32, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-biotechnology', 'biologist', 'BSc Biotechnology', 32, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-human-physiology', 'biologist', 'BSc Human Physiology', 32, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-geoinformatics', 'land-surveyor', 'BSc Geoinformatics', 34, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-geography', 'environmental-scientist', 'BSc Geography (Geography and Environmental Science)', 34, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+    ['up-bsc-env-eng-geology', 'geologist', 'BSc Environmental and Engineering Geology', 34, [lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
+  ].map(([id, career_id, name, min_aps, extraSubjects]) => ({
+    ...base, id, career_id, name, faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps,
+    subject_requirements: [engLvl(5, 5), ...extraSubjects],
+    notes: 'From the user-supplied Natural & Agricultural Sciences 2027 Faculty Yearbook. ' + CLOSING,
+  })),
+  ...[
+    ['up-bscagric-animal-science', 'BScAgric in Animal Science'],
+    ['up-bscagric-agribusiness', 'BScAgric in Agricultural Economics (Agribusiness Management)'],
+    ['up-bscagric-plant-soil', 'BScAgric in Applied Plant and Soil Sciences'],
+    ['up-bscagric-plant-pathology', 'BScAgric in Plant Pathology'],
+  ].map(([id, name]) => ({
+    ...base, id, career_id: 'agricultural-scientist', name, faculty: 'Natural & Agricultural Sciences',
+    duration_years: 4, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)],
+    notes: 'From the user-supplied Natural & Agricultural Sciences 2027 Faculty Yearbook - a 5-year extended version also exists for Applied Plant and Soil Sciences and Plant Pathology, not shown as its own row. ' + CLOSING,
+  })),
 
   // ---------------- Education & Humanities ----------------
   { ...base, id: 'up-bed', career_id: 'teacher', name: 'BEd (all phases)', faculty: 'Education',
