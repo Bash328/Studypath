@@ -145,6 +145,7 @@ const COUNTRIES = [
     <h2 class="h3">Funding</h2>
     ${claims([
       v('University of Manchester’s **Global Futures Scholarships**, for 2027 entry: up to **£36,000 total** (£12,000/year for 3 years), merit-based. Its own scholarship page names South Africa explicitly as eligible (domiciled in South Africa, with an NSC or IEB qualification). Applications open December 2026, across two rounds (25 February and 8 April 2027). Excludes Medicine, Dentistry, Architecture and foundation-year courses.', [src('manchester.ac.uk', 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/scholarships/')]),
+      g('**Chevening** is postgraduate only, so it doesn’t apply straight out of matric – worth bookmarking for after your first degree.'),
     ])}
   </div>
 </section>`,
@@ -480,40 +481,11 @@ function countryHub() {
   const published = COUNTRIES.filter((c) => c.published);
   return `
 <section class="section wrap wrap--narrow" id="examples">
-  ${sectionHead('🎓', 'Universities, money, visas and deadlines – pick a country', 'A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
+  ${sectionHead('🎓', 'Costs, funding, visas, and deadlines – pick a country', 'A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
   <div class="grid grid--2">
     ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
   </div>
   <p class="small muted">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany, Hungary and New Zealand are researched but held back for now, for the same reason.</p>
-</section>`;
-}
-
-function scholarshipsSection() {
-  return `
-<section class="section wrap wrap--narrow" id="scholarships">
-  ${sectionHead('🎓', 'Scholarships open to South Africans', 'Most fully-funded scholarships overseas are postgraduate only. These are the ones we could confirm cover undergraduate study.')}
-  <div class="stack">
-    <article class="card">
-      <h3>Stipendium Hungaricum (Hungary)</h3>
-      ${claims([
-        v('Covers full tuition and contributes toward accommodation, plus a monthly stipend and medical insurance, at undergraduate and postgraduate level.', [src('stipendiumhungaricum.hu', 'https://stipendiumhungaricum.hu'), src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
-        v('Eligibility for South Africa: SA citizen in good health, born before 31 August 2008, NSC with a Bachelor’s pass, minimum 60% NSC average for undergraduate applicants (Life Orientation excluded). Apply online through the Tempus Public Foundation, with nomination via South Africa’s DHET process.', [src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
-      ])}
-    </article>
-    <article class="card">
-      <h3>Mastercard Foundation Scholars Program</h3>
-      ${claims([
-        v('Covers undergraduate and postgraduate study, but only through partner universities – in South Africa that’s UCT, UP and UWC, each confirmed current. You apply through the partner university directly, not to Mastercard Foundation itself, and those universities’ own closing dates apply.', [
-          src('UCT', 'https://uct.ac.za/mastercardfdn/how-apply'), src('UP', 'https://www.up.ac.za/mastercard-foundation-scholars-program'), src('UWC', 'https://www.uwc.ac.za/study/partnerships/mastercard-foundation-scholars-program'),
-        ]),
-      ])}
-    </article>
-    <article class="card">
-      <h3>Chevening (UK)</h3>
-      ${claims([g('Postgraduate only, so it doesn’t apply straight out of matric. Worth bookmarking for after your first degree.')])}
-    </article>
-  </div>
-  <p class="small muted">DAAD, MEXT (Japan), GKS (Korea), Türkiye Bursları, Commonwealth, Fulbright and Erasmus+ scholarships may also be open to South Africans at various levels – we haven’t checked their current terms yet, so they’re left out rather than guessed at.</p>
 </section>`;
 }
 
@@ -529,9 +501,9 @@ export function abroadPage() {
 
 <section class="wrap wrap--narrow">
   <div class="callout callout--warn">
-    <h3>Why most of this page has no entry requirements</h3>
-    <p>Everywhere else on Studypath, every requirement links to the official page it came from. We’ve only verified a handful of foreign universities’ requirements so far (see below) – for everywhere else, rather than repeat what agents and forums say, <strong>we’ve left the numbers out</strong>.</p>
-    <p>Everything below is ${tag('general', 'general guidance about the process')} unless it’s tagged ${tag('verified', 'checked against the official source')} – each paragraph is marked, and each section tells you where to check it.</p>
+    <h3>Why this page itself has no entry requirements</h3>
+    <p>Everywhere else on Studypath, every requirement links to the official page it came from. Entry requirements, money, visas and funding differ by country, so rather than repeat what agents and forums say in one general place, <strong>those numbers live on each country’s own guide below</strong>, each checked against the official source.</p>
+    <p>Everything on this page is ${tag('general', 'general guidance about the process')} unless it’s tagged ${tag('verified', 'checked against the official source')} – each paragraph is marked, and each section tells you where to check it.</p>
   </div>
 </section>
 
@@ -543,7 +515,6 @@ export function abroadPage() {
 </section>
 
 ${countryHub()}
-${scholarshipsSection()}
 
 <section class="section wrap wrap--narrow">
   ${sectionHead('🗓️', 'What to line up, and roughly when')}
