@@ -33,7 +33,7 @@ const ujEng = (id, career_id, name, url) => ({
   ...ujBase, id, career_id, name, faculty: 'Engineering & the Built Environment',
   duration_years: 4, min_aps: 32, source_url: url,
   subject_requirements: [engLvl(5, 5), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), lvl('Physical Sciences', 5)],
-  notes: flag('partially-verified', 'RESOLVED 2026-10-02: originally captured only from the Civil Engineering page, with Electrical and Mechanical assumed to match rather than independently checked (and both wrongly pointing at Civil’s URL as their source). A web search surfacing each programme’s own uj.ac.za page (uj.ac.za is blocked for a raw fetch in this environment) independently confirms Civil, Electrical & Electronic, and Mechanical all share this exact APS 32 / English 5 / Mathematics 5 / Physical Science 5 formula - each now cites its own page. ' + UJ_CAVEAT),
+  notes: 'CONFIRMED 2026-10-02 by screenshots of each programme’s own live page (uj.ac.za is blocked for automated fetches, so the user checked manually): Civil, Electrical & Electronic, and Mechanical all share this exact APS 32 / English 5 (60%) / Mathematics or Technical Mathematics 5 (60%) / Physical Science 5 (60%) formula, each on its own page.',
 });
 
 const ujPrograms = [
@@ -50,20 +50,20 @@ const ujPrograms = [
     faculty: 'Science', duration_years: 3, min_aps: 34,
     source_url: 'https://www.uj.ac.za/university-courses/bsc-in-computer-science-and-informatics-specialising-in-ai-artificial-intelligence/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 7)],
-    notes: flag('partially-verified', 'RESOLVED 2026-10-02: this specialisation’s own programme page URL (programme code B2I04Q) was not previously captured - now found via web search surfacing UJ’s own page (uj.ac.za is blocked for a raw fetch in this environment). 2027 applications stated as 1 April - 31 October 2026. ' + UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 34, English 5 (60%), Mathematics 7 (80%).' },
 
   { ...ujBase, id: 'uj-nursing', career_id: 'nurse', name: 'Bachelor of Nursing',
     faculty: 'Health Sciences', duration_years: 4, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-nursing/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 4), lvl('Life Sciences', 4),
-      manual('Interview', 'An interview is required.')],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+      manual('Interview', 'An interview is required. Selection also weighs English proficiency, and Mathematical Literacy, Technical Mathematics and Technical Science are explicitly not accepted.')],
+    notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 30, English 5 (60%+), Mathematics/Physical Sciences/Life Sciences all 4 (50%+). Campus: Doornfontein.' },
 
   { ...ujBase, id: 'uj-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law', duration_years: 4, min_aps: 31,
     source_url: 'https://www.uj.ac.za/university-courses/llb-in-law/',
     subject_requirements: [engLvl(5, 5), manual('Additional language', 'An additional language at level 4.'),
       anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 4))],
-    notes: flag('partially-verified', 'APS 31 applies if you take Mathematics; APS 32 is required if you take Mathematical Literacy. ' + UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 31 applies if you take Mathematics; APS 32 is required if you take Mathematical Literacy.' },
 
   { ...ujBase, id: 'uj-baccounting', career_id: 'chartered-accountant', name: 'Bachelor of Accounting (CA stream)',
     faculty: 'Economic & Financial Sciences', duration_years: 3, min_aps: 33,
@@ -83,7 +83,7 @@ const ujPrograms = [
     faculty: 'Education', duration_years: 4, min_aps: 28,
     source_url: 'https://www.uj.ac.za/university-courses/bed-in-foundation-phase-teaching-grade-r-3/',
     subject_requirements: [engLvl(5, 6), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 5), lvl('Technical Mathematics', 5))],
-    notes: flag('partially-verified', UJ_CAVEAT + ' This resolves a gap logged earlier (see uj-omitted-rows in research-log.mjs) - we now have the exact programme-page URL.') },
+    notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 28, English HL 5 (60%+) or FAL 6 (70%+), Mathematics 3 (40%+) or Mathematical Literacy/Technical Mathematics 5 (60%+).' },
 
   { ...ujBase, id: 'uj-bed-senior-fet-maths', career_id: 'teacher', name: 'BEd Senior Phase & FET Teaching (Mathematics)',
     faculty: 'Education', duration_years: null, min_aps: 28,
@@ -107,7 +107,7 @@ const ujPrograms = [
     faculty: 'Humanities', duration_years: 4, min_aps: 31,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-social-work/',
     subject_requirements: [engLvl(5, 5)],
-    notes: flag(['partially-verified', 'conflict'], UJ_CAVEAT + ' Two indexed UJ pages gave slightly different APS figures (31 and 31.5) for this programme, and neither stated a Mathematics/Mathematical Literacy requirement - we show 31 rather than a guessed decimal APS, and flag the conflict.') },
+    notes: 'RESOLVED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 31, English 5 (60%+) - settles the earlier 31-vs-31.5 conflict between two indexed copies of this page in favour of 31. No Mathematics/Mathematical Literacy requirement is stated.' },
 
   { ...ujBase, id: 'uj-bcom-indpsych', career_id: 'industrial-psychologist', name: 'BCom in Industrial Psychology',
     faculty: 'Economic & Financial Sciences', duration_years: null, min_aps: 26,
@@ -140,10 +140,10 @@ const ujPrograms = [
     notes: flag('partially-verified', UJ_CAVEAT + ' Feeds into the BSc Honours in Quantity Surveying.') },
 
   { ...ujBase, id: 'uj-bcom-accounting-std', career_id: 'chartered-accountant', name: 'BCom in Accounting',
-    faculty: 'Economic & Financial Sciences', duration_years: null, min_aps: 28,
+    faculty: 'Economic & Financial Sciences', duration_years: 3, min_aps: 28,
     source_url: 'https://www.uj.ac.za/university-courses/bcom-in-accounting/',
     subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4)],
-    notes: flag('partially-verified', UJ_CAVEAT + ' Distinct from the Bachelor of Accounting (CA stream) already listed above, which has a higher APS; neither programme accepts Mathematical Literacy or Technical Mathematics.') },
+    notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 28, English 4 (50%), Mathematics 4 (50%), explicitly stating Mathematical Literacy and Technical Mathematics are not accepted. 3 years. Distinct from the Bachelor of Accounting (CA stream) already listed above, which has a higher APS.' },
 ];
 
 // =====================================================================
