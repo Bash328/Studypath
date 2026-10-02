@@ -165,7 +165,7 @@ const SYSTEMS = {
     explanation:
       'Wits Health Sciences does not use APS. It uses a Composite Index of 75% school average across 5 subjects and 25% NBT - and Wits does not publish the cut-off scores.',
     reason:
-      'We cannot work this out for you: it needs your NBT results, and Wits does not publish the cut-off you would be measured against.',
+      'We cannot work this out for you: it needs your NBT results, and Wits does not publish the cut-off you would be measured against. Contact Wits Health Sciences admissions directly (see Contacts on Wits’s page) to find out where you stand.',
   },
 
   UP_APS_exLO: {

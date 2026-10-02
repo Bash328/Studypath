@@ -45,7 +45,12 @@ const ujPrograms = [
     faculty: 'Science', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bsc-in-computer-science-and-informatics/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)],
-    notes: flag('partially-verified', UJ_CAVEAT + ' UJ also lists an Artificial Intelligence specialisation at APS 34 with Mathematics at level 7, but we could not capture that specialisation’s own programme page URL, so we are not showing it as a separate verified entry.') },
+    notes: flag('partially-verified', UJ_CAVEAT) },
+  { ...ujBase, id: 'uj-bsc-compsci-ai', career_id: 'software-engineer', name: 'BSc Computer Science & Informatics (Specialising in AI)',
+    faculty: 'Science', duration_years: 3, min_aps: 34,
+    source_url: 'https://www.uj.ac.za/university-courses/bsc-in-computer-science-and-informatics-specialising-in-ai-artificial-intelligence/',
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 7)],
+    notes: flag('partially-verified', 'RESOLVED 2026-10-02: this specialisation’s own programme page URL (programme code B2I04Q) was not previously captured - now found via web search surfacing UJ’s own page (uj.ac.za is blocked for a raw fetch in this environment). 2027 applications stated as 1 April - 31 October 2026. ' + UJ_CAVEAT) },
 
   { ...ujBase, id: 'uj-nursing', career_id: 'nurse', name: 'Bachelor of Nursing',
     faculty: 'Health Sciences', duration_years: 4, min_aps: 30,
