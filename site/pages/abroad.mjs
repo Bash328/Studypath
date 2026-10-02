@@ -56,16 +56,39 @@ const TIMELINE = [
 // back (the content lives here so a later pass can finish and flip it on).
 // ---------------------------------------------------------------------------
 
-function uniCard({ name, field, need, url, level = 'verified' }) {
+/**
+ * `contact`, when given, is { email?, phone?, url? } for that university's own
+ * international-admissions office - the url is only needed if it differs from the
+ * entry-requirement page already linked as the main source.
+ * `apply`, when given, is { url, note? } - where to actually submit an application
+ * (a portal, UCAS, Studielink, OUAC...), with a short note for the portal name/fee.
+ */
+function uniCard({ name, field, need, url, level = 'verified', contact, apply }) {
   const badge = level === 'verified' ? verificationTag('verified') : tag(level);
+  const contactLine = contact && (contact.email || contact.phone)
+    ? `<p class="small"><span class="source__label">Contact:</span> ${[
+        contact.email ? `<a href="mailto:${esc(contact.email)}">${esc(contact.email)}</a>` : null,
+        contact.phone ? esc(contact.phone) : null,
+      ].filter(Boolean).join(' · ')}${contact.url && contact.url !== url ? ` <span class="muted">(${link(contact.url, hostOf(contact.url))})</span>` : ''}</p>`
+    : '';
+  const applyLine = apply
+    ? `<p class="small"><span class="source__label">How to apply:</span> ${link(apply.url, apply.note || 'Apply here')}</p>`
+    : '';
   return `<article class="card">
   <div class="badge-row">${badge}</div>
   <h3>${esc(name)}</h3>
   ${field ? `<p class="card__meta">${esc(field)}</p>` : ''}
   <p>${esc(need)}</p>
   <p class="source"><span class="source__label">Source:</span> ${link(url, hostOf(url))}</p>
+  ${applyLine}
+  ${contactLine}
 </article>`;
 }
+
+/** Several UK/Ireland universities quote NSC requirements as a run-together digit
+ * string (e.g. "77666") rather than spelling out each subject - this decodes it once,
+ * for sections where that notation actually appears. */
+const nscScaleNote = () => `<p class="small muted">${iconOrEmoji('❓')} Reading a grade string like <strong>77666</strong>: it’s one NSC achievement level per subject, best to worst, run together – level 7 = 80–100%, 6 = 70–79%, 5 = 60–69%, 4 = 50–59%. So “77666” means two subjects at 80%+ and three at 70–79%. Where a university also gives an “A-level equivalent” (e.g. AAA), that’s just its own conversion of that same NSC string – not a separate requirement.</p>`;
 
 const COUNTRIES = [
   {
@@ -98,22 +121,32 @@ const COUNTRIES = [
 
 <section class="section wrap wrap--narrow" id="examples">
   ${sectionHead('🎓', 'Universities with published South Africa (NSC/IEB) entry rules')}
+  ${nscScaleNote()}
   <div class="stack">
     ${[
-      { name: 'University of Edinburgh (Scotland)', field: 'Arts, Humanities & Social Sciences', need: 'Grade 6 (70%) in at least 4 NSC subjects (excluding Life Orientation), with Grade 4 (50%) in English Home/First Additional Language.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa' },
-      { name: 'University of Edinburgh (Scotland)', field: 'Medicine (MBChB)', need: '4 subjects at Grade 7 (80%) including Physical Sciences, Life Sciences and Maths, plus Grade 6 (70%) in English.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa' },
-      { name: 'University of Sheffield (England)', field: 'Most undergraduate degrees', need: '5 subjects at Grade 6 (70%), with any subject the specific degree requires at Grade 7 (80%). NSC English grade 4 or above accepted instead of IELTS.', url: 'https://sheffield.ac.uk/international/entry-requirements/south-africa' },
-      { name: 'University of Manchester (England)', field: 'Guide, varies by course', need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.', url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/' },
-      { name: 'University of Leeds (England)', field: 'Guide, varies by course', need: 'Accepts the NSC with matriculation endorsement or the International Secondary Certificate. Grade bands range from 77666–66655 up to 77776 depending on the course. NSC/ISC English grade 4/C or above accepted instead of IELTS.', url: 'https://www.leeds.ac.uk/admissions-qualifications/21927/south-africa' },
-      { name: 'University of Birmingham (England)', field: 'Guide, varies by course', need: 'Explicitly names both the NSC and IEB as accepted. Grade-band table in 5 subjects (excluding Life Orientation): A*AA-equivalent 77766, AAA-equivalent 77666, AAB-equivalent 76666, ABB–BBB-equivalent 66666. Separate, stricter requirements apply for Medicine and Dentistry.', url: 'https://www.birmingham.ac.uk/International/students/country/south-africa/index.aspx' },
-      { name: 'University of Nottingham (England)', field: 'Guide, varies by course', need: 'Considers direct entry with 5+ NSC subject passes (Life Orientation excluded), typically accepting grades from 77777 down to 66665 in relevant subjects.', url: 'https://www.nottingham.ac.uk/studywithus/international-applicants/country-info/countryinformation/south-africa.aspx' },
-      { name: 'University of Glasgow (Scotland)', field: 'Guide, varies by course', need: 'Grade-band table from A*AA-equivalent down to BBB-equivalent. Explicitly states the NSC does not satisfy entry for Medicine or Dentistry – A-levels recommended instead. Accepts both NSC and IEB.', url: 'https://www.gla.ac.uk/international/country/southafrica/' },
-      { name: 'University of Warwick (England)', field: 'Guide, varies by course', need: 'Considers direct entry from NSC 77777/AAAAA down to 76666/ABBBB, with specific subjects usually needed at grade 7/A. Also runs a Warwick International Foundation Programme for lower marks.', url: 'https://warwick.ac.uk/study/international/countryinformation/africa/southafrica/' },
-      { name: 'University of Bristol (England)', field: 'Guide, varies by course', need: 'Considers NSC holders with grades of 7, 6 and 5 for bachelor’s degree courses, needing good grades in five subjects excluding Life Orientation.', url: 'https://www.bristol.ac.uk/international/countries/south-africa.html' },
-      { name: 'University of Liverpool (England)', field: 'Guide, varies by course', need: 'Grade-band table in 5 subjects: AAA-equivalent 77666, AAB-equivalent 76666, ABB-equivalent 66666, BBB-equivalent 66665. Considers NSC (with Matriculation Endorsement) or IEB for certain science-linked courses.', url: 'https://www.liverpool.ac.uk/international/countries/southafrica.php' },
+      { name: 'University of Edinburgh (Scotland)', field: 'Arts, Humanities & Social Sciences', need: 'Grade 6 (70%) in at least 4 NSC subjects (excluding Life Orientation), with Grade 4 (50%) in English Home/First Additional Language.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa', apply: { url: 'https://www.ed.ac.uk/studying/international/applying/undergraduate', note: 'Apply via UCAS' } },
+      { name: 'University of Edinburgh (Scotland)', field: 'Medicine (MBChB)', need: '4 subjects at Grade 7 (80%) including Physical Sciences, Life Sciences and Maths, plus Grade 6 (70%) in English.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa', apply: { url: 'https://www.ed.ac.uk/studying/international/applying/undergraduate', note: 'Apply via UCAS' } },
+      { name: 'University of Sheffield (England)', field: 'Most undergraduate degrees', need: '5 subjects at Grade 6 (70%), with any subject the specific degree requires at Grade 7 (80%). NSC English grade 4 or above accepted instead of IELTS.', url: 'https://sheffield.ac.uk/international/entry-requirements/south-africa', apply: { url: 'https://sheffield.ac.uk/international/applying/undergraduate', note: 'Apply via UCAS' }, contact: { email: 'international@sheffield.ac.uk', phone: '+44 114 222 2000', url: 'https://www.sheffield.ac.uk/international/contact/team' } },
+      { name: 'University of Manchester (England)', field: 'Guide, varies by course', need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.', url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/', apply: { url: 'https://www.manchester.ac.uk/study/undergraduate/applying/how-to-apply/', note: 'Apply via UCAS, code M20 MANU' }, contact: { email: 'international@manchester.ac.uk', phone: '+44 (0)161 306 6000' } },
+      { name: 'University of Leeds (England)', field: 'Guide, varies by course', need: 'Accepts the NSC with matriculation endorsement or the International Secondary Certificate. Grade bands range from 77666–66655 up to 77776 depending on the course. NSC/ISC English grade 4/C or above accepted instead of IELTS.', url: 'https://www.leeds.ac.uk/admissions-qualifications/21927/south-africa', apply: { url: 'https://www.leeds.ac.uk/undergraduate-how-to-apply/doc/apply', note: 'Apply via UCAS' }, contact: { email: 'study@leeds.ac.uk', url: 'https://www.leeds.ac.uk/about/doc/about-contact-us' } },
+      { name: 'University of Birmingham (England)', field: 'Guide, varies by course', need: 'Explicitly names both the NSC and IEB as accepted. Grade-band table in 5 subjects (excluding Life Orientation): A*AA-equivalent 77766, AAA-equivalent 77666, AAB-equivalent 76666, ABB–BBB-equivalent 66666. Separate, stricter requirements apply for Medicine and Dentistry.', url: 'https://www.birmingham.ac.uk/International/students/country/south-africa/index.aspx', apply: { url: 'https://www.birmingham.ac.uk/study/undergraduate/apply', note: 'Apply via UCAS, code B32' }, contact: { email: 'Africa@contacts.bham.ac.uk' } },
+      { name: 'University of Nottingham (England)', field: 'Guide, varies by course', need: 'Considers direct entry with 5+ NSC subject passes (Life Orientation excluded), typically accepting grades from 77777 down to 66665 in relevant subjects.', url: 'https://www.nottingham.ac.uk/studywithus/international-applicants/country-info/countryinformation/south-africa.aspx', apply: { url: 'https://www.nottingham.ac.uk/studywithus/ugstudy/applying.html', note: 'Apply via UCAS (£34.50 UCAS fee)' }, contact: { phone: '+44 (0)115 951 5247' } },
+      { name: 'University of Glasgow (Scotland)', field: 'Guide, varies by course', need: 'Grade-band table from A*AA-equivalent down to BBB-equivalent. Explicitly states the NSC does not satisfy entry for Medicine or Dentistry – A-levels recommended instead. Accepts both NSC and IEB.', url: 'https://www.gla.ac.uk/international/country/southafrica/', apply: { url: 'https://www.gla.ac.uk/undergraduate/how-to-apply-for-an-undergraduate-degree/ucas', note: 'Apply via UCAS' } },
+      { name: 'University of Warwick (England)', field: 'Guide, varies by course', need: 'Considers direct entry from NSC 77777/AAAAA down to 76666/ABBBB, with specific subjects usually needed at grade 7/A. Also runs a Warwick International Foundation Programme for lower marks.', url: 'https://warwick.ac.uk/study/international/countryinformation/africa/southafrica/', apply: { url: 'https://warwick.ac.uk/study/undergraduate/applying/how-to-apply/', note: 'Apply via UCAS, code W20' }, contact: { email: 'Africa@warwick.ac.uk', phone: '+44 (0)24 7657 2686' } },
+      { name: 'University of Bristol (England)', field: 'Guide, varies by course', need: 'Considers NSC holders with grades of 7, 6 and 5 for bachelor’s degree courses, needing good grades in five subjects excluding Life Orientation.', url: 'https://www.bristol.ac.uk/international/countries/south-africa.html', apply: { url: 'https://www.bristol.ac.uk/study/undergraduate/apply/international/', note: 'Apply via UCAS, code B78' }, contact: { email: 'support@international.bristol.ac.uk', phone: '+44 (0)117 205 2644' } },
+      { name: 'University of Liverpool (England)', field: 'Guide, varies by course', need: 'Grade-band table in 5 subjects: AAA-equivalent 77666, AAB-equivalent 76666, ABB-equivalent 66666, BBB-equivalent 66665. Considers NSC (with Matriculation Endorsement) or IEB for certain science-linked courses.', url: 'https://www.liverpool.ac.uk/international/countries/southafrica.php', apply: { url: 'https://www.liverpool.ac.uk/international/applying/how-to-apply/', note: 'Apply via UCAS, code L41' }, contact: { email: 'SubAfrica@liverpool.ac.uk', phone: '+44 151 794 5927' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">A handful of examples, not a full list. Some courses don’t take the NSC at all (e.g. QMUL’s London MBBS/BDS, or Medicine/Dentistry at Glasgow), and Maths Literacy usually doesn’t count where Mathematics is required – always check the specific course page.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      v('University of Manchester’s **Global Futures Scholarships**, for 2027 entry: up to **£36,000 total** (£12,000/year for 3 years), merit-based. Its own scholarship page names South Africa explicitly as eligible (domiciled in South Africa, with an NSC or IEB qualification). Applications open December 2026, across two rounds (25 February and 8 April 2027). Excludes Medicine, Dentistry, Architecture and foundation-year courses.', [src('manchester.ac.uk', 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/scholarships/')]),
+    ])}
+  </div>
 </section>`,
   },
   {
@@ -130,18 +163,50 @@ const COUNTRIES = [
   </div>
 </section>
 
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Money and visas</h2>
+    ${claims([
+      v('South Africa lost visa-free access to Ireland on 10 July 2024 and is now visa-required. The study (“D”) visa costs **€60** for a single-journey visa (valid up to 90 days) or **€100** for a multi-journey visa (valid up to 5 years).', [src('Education in Ireland (State agency)', 'https://www.educationinireland.com/en/plan-your-study-abroad/student-visas')]),
+      v('Proof of funds: for courses starting after 1 July 2023, visa-required students must show access to **€10,000** for the year. A tuition deposit – normally a minimum of **€6,000**, or the full fee if it’s less – is also required before registering.', [src('tcd.ie', 'https://www.tcd.ie/study/international/arriving-in-ireland/visa-immigration/FAQ/')]),
+      v('After arrival, you register your immigration permission (Stamp 2) for an **Irish Residence Permit (IRP)**, which costs **€300**. Private medical insurance – or eligible travel insurance with medical cover, valid for your full stay – is mandatory and checked as part of the visa application itself, not just recommended.', [src('Education in Ireland (State agency)', 'https://www.educationinireland.com/en/plan-your-study-abroad/student-visas')]),
+    ])}
+    ${checksBox([{ label: 'Student visas, Education in Ireland', url: 'https://www.educationinireland.com/en/plan-your-study-abroad/student-visas' }, { label: 'Irish Naturalisation and Immigration Service', url: 'https://www.irishimmigration.ie' }])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Deadlines</h2>
+    ${claims([
+      v('Trinity opens applications 1 November. Its priority deadline is **1 February** (decision by 1 April); the final deadline is **30 June**. Music, Drama, Dental Science and Medicine all close on 1 February.', [src('tcd.ie', 'https://www.tcd.ie/study/international/how-to-apply/')]),
+      r('UCD runs rolling non-EU admissions, reported to open around 1 October for the following September intake with a final deadline around 1 July – apply earlier if you’ll need a visa. UCD’s own deadlines page consistently blocked our fetch, so treat these as indicative only until confirmed directly.', []),
+    ])}
+  </div>
+</section>
+
 <section class="section wrap wrap--narrow" id="examples">
   ${sectionHead('🎓', 'What the universities ask for')}
+  ${nscScaleNote()}
   <div class="stack">
     ${[
-      { name: 'Trinity College Dublin', field: 'Guide, varies by course', need: 'Publishes four NSC/IEB “bands” based on your five strongest subjects (excluding Life Orientation): Special Entry 77777, Band 1 77776, Band 2 77766, Band 3 77666. You must also meet minimum matriculation requirements: passes in English, Mathematics and a language other than English. Needs “a high level of competence in English” via a recognised exam system.', url: 'https://www.tcd.ie/study/country/south-africa/' },
-      { name: 'University College Dublin (UCD)', field: 'Guide, varies by course', need: 'Asks for the award of the NSC (or the old Senior Certificate with matric endorsement), plus whatever grades the specific course sets. Its NSC English requirement is reported as 40% if taught through English or Home Language level, otherwise 60%.', url: 'https://www.ucd.ie/global/study-at-ucd/undergraduate/entryrequirements/southafrica/', level: 'reported' },
-      { name: 'University College Cork (UCC)', field: 'NSC (from 2008), minimum 5 subjects', need: 'Genuinely programme-tiered: Band 1 programmes need a minimum NSC average of grade 7, Band 2 grade 6, Band 3 grade 5. Where Mathematics or a lab science is required, those need at least grade 6.', url: 'https://www.ucc.ie/en/study/comparison/undergrad/africa-me-india/south-africa/' },
-      { name: 'University of Galway', field: 'Senior Certificate with matriculation endorsement, 5 subjects', need: 'Five bands by NSC achievement: Band I 60–64%, Band II 64–69%, Band III 70–79%, Band IV 80–90%, Band V 90–100% (Life Orientation excluded). Specific programmes may need a higher band.', url: 'https://www.universityofgalway.ie/global-galway/studyinireland/yourcountry/southafrica/' },
-      { name: 'University of Limerick', field: 'NSC accepted – no published grade thresholds', need: 'Confirms it accepts the NSC (AS level), but publishes no specific percentages or grade bands – only that some programmes may set a higher bar, and a portfolio, and that meeting minimum grades doesn’t guarantee a place. Worth contacting directly.', url: 'https://www.ul.ie/courses/south-africa', level: 'reported' },
+      { name: 'Trinity College Dublin', field: 'Guide, varies by course', need: 'Publishes four NSC/IEB “bands” based on your five strongest subjects (excluding Life Orientation): Special Entry 77777, Band 1 77776, Band 2 77766, Band 3 77666. You must also meet minimum matriculation requirements: passes in English, Mathematics and a language other than English. Needs “a high level of competence in English” via a recognised exam system.', url: 'https://www.tcd.ie/study/country/south-africa/', apply: { url: 'https://www.tcd.ie/study/international/how-to-apply/', note: 'Apply directly via my.tcd.ie (€55 per course)' }, contact: { email: 'daniel.osullivan@tcd.ie' } },
+      { name: 'University College Dublin (UCD)', field: 'Guide, varies by course', need: 'Asks for the award of the NSC (or the old Senior Certificate with matric endorsement), plus whatever grades the specific course sets. Its NSC English requirement is reported as 40% if taught through English or Home Language level, otherwise 60%.', url: 'https://www.ucd.ie/global/study-at-ucd/undergraduate/entryrequirements/southafrica/', level: 'reported', apply: { url: 'https://www.ucd.ie/courses/apply', note: 'Apply via UCD Global (reported ~€60 fee, unconfirmed)' }, contact: { email: 'globaladmissions@ucd.ie', phone: '+353 1 716 8500', url: 'https://www.ucd.ie/global/whoweare/internationaladmissions/' } },
+      { name: 'University College Cork (UCC)', field: 'NSC (from 2008), minimum 5 subjects', need: 'Genuinely programme-tiered: Band 1 programmes need a minimum NSC average of grade 7, Band 2 grade 6, Band 3 grade 5. Where Mathematics or a lab science is required, those need at least grade 6.', url: 'https://www.ucc.ie/en/study/comparison/undergrad/africa-me-india/south-africa/', apply: { url: 'https://ucc.elluciancrmrecruit.com/Apply/Account/Login', note: 'Apply via the UCCApply portal' }, contact: { email: 'internationaloffice@ucc.ie', phone: '+353 21 490 4724', url: 'https://www.ucc.ie/en/international/contactus/' } },
+      { name: 'University of Galway', field: 'Senior Certificate with matriculation endorsement, 5 subjects', need: 'Five bands by NSC achievement: Band I 60–64%, Band II 64–69%, Band III 70–79%, Band IV 80–90%, Band V 90–100% (Life Orientation excluded). Specific programmes may need a higher band.', url: 'https://www.universityofgalway.ie/global-galway/studyinireland/yourcountry/southafrica/', apply: { url: 'https://nuigalway.elluciancrmrecruit.com/Apply/Account/Login', note: 'Apply via Apply to University of Galway (€35, up to 2 programmes)' }, contact: { phone: '+353 91 524411' } },
+      { name: 'University of Limerick', field: 'NSC accepted – no published grade thresholds', need: 'Confirms it accepts the NSC (AS level), but publishes no specific percentages or grade bands – only that some programmes may set a higher bar, and a portfolio, and that meeting minimum grades doesn’t guarantee a place. Worth contacting directly.', url: 'https://www.ul.ie/courses/south-africa', level: 'reported', apply: { url: 'https://www.ul.ie/global/incoming-students/full-degree', note: 'Apply via the “Apply Now” button on your chosen programme’s page' }, contact: { email: 'ULGlobal@ul.ie', phone: '+353 61 202700' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">Both Trinity and UCD also offer an International Foundation route (the Trinity International Foundation Programme and the UCD International Foundation Year) if your marks fall short of direct entry.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      r('Trinity’s **Global Excellence Undergraduate Scholarships** are worth **€2,000–€5,000** (applied to tuition), for non-EU fee-status applicants with an offer for 2026/27 entry. Its exclusion list names China but not South Africa, which suggests South African applicants qualify – but Trinity doesn’t explicitly confirm South Africa as eligible on the page itself, so treat this as likely rather than certain until you check with Trinity directly. Doesn’t cover Medicine, Dentistry, Acting, Engineering, Natural Sciences or Computer Science & Statistics.', [src('tcd.ie', 'https://www.tcd.ie/study/international/scholarships/undergraduate/geug.php')]),
+    ])}
+  </div>
 </section>`,
   },
   {
@@ -159,14 +224,38 @@ const COUNTRIES = [
   </div>
 </section>
 
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Money and visas</h2>
+    ${claims([
+      v('South Africa is **not** on the Netherlands’ MVV-exempt list, so you need an MVV (a “Type D” entry visa) alongside your residence permit – both are applied for together. The combined **residence permit fee is €254** (the 2026 figure) – crucially, **the university applies on your behalf**, not you directly, since it must be an IND-recognised sponsor.', [src('ind.nl', 'https://ind.nl/en/fees-costs-of-an-application'), src('ind.nl, MVV exemptions', 'https://ind.nl/en/mvv-exemptions')]),
+      v('Proof of sufficient means for a student residence permit: **€1,130.77/month** for higher professional education (HBO) or university study (the 2026 figure, effective 1 January–31 December 2026).', [src('ind.nl', 'https://ind.nl/en/required-amounts-income-requirements')]),
+      v('Health insurance is a **legal requirement**, not just advice. Full-time students who don’t also work must buy private international student insurance; the moment you take on any paid work (even a zero-hour contract), you’re required to switch to Dutch public health insurance instead.', [src('Study in NL, Nuffic', 'https://www.studyinnl.org/plan-your-stay/healthcare-insurance'), src('rug.nl', 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/financial-matters/health-insurance-international-students?lang=en')]),
+    ])}
+    ${checksBox([{ label: 'IND, fees and costs of an application', url: 'https://ind.nl/en/fees-costs-of-an-application' }])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Deadlines</h2>
+    ${claims([
+      g('Deadlines vary by university and even by programme, so don’t assume one date applies everywhere. Capacity-limited (“numerus fixus”) programmes typically close around **15 January**; most other bachelor’s programmes close around **1 May** – but several universities set an earlier cut-off specifically for non-EU/EEA applicants, to leave time for the residence-permit process.'),
+      v('Groningen uses the same dates for every applicant: **1 May** for regular bachelor’s programmes, **15 January** for fixed-quota (numerus fixus) programmes.', [src('rug.nl', 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/application-deadlines/bachelor-application-deadlines?lang=en')]),
+      v('VU Amsterdam sets a separate, earlier deadline for non-EU/EEA applicants: **1 April** for 2027/2028 entry, with applications opening 1 October 2026.', [src('vu.nl', 'https://vu.nl/en/education/more-about/apply-bachelors-programme')]),
+      v('Erasmus University College’s own deadlines for 2027/2028: **15 January** (regular) or **1 May** (final).', [src('eur.nl/euc', 'https://www.eur.nl/en/euc/application-admissions/deadlines')]),
+    ])}
+  </div>
+</section>
+
 <section class="section wrap wrap--narrow" id="examples">
   ${sectionHead('🎓', 'Universities that take the NSC directly')}
   <div class="stack">
     ${[
-      { name: 'University of Groningen', field: 'Guide, varies by faculty', need: 'Requires the NSC with 7 examination subjects and an overall average of 70% (Life Orientation and Mathematical Literacy excluded); Science/Engineering, Economics and Medical Sciences also set their own required subjects.', url: 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/with-non-dutch-diploma/bachelor/bachelor-entry-requirements/bachelorlinkscountry/south-africa?lang=en' },
-      { name: 'Vrije Universiteit (VU) Amsterdam', field: 'Guide, varies by faculty', need: 'Accepts the NSC (from Umalusi) or IEB with 7 examination subjects, an overall average of 70% (excluding Life Orientation) and no single subject below 65%, where the certificate confirms you’ve met South Africa’s own Bachelor’s-admission minimum.', url: 'https://vu.nl/en/education/more-about/list-of-diplomas-per-country' },
-      { name: 'Erasmus University Rotterdam', field: 'General bachelor’s admission', need: 'Accepts the NSC with an overall average of 70%, each individual subject at 55% or higher, and the certificate confirming you’ve met South Africa’s Bachelor’s-admission minimum.', url: 'https://www.eur.nl/en/education/practical-matters/bachelor-admission-and-application/diploma-overview' },
-      { name: 'Erasmus University College (EUC)', field: 'Selective liberal-arts college within Erasmus Rotterdam', need: 'A stricter bar than Erasmus’s own general bachelor’s admission above, from the same university: minimum overall NSC score of 70%, with Mathematics at achievement level 6 or higher.', url: 'https://www.eur.nl/en/euc/application-admissions/admission-requirements' },
+      { name: 'University of Groningen', field: 'Guide, varies by faculty', need: 'Requires the NSC with 7 examination subjects and an overall average of 70% (Life Orientation and Mathematical Literacy excluded); Science/Engineering, Economics and Medical Sciences also set their own required subjects.', url: 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/with-non-dutch-diploma/bachelor/bachelor-entry-requirements/bachelorlinkscountry/south-africa?lang=en', apply: { url: 'https://www.rug.nl/education/bachelor/international-students/admission-and-application/?lang=en', note: 'Apply via Studielink' } },
+      { name: 'Vrije Universiteit (VU) Amsterdam', field: 'Guide, varies by faculty', need: 'Accepts the NSC (from Umalusi) or IEB with 7 examination subjects, an overall average of 70% (excluding Life Orientation) and no single subject below 65%, where the certificate confirms you’ve met South Africa’s own Bachelor’s-admission minimum.', url: 'https://vu.nl/en/education/more-about/list-of-diplomas-per-country', apply: { url: 'https://vu.nl/en/education/more-about/apply-bachelors-programme', note: 'Apply via Studielink (€100 fee for non-NL diplomas)' }, contact: { phone: '+31 (0)20 59 84510' } },
+      { name: 'Erasmus University Rotterdam', field: 'General bachelor’s admission', need: 'Accepts the NSC with an overall average of 70%, each individual subject at 55% or higher, and the certificate confirming you’ve met South Africa’s Bachelor’s-admission minimum.', url: 'https://www.eur.nl/en/education/practical-matters/bachelor-admission-and-application/diploma-overview', apply: { url: 'https://www.eur.nl/en/education/bachelor-programmes/admission-and-application-bachelor', note: 'Apply via Studielink, then the EUR Admissions Portal (€100 fee)' }, contact: { email: 'admissions.office@eur.nl' } },
+      { name: 'Erasmus University College (EUC)', field: 'Selective liberal-arts college within Erasmus Rotterdam', need: 'A stricter bar than Erasmus’s own general bachelor’s admission above, from the same university: minimum overall NSC score of 70%, with Mathematics at achievement level 6 or higher.', url: 'https://www.eur.nl/en/euc/application-admissions/admission-requirements', apply: { url: 'https://www.eur.nl/en/euc/application-admissions/application-procedure', note: 'Apply via Studielink (€100 fee)' }, contact: { email: 'admissions@euc.eur.nl' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">Treat these as confirmed exceptions, not a rule – most Dutch research universities still ask for VWO. Always check the specific faculty’s own page.</p>
@@ -176,11 +265,20 @@ const COUNTRIES = [
   ${sectionHead('🎓', 'Universities that need more than a plain matric')}
   <div class="stack">
     ${[
-      { name: 'TU Delft – a worked example of “not equivalent” in practice', need: 'States the NSC/IEB is “not considered to be equivalent” to the Dutch pre-university (VWO) diploma. Requires South African applicants to have completed at least the first year (60 ECTS) of a BSc/BEng at an accredited academic university, in the same or a closely related field, with a GPA of at least 75%.', url: 'https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma/admission-requirements/country-specific-requirements' },
-      { name: 'University of Amsterdam – PPLE (Politics, Psychology, Law & Economics)', need: 'Needs the NSC (with the South Africa Bachelor’s-admission endorsement) AND a successfully completed first year of full-time South African university Bachelor’s study, with a university GPA of at least 70, a supplementary maths exam, and an English score of at least 75.', url: 'https://pple.uva.nl/how-to-apply/entry-requirements/requirements-per-diploma-type/your-entry-requirements.html' },
+      { name: 'TU Delft – a worked example of “not equivalent” in practice', need: 'States the NSC/IEB is “not considered to be equivalent” to the Dutch pre-university (VWO) diploma. Requires South African applicants to have completed at least the first year (60 ECTS) of a BSc/BEng at an accredited academic university, in the same or a closely related field, with a GPA of at least 75%.', url: 'https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma/admission-requirements/country-specific-requirements', apply: { url: 'https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma/1-admission-requirements', note: 'Apply via Studielink, then MyTUDelft' }, contact: { email: 'info@tudelft.nl', phone: '015-2789111', url: 'https://www.tudelft.nl/en/about-tu-delft/contact' } },
+      { name: 'University of Amsterdam – PPLE (Politics, Psychology, Law & Economics)', need: 'Needs the NSC (with the South Africa Bachelor’s-admission endorsement) AND a successfully completed first year of full-time South African university Bachelor’s study, with a university GPA of at least 70, a supplementary maths exam, and an English score of at least 75.', url: 'https://pple.uva.nl/how-to-apply/entry-requirements/requirements-per-diploma-type/your-entry-requirements.html', apply: { url: 'https://pple.uva.nl/how-to-apply/application-guide/application-guide.html', note: 'Apply via Studielink, then the SIS portal' }, contact: { phone: '+31 (0)20 525 9099', url: 'https://pple.uva.nl/contact' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">Both ask for university-level study on top of your NSC, not instead of it – the “not equivalent to VWO” pattern, applied by two different universities.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      v('The Dutch government’s **Holland Scholarship**, run through Nuffic and participating universities (including Groningen, VU, Erasmus, TU Delft and UvA), is worth **€5,000** in your first year of study. Eligibility is non-nationality-restrictive beyond being from outside the EEA – South Africa qualifies. The 2026/27 cycle opened 1 November 2025; check each participating university’s own page for its specific deadline.', [src('Study in NL, Nuffic', 'https://www.studyinnl.org/finances/holland-scholarship')]),
+    ])}
+  </div>
 </section>`,
   },
   {
@@ -231,14 +329,23 @@ const COUNTRIES = [
   ${sectionHead('🎓', 'Universities with published South Africa entry rules', 'Canada has no single national equivalency rule like the UK’s UCAS – each university sets its own.')}
   <div class="stack">
     ${[
-      { name: 'University of British Columbia (UBC, Vancouver)', field: 'Programme-specific course requirements', need: 'Needs the National Senior Certificate; past years required around a 75% average (minimum pass 40%). Specific course prerequisites vary by programme, e.g. Applied Science (Engineering) and Science need Pre-Calculus Maths and Physical Sciences; Commerce needs Pre-Calculus Maths; Dental Hygiene needs Life Science, Physical Science, and an interview.', url: 'https://you.ubc.ca/applying-ubc/requirements/international-high-schools/' },
-      { name: 'Western University', field: 'Programme-specific course requirements', need: 'Needs the Senior Certificate with Matriculation endorsement; typically admits with the equivalent of a B (3.0) average. Required subjects vary: Medical Sciences needs Biology, Chemistry and Maths; Nursing needs Biology, Chemistry, English and Maths; Arts & Humanities has none.', url: 'https://welcome.uwo.ca/next-steps/requirements/international-high-school/south-africa.html' },
+      { name: 'University of British Columbia (UBC, Vancouver)', field: 'Programme-specific course requirements', need: 'Needs the National Senior Certificate; past years required around a 75% average (minimum pass 40%). Specific course prerequisites vary by programme, e.g. Applied Science (Engineering) and Science need Pre-Calculus Maths and Physical Sciences; Commerce needs Pre-Calculus Maths; Dental Hygiene needs Life Science, Physical Science, and an interview.', url: 'https://you.ubc.ca/applying-ubc/requirements/international-high-schools/', apply: { url: 'https://you.ubc.ca/applying-ubc/how-to-apply/application/', note: 'Apply via EducationPlannerBC (CAD 173.25 for study-permit applicants)' }, contact: { phone: '604 822 8999', url: 'https://you.ubc.ca/contact-us/' } },
+      { name: 'Western University', field: 'Programme-specific course requirements', need: 'Needs the Senior Certificate with Matriculation endorsement; typically admits with the equivalent of a B (3.0) average. Required subjects vary: Medical Sciences needs Biology, Chemistry and Maths; Nursing needs Biology, Chemistry, English and Maths; Arts & Humanities has none.', url: 'https://welcome.uwo.ca/next-steps/requirements/international-high-school/south-africa.html', contact: { email: 'international@uwo.ca', phone: '(519) 661-2100' } },
       { name: 'University of Ottawa', field: 'General undergraduate entry', need: 'Applicants straight from the NSC need a minimum 75% average (higher for some programmes); applicants with some post-secondary study already need a minimum 70% average.', url: 'https://www.uottawa.ca/study/undergraduate-studies/international-applicants/south-africa' },
-      { name: 'University of Toronto', field: 'General undergraduate entry, no published percentage', need: 'Requires the National Senior Certificate with matriculation endorsement, but publishes no specific percentage – admission is competitive review on top of meeting the matriculation endorsement.', url: 'https://future.utoronto.ca/international-high-school-requirements-country?page=6' },
-      { name: 'McGill University', field: 'General undergraduate entry', need: 'Accepts “Senior Certificates” with a minimum requirement equivalent to a B+ average – most programmes set a higher bar.', url: 'https://www.mcgill.ca/undergraduate-admissions/apply/requirements/international/other' },
+      { name: 'University of Toronto', field: 'General undergraduate entry, no published percentage', need: 'Requires the National Senior Certificate with matriculation endorsement, but publishes no specific percentage – admission is competitive review on top of meeting the matriculation endorsement.', url: 'https://future.utoronto.ca/international-high-school-requirements-country?page=6', apply: { url: 'https://future.utoronto.ca/international-students/apply-now/', note: 'Apply via OUAC (Ontario Universities’ Application Centre)' }, contact: { email: 'international@utoronto.ca', phone: '+1 416 946 8828', url: 'https://international.utoronto.ca/about/contact-us/' } },
+      { name: 'McGill University', field: 'General undergraduate entry', need: 'Accepts “Senior Certificates” with a minimum requirement equivalent to a B+ average – most programmes set a higher bar.', url: 'https://www.mcgill.ca/undergraduate-admissions/apply/requirements/international/other', apply: { url: 'https://www.mcgill.ca/undergraduate-admissions/step-step-guide', note: 'Apply via the McGill Applicant Portal' }, contact: { email: 'futurestudents@mcgill.ca', url: 'https://www.mcgill.ca/undergraduate-admissions/contact-us' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">A handful of examples, not a full list – always check the specific university’s own international-admissions page, since course prerequisites can differ a lot within one university.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      v('UBC’s **Karen McKellin International Leader of Tomorrow (ILOT) Award** is need-and-merit based: it covers significant or full financial need plus tuition, and is renewable for up to 3–4 years, for students who “would be unable to attend university without significant financial assistance.” Fewer than 30 are awarded each year, so it’s highly competitive – but it’s open to all international undergraduate applicants, with no South Africa exclusion on the page.', [src('you.ubc.ca', 'https://you.ubc.ca/financial-planning/scholarships-awards-international-students/international-scholars/')]),
+    ])}
+  </div>
 </section>`,
   },
   {
@@ -260,14 +367,23 @@ const COUNTRIES = [
   ${sectionHead('🎓', 'Universities with published South Africa (NSC) entry rules')}
   <div class="stack">
     ${[
-      { name: 'UNSW Sydney', field: 'Guide, 2027 entry, varies by degree', need: 'Publishes an NSC-to-degree table: your NSC average (best 4 subjects, excluding Life Orientation) needs to be around 62% for most Arts/Science/Social Science degrees, 70% for Engineering (Hons), 72% for Commerce or Combined Law, up to 77% for the Medical Studies/MD pathway and 79% for Actuarial Studies.', url: 'https://www.unsw.edu.au/content/dam/pdfs/future-students/2027-int-ug-entry-table.pdf' },
-      { name: 'University of Western Australia', field: 'Guide, varies by course', need: 'Converts your NSC average (best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98 – the course itself then sets its own cut-off.', url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate' },
-      { name: 'University of Sydney', field: 'Programme-specific, 2027 International Admission Guide', need: 'Publishes an exact NSC average (best 4 subjects, excluding Life Orientation) needed per degree, e.g. Arts 81, Science 84, Commerce 94, Engineering Honours (most streams) 87, Design in Architecture 90, Music 77, Psychology 80 (Honours 91), Physiotherapy 95. Medicine runs through a separate pathway.', url: 'http://www.sydney.edu.au/dam/corporate/documents/study/how-to-apply/international-admission-guide.pdf' },
-      { name: 'University of Queensland (UQ)', field: '⚠️ Addressed to SA-schooled Queensland-domestic applicants, not the standard international pathway', need: 'UQ’s own “South African National Senior Certificate information sheet” gives the most precise NSC-to-score conversion we found anywhere: minimum pass is NSC grade 4 (50%) since 2008, with a full table converting your average of best 5 subjects into a Selection Rank (e.g. 6.00 → Rank 93.00; 5.27 → Rank 82.00). It explicitly addresses domestic/Queensland-resident applicants who did SA schooling – check with UQ which pathway applies to you.', url: 'https://study.uq.edu.au/sites/default/files/2020-03/south-african-senior-certificate-info-sheet.pdf' },
-      { name: 'Australian National University (ANU)', field: 'NSC average to ANU Entrance Rank', need: 'Publishes a direct conversion table from your NSC indicative score to an ANU Entrance Rank, e.g. 64 → 80, 70 → 90, 76 → 95, 82 → 98, 85 → 99.', url: 'https://study.anu.edu.au/apply/indicative-entry-requirement/south-african-national-senior-certificate' },
+      { name: 'UNSW Sydney', field: 'Guide, 2027 entry, varies by degree', need: 'Publishes an NSC-to-degree table: your NSC average (best 4 subjects, excluding Life Orientation) needs to be around 62% for most Arts/Science/Social Science degrees, 70% for Engineering (Hons), 72% for Commerce or Combined Law, up to 77% for the Medical Studies/MD pathway and 79% for Actuarial Studies.', url: 'https://www.unsw.edu.au/content/dam/pdfs/future-students/2027-int-ug-entry-table.pdf', apply: { url: 'https://www.unsw.edu.au/study/how-to-apply/international', note: 'Apply via the UNSW Applicant Portal' }, contact: { phone: '+61 2 9385 1844' } },
+      { name: 'University of Western Australia', field: 'Guide, varies by course', need: 'Converts your NSC average (best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98. Course-specific ATAR-equivalent cut-offs, confirmed on UWA’s own course prerequisites table: Environmental Design 75, Engineering (Honours) 80, Commerce 80, Economics 85, Law (JD pathway) 96, Medicine (via Biomedicine) 98.', url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate', apply: { url: 'https://www.uwa.edu.au/study/how-to-apply/international-applicants', note: 'Apply via the UWA Application Portal (AUD 150 fee)' }, contact: { phone: '+61 8 6488 1000' } },
+      { name: 'University of Sydney', field: 'Programme-specific, 2027 International Admission Guide', need: 'Publishes an exact NSC average (best 4 subjects, excluding Life Orientation) needed per degree, e.g. Arts 81, Science 84, Commerce 94, Engineering Honours (most streams) 87, Design in Architecture 90, Music 77, Psychology 80 (Honours 91), Physiotherapy 95. Medicine runs through a separate pathway.', url: 'http://www.sydney.edu.au/dam/corporate/documents/study/how-to-apply/international-admission-guide.pdf', apply: { url: 'https://www.sydney.edu.au/study/applying/how-to-apply/international-students.html', note: 'Apply via your course page or an authorised agent' }, contact: { email: 'international.admissions@sydney.edu.au', phone: '1800 793 864 (within Australia)', url: 'https://www.sydney.edu.au/study/applying/how-to-apply/international-students/contact-our-regional-experts.html' } },
+      { name: 'University of Queensland (UQ)', field: '⚠️ Addressed to SA-schooled Queensland-domestic applicants, not the standard international pathway', need: 'UQ’s own “South African National Senior Certificate information sheet” gives the most precise NSC-to-score conversion we found anywhere: minimum pass is NSC grade 4 (50%) since 2008, with a full table converting your average of best 5 subjects into a Selection Rank (e.g. 6.00 → Rank 93.00; 5.27 → Rank 82.00). It explicitly addresses domestic/Queensland-resident applicants who did SA schooling – check with UQ which pathway applies to you.', url: 'https://study.uq.edu.au/sites/default/files/2020-03/south-african-senior-certificate-info-sheet.pdf', apply: { url: 'https://apply.uq.edu.au/', note: 'Apply via UQ’s application portal (AUD 150 per application)' }, contact: { email: 'admissions@uq.edu.au', phone: '+61 7 3365 2203' } },
+      { name: 'Australian National University (ANU)', field: 'NSC average to ANU Entrance Rank', need: 'Publishes a direct conversion table from your NSC indicative score to an ANU Entrance Rank, e.g. 64 → 80, 70 → 90, 76 → 95, 82 → 98, 85 → 99.', url: 'https://study.anu.edu.au/apply/indicative-entry-requirement/south-african-national-senior-certificate', apply: { url: 'https://study.anu.edu.au/apply/international-applications', note: 'Apply via ANU StudyLink (AUD 150 per application)' }, contact: { email: 'admissions@anu.edu.au' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">A handful of examples, not a full list.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      v('University of Sydney’s **International Undergraduate Academic Excellence Scholarship** covers **100% of tuition fees and the Student Services and Amenities Fee (SSAF)** for your degree’s full published duration. Around 20 are awarded globally each year, across two intakes – highly competitive, but currently open with no nationality exclusion on the page.', [src('sydney.edu.au', 'https://www.sydney.edu.au/scholarships/e/sydney-international-undergraduate-academic-excellence-scholarship.html')]),
+    ])}
+  </div>
 </section>`,
   },
   {
@@ -291,14 +407,23 @@ const COUNTRIES = [
   ${sectionHead('🎓', 'Universities with published South Africa entry rules')}
   <div class="stack">
     ${[
-      { name: 'University of Southern Indiana', field: 'General undergraduate entry', need: 'States its equivalent-credentials requirement for South African applicants as the National Senior Certificate (NSC, from 2008 onwards) with 130 credits.', url: 'https://www.usi.edu/international/admissions/how-to-apply/equivalent-credentials' },
-      { name: 'Oregon State University', field: 'General undergraduate entry, 3 pathways', need: 'Its country-requirements table (headed “Senior Certificate,” which may be older terminology but matches the NSC’s post-2008 achievement scale) sets: 55% average for its foundation pathway; 60% average (minimum 40% per subject) for direct/accelerated entry; 55% on transferable coursework for direct transfer.', url: 'https://admissions.oregonstate.edu/sites/admissions.oregonstate.edu/files/ug_country_requirements_1.pdf' },
-      { name: 'University of Iowa', field: 'General undergraduate entry', need: 'Names the National Senior Certificate directly: minimum grade “B or 70%” for certificates issued since 2008, “C or 60%” for pre-2008 certificates. South African applicants are exempt from the usual English-proficiency requirement.', url: 'https://admissions.uiowa.edu/apply/academic-requirements-country' },
-      { name: 'Andrews University', field: 'General undergraduate entry', need: 'Names the NSC directly: at least five subjects passed, including English and Maths, with a minimum GPA of 2.50 on the NSC’s 7-point achievement scale.', url: 'https://www.andrews.edu/services/international/ugcountryreqs/africa-ug.html' },
-      { name: 'University of Memphis', field: 'Document acceptance, no stated minimum average', need: 'Its South Africa-specific page lists which SA certificates it accepts (NSC, Senior Certificate, Senior Certificate with Matriculation Exemption, and several provincial variants) but publishes no numeric minimum average – a separate general English-proficiency requirement still applies.', url: 'https://www.memphis.edu/admissions/international/southafrica.pdf' },
+      { name: 'University of Southern Indiana', field: 'General undergraduate entry', need: 'States its equivalent-credentials requirement for South African applicants as the National Senior Certificate (NSC, from 2008 onwards) with 130 credits.', url: 'https://www.usi.edu/international/admissions/how-to-apply/equivalent-credentials', apply: { url: 'https://connect.usi.edu/apply/', note: 'Apply online ($40 fee)' }, contact: { email: 'usi1apply@usi.edu', phone: '+1 812 464 1768' } },
+      { name: 'Oregon State University', field: 'General undergraduate entry, 3 pathways', need: 'Its country-requirements table (headed “Senior Certificate,” which may be older terminology but matches the NSC’s post-2008 achievement scale) sets: 55% average for its foundation pathway; 60% average (minimum 40% per subject) for direct/accelerated entry; 55% on transferable coursework for direct transfer.', url: 'https://admissions.oregonstate.edu/sites/admissions.oregonstate.edu/files/ug_country_requirements_1.pdf', apply: { url: 'https://intlapps.oregonstate.edu/login/', note: 'Apply via OSU’s international applicant portal (not the Common App)' }, contact: { email: 'intladmit@oregonstate.edu', url: 'https://admissions.oregonstate.edu/international/contact-us' } },
+      { name: 'University of Iowa', field: 'General undergraduate entry', need: 'Names the National Senior Certificate directly: minimum grade “B or 70%” for certificates issued since 2008, “C or 60%” for pre-2008 certificates. South African applicants are exempt from the usual English-proficiency requirement.', url: 'https://admissions.uiowa.edu/apply/academic-requirements-country', apply: { url: 'https://admissions.uiowa.edu/apply/international-application-process', note: 'Apply via the University of Iowa application or Common App ($80 fee)' }, contact: { email: 'international@uiowa.edu' } },
+      { name: 'Andrews University', field: 'General undergraduate entry', need: 'Names the NSC directly: at least five subjects passed, including English and Maths, with a minimum GPA of 2.50 on the NSC’s 7-point achievement scale.', url: 'https://www.andrews.edu/services/international/ugcountryreqs/africa-ug.html', apply: { url: 'https://apply.andrews.edu/en-US/andrews-application-transition', note: 'Apply online ($30 fee, plus a $100 international student fee)' }, contact: { email: 'iss@andrews.edu', phone: '+1 269 471 6395' } },
+      { name: 'University of Memphis', field: 'Document acceptance, no stated minimum average', need: 'Its South Africa-specific page lists which SA certificates it accepts (NSC, Senior Certificate, Senior Certificate with Matriculation Exemption, and several provincial variants) but publishes no numeric minimum average – a separate general English-proficiency requirement still applies.', url: 'https://www.memphis.edu/admissions/international/southafrica.pdf', apply: { url: 'https://apply.memphis.edu/apply/', note: 'Apply via a Tiger Tracks account ($50 fee)' }, contact: { email: 'admissions@memphis.edu' } },
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">A handful of examples, not a full list. Some universities require your NSC to be independently evaluated by a service like World Education Services (WES) before they’ll accept it, separately from admission itself.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Funding</h2>
+    ${claims([
+      r('University of Southern Indiana’s **International Merit Scholarships** are reported to be worth **$500–$3,000 per year**, renewed each year, for incoming freshmen with a minimum 3.25 high-school GPA – a separate scholarship application is required. We cross-referenced this against USI’s own international-admissions language rather than reading it directly off a USI scholarships page, so treat the exact figures as reported, not verified, until you confirm them with USI directly.', [src('usi.edu, cross-referenced via a scholarship directory', 'https://www.usi.edu/international/admissions/how-to-apply')]),
+    ])}
+  </div>
 </section>`,
   },
   {
