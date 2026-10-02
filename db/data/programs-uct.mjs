@@ -212,4 +212,22 @@ export const uctPrograms = [
       manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
     ],
     notes: bands(450, 450, 380) + ' UCT does not list Journalism as its own admission line - you’re admitted to the general BA/BSocSc and choose your major from second year. Confirm which specific major UCT offers in this area before relying on it.' },
+
+  { ...base, id: 'uct-bsw', career_id: 'social-worker', name: 'Bachelor of Social Work',
+    faculty: 'Humanities', duration_years: 4, min_aps: 450, score_type: 'band_a',
+    subject_requirements: [
+      engPct(50, 60),
+      manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
+      manual('Interview', 'Applicants may be required to attend an admissions interview and demonstrate they will meet the South African Council for Social Service Professions’ professional requirements.'),
+    ],
+    notes: bands(450, 450, 380) + ' A standalone structured degree (not a BA/BSocSc major), capped at 80 places a year. This qualification lets you register as a professional social worker with the South African Council for Social Service Professions.' },
+
+  { ...base, id: 'uct-bafa', career_id: 'artist', name: 'Bachelor of Arts in Fine Art',
+    faculty: 'Humanities', duration_years: 4, min_aps: 380, score_type: 'minimum',
+    subject_requirements: [
+      engPct(50, 60),
+      manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
+      manual('Portfolio', 'A supplementary application questionnaire and a portfolio of work are required - this is the leading factor in admission, with places awarded on merit. Applicants below the minimum FPS who excel in the portfolio may still be considered.'),
+    ],
+    notes: 'FPS 380 or above is the published minimum, but unlike the general BA/BSocSc there are no separate guaranteed/likely bands here - the portfolio evaluation decides it. A four-year structured degree at the Michaelis School of Fine Art, not a BA major.' },
 ];

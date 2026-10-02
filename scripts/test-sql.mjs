@@ -49,7 +49,10 @@ r = await get('/api/coverage');
 // Dropped from 7 to 6 on 2026-10-02: the user screenshotted UJ's live Bachelor of Social
 // Work page, settling the 31-vs-31.5 conflict between two indexed copies of that page in
 // favour of 31 - a genuine resolution, not a dropped disclosure.
-ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 6, JSON.stringify(r.b.flagCounts));
+// Dropped from 6 to 5 on 2026-10-02: the user supplied UWC's own 2027 General Admissions
+// Criteria brochure, a third independent UWC source confirming Nursing's lower APS/subject
+// figure over a second source's higher one - another genuine resolution.
+ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 5, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
 ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
 r = await get('/api/meta');

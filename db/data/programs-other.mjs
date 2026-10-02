@@ -267,7 +267,7 @@ const uwcPrograms = [
     source_url: 'https://www.uwc.ac.za/study/faculties-and-programmes/faculty-of-community-and-health-sciences/programmes/252',
     subject_requirements: [engLvl(4, 5), manual('Additional language', 'Another official language at level 4.'),
       anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 4))],
-    notes: flag(['conflict', 'partially-verified', 'unverified'], 'CONFLICT: one UWC source gives Mathematics level 3 (or Mathematical Literacy level 4) as shown here; another gives Mathematics level 4 (or Mathematical Literacy level 6) plus Life Sciences level 4. We show the lower, more commonly repeated figure, but neither is a raw-fetched page in this pass. UWC also lists a separate 5-year Nursing programme code - duration is left blank because we could not confirm which this APS applies to. ' + UWC_WIDER_CAVEAT) },
+    notes: 'RESOLVED 2026-10-02: a direct raw read (via pdftotext) of UWC’s own 2027 General Admissions Criteria brochure confirms this exact figure (minimum 30 points, English Home Language 4 or First Additional 5, Mathematics 3 or Mathematical Literacy 4, another language 4) - a third independent UWC source, settling the earlier conflict with a second source’s higher figure (Mathematics 4/Mathematical Literacy 6 plus Life Sciences 4) in favour of this one. UWC also lists a separate 5-year Nursing programme code - duration is left blank because we could not confirm which this APS applies to.' },
   { ...uwcBase, id: 'uwc-bds', career_id: 'dentist', name: 'Bachelor of Dental Surgery (BDS)', faculty: 'Dentistry',
     duration_years: null, min_aps: 40,
     source_url: 'https://www.uwc.ac.za/study/faculties-and-programmes/faculty-of-dentistry/programmes/363',
