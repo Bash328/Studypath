@@ -12,7 +12,7 @@
 
 export const ANALYTICS = {
   ga4MeasurementId: 'G-EEP9NMYLF9',
-  cloudflareWebAnalyticsToken: '',
+  cloudflareWebAnalyticsToken: 'f4f4b0cad45c4cf0bdfb18b67df0bab7',
   /** GA4 sets cookies, so it waits for consent. Cloudflare Web Analytics does not. */
   requireConsentForGa4: true,
 };

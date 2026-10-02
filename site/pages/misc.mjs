@@ -27,7 +27,8 @@ export function privacyPage() {
 
   ${sectionHead('📊', 'Counting visits')}
   <div class="card">
-    <p>We use Google Analytics to see which pages help learners – for example, how many people open a source link. It sets cookies, so we ask your permission first with a banner the first time you visit; everything on Studypath works the same if you say no, and you can change your mind any time by clearing your browser’s site data.</p>
+    <p>We use <strong>Cloudflare Web Analytics</strong> to count visits and see which pages learners use. It doesn’t use cookies or track you across other sites, so it runs for every visitor without asking.</p>
+    <p>We also use Google Analytics to see which pages help learners – for example, how many people open a source link. It sets cookies, so we ask your permission first with a banner the first time you visit; everything on Studypath works the same if you say no, and you can change your mind any time by clearing your browser’s site data.</p>
   </div>
 
   ${sectionHead('🌐', 'Other things to know')}
