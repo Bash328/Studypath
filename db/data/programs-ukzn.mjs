@@ -23,10 +23,21 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 //
 // Follow-up pass (2026-10-02, see ukzn-engineering-bcom-2026-10-02 in research-log.mjs):
 // BCom General re-checked and confirmed unchanged against its own live clms.ukzn.ac.za
-// page. Engineering's faculty-wide formula spot-checked via Agricultural Engineering's
-// own live engineering.ukzn.ac.za page and confirmed unchanged; other engineering
-// disciplines' own pages don't publish their figures yet, so they still rest on the
-// brochure/faculty-wide convention rather than their own confirmed page.
+// page. Engineering's faculty-wide formula spot-checked via Agricultural and Chemical
+// Engineering's own live engineering.ukzn.ac.za pages and confirmed unchanged.
+//
+// User-supplied brochure pass (2026-10-02, see ukzn-user-brochure-2026-10-02 in
+// research-log.mjs): the user supplied UKZN's own "Undergraduate Degree Requirements
+// Guide" PDF, which covers every college in one document. Cross-checked against it and
+// found three real corrections (Engineering Access Programme is 5 years not 3; Optometry
+// was missing English/LO and wrongly required both Life and Physical Sciences instead of
+// either; BSc Computer Science & IT's English/Life Orientation conflict now favours level
+// 4, 2-1) plus added Foundation Phase subject detail to the BEd row. Also surfaced
+// programmes not yet in this file at all - Architectural Studies and eight Health
+// Sciences programmes (Audiology, Speech-Language Therapy, Dental Therapy, Dietetics &
+// Human Nutrition, Medical Science: Anatomy, Medical Science: Physiology, Occupational
+// Therapy, Oral Hygiene, Sport Science) - logged as a finding for a future pass rather
+// than added now.
 
 const BROCHURE = 'https://studyatukzn.ukzn.ac.za/wp-content/uploads/2026/02/Study@UKZN-BROCHURE-2026.pdf';
 
@@ -44,7 +55,7 @@ const DATED = 'This comes from the Study@UKZN 2026 brochure, the most recent off
 const eng = (id, career_id, name) => ({
   ...base, id, career_id, name, faculty: 'Agriculture, Engineering & Science', duration_years: 4, min_aps: 33,
   subject_requirements: [pct('Mathematics', 65), pct('Physical Sciences', 65), lvl('English', 4), lvl('Life Orientation', 4)],
-  notes: flag('dated-document', 'The published APS range is 48-33. Spot-checked 2026-10-02 via a direct fetch of Agricultural Engineering’s own live discipline page (engineering.ukzn.ac.za), which confirmed this exact formula unchanged - other disciplines’ own pages (e.g. Civil Engineering’s) don’t yet show their own admission figures ("currently being uploaded"), so they’re shown on the same faculty-wide formula rather than their own confirmed page. ' + DATED),
+  notes: flag('dated-document', 'The published APS range is 48-33. CONFIRMED 2026-10-02 for every discipline: a user-supplied copy of UKZN’s own Undergraduate Degree Requirements Guide lists Agricultural, Chemical, Civil, Computer, Electrical, Electronic and Mechanical Engineering as one merged table row sharing this exact entry text and APS range - so this is UKZN’s own stated position that all seven share the formula, not just an inference from Agricultural and Chemical’s own pages (both separately confirmed live, 2026-10-02). ' + DATED),
 });
 
 export const ukznPrograms = [
@@ -59,16 +70,15 @@ export const ukznPrograms = [
   eng('ukzn-bsc-land-surveying', 'land-surveyor', 'BSc Land Surveying'),
 
   { ...base, id: 'ukzn-eng-access', career_id: 'civil-engineer', name: 'BSc Engineering Access Programme',
-    faculty: 'Agriculture, Engineering & Science', duration_years: 3, min_aps: null,
+    faculty: 'Agriculture, Engineering & Science', duration_years: 5, min_aps: null,
     subject_requirements: [lvl('English', 4), lvl('Life Orientation', 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
-    notes: flag('dated-document', 'No APS is published for the Access Programme. ' + DATED) },
+    notes: flag('dated-document', 'CORRECTED 2026-10-02: a user-supplied copy of UKZN’s own Undergraduate Degree Requirements Guide states this programme is 5 years, not the 3 we previously showed. No APS is published for the Access Programme. ' + DATED) },
 
   { ...base, id: 'ukzn-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science & Information Technology',
     faculty: 'Agriculture, Engineering & Science', duration_years: 3, min_aps: 30,
-    source_url: 'https://wp-smscs.ukzn.ac.za/computer-science/',
-    subject_requirements: [lvl('Mathematics', 5), lvl('English', 5), lvl('Life Orientation', 5),
+    subject_requirements: [lvl('Mathematics', 5), lvl('English', 4), lvl('Life Orientation', 4),
       manual('A science subject', 'Agricultural Science, Life Sciences or Physical Science at level 4.')],
-    notes: flag(['conflict', 'dated-document'], 'CONFLICT found in a 2026-10-01 spot-check: UKZN’s own School of Mathematics, Statistics & Computer Science page (via web search, not a raw fetch - its domain did not resolve for this pass’s fetch tool) states English and Life Orientation at level 5, not the level 4 the 2026 Study@UKZN brochure gives - Mathematics (level 5) and the APS range (48-30) are unchanged between the two sources. We show the school page’s level 5 figures as the more specific, programme-level source. ' + DATED) },
+    notes: flag('conflict', 'CORRECTED 2026-10-02: a prior pass found UKZN’s own School of Mathematics, Statistics & Computer Science page (via web search, not a raw fetch) stating English and Life Orientation at level 5, and switched to that figure over the 2026 Study@UKZN brochure’s level 4. A user-supplied copy of UKZN’s own Undergraduate Degree Requirements Guide now gives a third reading, and it agrees with the original brochure: English and Life Orientation at level 4. With two official UKZN documents now saying level 4 against one school-page search result saying level 5, we show level 4 as the majority reading but flag the conflict rather than discard the school page’s figure outright. Mathematics (level 5) and the APS range (48-30) are unchanged across all three sources.') },
 
   // ---------------- Health Sciences ----------------
   { ...base, id: 'ukzn-mbchb', career_id: 'doctor', name: 'MBChB (Medicine)', faculty: 'Health Sciences',
@@ -93,8 +103,8 @@ export const ukznPrograms = [
     notes: flag('dated-document', 'The published APS range is 48-30. ' + DATED) },
   { ...base, id: 'ukzn-optometry', career_id: 'optometrist', name: 'Bachelor of Optometry', faculty: 'Health Sciences',
     duration_years: 4, min_aps: 33,
-    subject_requirements: [lvl('Mathematics', 4), lvl('Life Sciences', 4), lvl('Physical Sciences', 4)],
-    notes: flag('dated-document', 'The published APS range is 48-33. UKZN does not appear to offer a BDS; the brochure lists Dental Therapy instead. ' + DATED) },
+    subject_requirements: [lvl('English', 4), lvl('Life Orientation', 4), lvl('Mathematics', 4), anyOf(lvl('Life Sciences', 4), lvl('Physical Sciences', 4))],
+    notes: flag('dated-document', 'CORRECTED 2026-10-02: a user-supplied copy of UKZN’s own Undergraduate Degree Requirements Guide shows English and Life Orientation at level 4 are also required (previously missing here), and that Life Sciences and Physical Sciences are an either/or choice, not both required as this row previously showed. The published APS range is 48-33. UKZN does not appear to offer a BDS; the brochure lists Dental Therapy instead. ' + DATED) },
 
   // ---------------- Law & Management Studies ----------------
   { ...base, id: 'ukzn-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law & Management Studies',
@@ -115,8 +125,8 @@ export const ukznPrograms = [
   // ---------------- Humanities ----------------
   { ...base, id: 'ukzn-bed', career_id: 'teacher', name: 'BEd Foundation / Intermediate / Senior-FET Phase', faculty: 'Humanities',
     duration_years: 4, min_aps: 28,
-    subject_requirements: [manual('Varies by phase', 'Subject requirements vary by teaching phase - see the UKZN brochure for the phase you want.')],
-    notes: flag('dated-document', 'The published APS range is 48-28. ' + DATED) },
+    subject_requirements: [engLvl(4, 4), manual('Varies by phase', 'Foundation Phase (Grade R-3) also needs another official SA language at Home/First Additional Language level 4 and Mathematics level 3 or Mathematical Literacy level 4. Intermediate (Grade 4-6) and Senior/FET (Grade 7-12) need level 5 in two further subjects relevant to your chosen teaching package instead - see UKZN’s own guide for the exact list per package.')],
+    notes: 'ADDED DETAIL 2026-10-02 from a user-supplied copy of UKZN’s own Undergraduate Degree Requirements Guide: the three phases share English Home/First Additional Language level 4 and this APS range (48-28), but differ in their other subject requirements - see the Foundation Phase detail above. A Matriculation Exemption route exists for all three phases via an NQF Level 4 National Certificate (Vocational) with a Bachelor’s-grade endorsement, considered through selection criteria at 32 points.' },
   { ...base, id: 'ukzn-ba', career_id: 'humanities-generalist', name: 'BA / BSocSc (General Studies)', faculty: 'Humanities',
     duration_years: 3, min_aps: 28,
     subject_requirements: [lvl('English', 4), lvl('Life Orientation', 4),

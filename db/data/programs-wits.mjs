@@ -174,10 +174,11 @@ export const witsPrograms = [
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/economic-science/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 7)],
     notes: 'Confirmed unchanged by a direct fetch of the 2027 course-finder page (2026-10-02 spot-check). APS 39-41 with English 5 and Mathematics 7 may be wait-listed.' },
-  { ...sourceA, id: 'wits-bcom-law', career_id: 'lawyer', name: 'BCom with Law',
+  { ...base, id: 'wits-bcom-law', career_id: 'lawyer', name: 'BCom with Law (part-time)',
     faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 43,
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/bcom-part-time-with-law/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
-    notes: flag('dated-document', 'A 2026-10-01 spot-check via web search (the exact course-finder URL could not be located) found APS 43+, English Level 5 and Mathematics Level 5 still quoted for this programme - no change found, but this is not a raw page read. ' + datedNote) },
+    notes: 'RESOLVED 2026-10-02 (closes the last open Wits gap - see wits-bcom-law-resolved-2026-10-02 in research-log.mjs): a direct fetch of the live course-finder page confirms APS 43+ belongs specifically to the part-time route (evening lectures, Braamfontein West Campus, no NSFAS/scholarships/residence). APS 35-42 with English and Mathematics Level 6 may be wait-listed. There is no separate full-time "BCom with Law" degree - a full-time student wanting both does the general BCom (APS 38, see wits-bcom-general) and chooses Law as their second major, the same way other BCom major combinations work.' },
   // CONFLICT found in the 2026-10-01 Wits spot-check: a direct fetch of the 2027
   // course-finder page confirms APS 46+ (unchanged) but gives Mathematics at Level 5,
   // not the Level 4 the 2026 schools-liaison guide states - we show the course-finder's
