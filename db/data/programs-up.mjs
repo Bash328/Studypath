@@ -19,6 +19,7 @@ const base = {
 };
 
 const CLOSING = 'Most UP closing dates are 30 June; Veterinary Science closes 31 May. Grade 12 applicants apply with their final Grade 11 results.';
+const EMS_CONFIRMED = 'Confirmed against the user-supplied EMS 2027 Faculty Brochure. ' + CLOSING;
 
 const beng = (id, career_id, name) => ({
   ...base, id, career_id, name, faculty: 'Engineering, Built Environment & IT', duration_years: 4, min_aps: 35,
@@ -52,9 +53,10 @@ export const upPrograms = [
   { ...base, id: 'up-bit', career_id: 'information-systems', name: 'BIT (Information Technology)',
     faculty: 'Engineering, Built Environment & IT', duration_years: null, min_aps: 30,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: CLOSING },
-  { ...base, id: 'up-bcom-information-systems', career_id: 'information-systems', name: 'BCom Informatics (Information Systems)',
-    faculty: 'Engineering, Built Environment & IT', duration_years: null, min_aps: 30,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: CLOSING },
+  { ...base, id: 'up-bcom-information-systems', career_id: 'information-systems', name: 'BCom specialising in Information Systems',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
+    notes: 'CORRECTED 2026-10-02 against the user-supplied EMS 2027 Faculty Brochure: this is an EMS-faculty Commerce degree (previously mislabelled under Engineering/IT), the only one in South Africa internationally endorsed by ABET’s Computing Accreditation Commission. 3 years. ' + CLOSING },
   { ...base, id: 'up-bsc-architecture', career_id: 'architect', name: 'BSc Architecture',
     faculty: 'Engineering, Built Environment & IT', duration_years: null, min_aps: 30,
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
@@ -98,21 +100,56 @@ export const upPrograms = [
     notes: flag('selection', 'The only BVSc offered by a South African public university. Closes 31 May - earlier than every other UP programme, including the rest of Health Sciences.') },
 
   // ---------------- Economic & Management Sciences ----------------
+  // Cross-checked 2026-10-02 against the user-supplied EMS 2027 Faculty Brochure (see
+  // up-ems-brochure-2026-10-02 in research-log.mjs): the five rows already here all
+  // matched exactly, just missing duration_years (every EMS programme below is 3 years
+  // unless noted). The brochure also names several specialisations not previously
+  // captured, added below where a career page already exists to point them at; three
+  // (Public Administration & International Relations, Human Resource Management,
+  // Marketing Management) have no matching career page yet and are logged as a gap
+  // instead of guessed into an ill-fitting one.
   { ...base, id: 'up-bcom-accounting-sciences', career_id: 'chartered-accountant', name: 'BCom Accounting Sciences',
-    faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 34,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)], notes: CLOSING },
-  { ...base, id: 'up-bcom-investment', career_id: 'financial-manager', name: 'BCom Investment Management',
-    faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 34,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)], notes: CLOSING },
-  { ...base, id: 'up-bcom-economics', career_id: 'economist', name: 'BCom Economics',
-    faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 32,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: CLOSING },
-  { ...base, id: 'up-bcom-financial-management', career_id: 'financial-manager', name: 'BCom Financial Management',
-    faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 32,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: CLOSING },
-  { ...base, id: 'up-bcom-3year', career_id: 'business-manager', name: 'BCom (3-year)',
-    faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 30,
-    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4)], notes: CLOSING },
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 34,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-investment', career_id: 'financial-manager', name: 'BCom specialising in Investment Management',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 34,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-economics', career_id: 'economist', name: 'BCom specialising in Economics',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-financial-management', career_id: 'financial-manager', name: 'BCom specialising in Financial Management Sciences',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-3year', career_id: 'business-manager', name: 'BCom (3-year, general)',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-4year', career_id: 'business-manager', name: 'BCom (4-year, extended)',
+    faculty: 'Economic & Management Sciences', duration_years: 4, min_aps: 26,
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 3)],
+    notes: 'A foundation-year entry route for applicants who don’t meet the 3-year programme’s minimum, with selection criteria beyond the figures shown here. ' + EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-agribusiness', career_id: 'agricultural-scientist', name: 'BCom specialising in Agribusiness Management',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
+    notes: 'Presented jointly with UP’s Faculty of Natural and Agricultural Sciences. ' + EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-business-management', career_id: 'business-manager', name: 'BCom specialising in Business Management',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4)], notes: EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-econometrics', career_id: 'economist', name: 'BCom specialising in Econometrics',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)],
+    notes: 'A higher Mathematics bar (level 6) than the general BCom Economics specialisation above (level 5) - distinct programmes, not the same one twice. ' + EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-law', career_id: 'lawyer', name: 'BCom specialising in Law',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
+    notes: 'A Commerce degree with law modules, not the direct LLB (see up-llb below, which needs a higher APS and no Mathematics) - lets you register for the 2-year LLB afterwards, the same combined-route pattern seen at other universities. ' + EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-statistics-datascience', career_id: 'data-scientist', name: 'BCom specialising in Statistics and Data Science',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 32,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
+    notes: 'Presented jointly with UP’s Faculty of Natural and Agricultural Sciences. ' + EMS_CONFIRMED },
+  { ...base, id: 'up-bcom-supplychain', career_id: 'supply-chain-logistics', name: 'BCom specialising in Supply Chain Management',
+    faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 30,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4)],
+    notes: 'UP is the only European Logistics Association National Certification Centre in Sub-Saharan Africa; students can earn a Level 4 cEJLog certificate alongside the degree. ' + EMS_CONFIRMED },
 
   // ---------------- Law ----------------
   { ...base, id: 'up-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law', duration_years: null, min_aps: 35,
@@ -137,7 +174,8 @@ export const upPrograms = [
 
   // ---------------- Education & Humanities ----------------
   { ...base, id: 'up-bed', career_id: 'teacher', name: 'BEd (all phases)', faculty: 'Education',
-    duration_years: null, min_aps: 28, subject_requirements: [engLvl(4, 4)], notes: CLOSING },
+    duration_years: 4, min_aps: 28, subject_requirements: [engLvl(4, 4)],
+    notes: 'Confirmed against the user-supplied Education 2027 Faculty Brochure: all four BEd phases (Early Childhood Care and Education, Foundation, Intermediate, Senior Phase & FET) share this exact APS and English requirement, each a 4-year degree. The Faculty also offers a 1-year (contact) or 2-year (online) Higher Certificate in Sports Sciences at a lower APS 20, not shown as its own row here. ' + CLOSING },
   { ...base, id: 'up-ba', career_id: 'humanities-generalist', name: 'BA', faculty: 'Humanities',
     duration_years: null, min_aps: 30, subject_requirements: [engLvl(5, 5)], notes: CLOSING },
   { ...base, id: 'up-ba-psychology', career_id: 'clinical-psychologist', name: 'BA (with Psychology as a major)', faculty: 'Humanities',
