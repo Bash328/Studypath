@@ -3,6 +3,9 @@ import { sectionHead, verificationTag } from '../lib/components.mjs';
 import { iconOrEmoji } from '../lib/icons.mjs';
 
 const g = (text) => ({ level: 'general', text, sources: [] });
+const r = (text, sources) => ({ level: 'reported', text, sources });
+const v = (text, sources) => ({ level: 'verified', text, sources });
+const src = (label, url) => ({ label, url });
 
 // Everything on this page is general guidance about a PROCESS. None of it comes from an
 // official source we verified, so every paragraph is marked that way and each section
@@ -104,6 +107,335 @@ const TIMELINE = [
   ['After results', 'Qualification assessment, visa application, proof of funds, accommodation.'],
 ];
 
+// ---------------------------------------------------------------------------
+// Country pages: money/visas and specific universities, one level deeper than
+// the general-process page above. Each country is `published: true` to get its
+// own page and a card on the picker grid, or `false` to stay researched-but-held-
+// back (the content lives here so a later pass can finish and flip it on).
+// ---------------------------------------------------------------------------
+
+function uniCard({ name, field, need, url, level = 'verified' }) {
+  const badge = level === 'verified' ? verificationTag('verified') : tag(level);
+  return `<article class="card">
+  <div class="badge-row">${badge}</div>
+  <h3>${esc(name)}</h3>
+  ${field ? `<p class="card__meta">${esc(field)}</p>` : ''}
+  <p>${esc(need)}</p>
+  <p class="source"><span class="source__label">Source:</span> ${link(url, hostOf(url))}</p>
+</article>`;
+}
+
+const COUNTRIES = [
+  {
+    id: 'uk', name: 'United Kingdom', published: true,
+    teaser: 'Visa fee, living-cost funds, the Graduate visa change from 2027, and real UCAS deadlines.',
+    lead: 'The most matric-friendly major destination – most UK universities publish exactly which NSC/IEB marks they take, straight from your South Africa country page, no A-levels needed.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Money and visas</h2>
+    ${claims([
+      v('Student visa fee: **£558** applying from outside the UK. Living-cost funds you must currently show: **£1,171/month** outside London or **£1,529/month** in London, for up to 9 months (maximum £10,539 / £13,761), held for at least 28 days.', [src('gov.uk', 'https://www.gov.uk/student-visa')]),
+      v('Immigration Health Surcharge: **£776/year** for students (other applicant types pay £1,035/year), paid upfront for the whole length of the visa.', [src('gov.uk', 'https://www.gov.uk/healthcare-immigration-application/how-much-pay')]),
+      r('Those living-cost figures are rising for applications made on or after **30 November 2026**, under the Home Office’s Statement of Changes HC 584: to **£1,203/month** outside London (maximum £10,827) and **£1,570/month** in London (maximum £14,130). Several immigration-law sources cite these exact figures, but gov.uk’s own guidance page hadn’t been updated to show them as of this check – confirm the live number on gov.uk closer to the date.', [src('HC 584, gov.uk', 'https://www.gov.uk/government/publications/statement-of-changes-to-the-immigration-rules-hc-584-3-september-2026')]),
+      v('The Graduate (post-study work) visa is **2 years** if you apply on or before 31 December 2026, but drops to **18 months** for applications from 1 January 2027 (PhD graduates still get 3 years). A learner starting a UK degree in 2027 will graduate under the shorter rule.', [src('gov.uk', 'https://www.gov.uk/student-visa')]),
+    ])}
+    ${checksBox([{ label: 'UK Student visa, gov.uk', url: 'https://www.gov.uk/student-visa' }])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">UCAS and deadlines (2027 entry)</h2>
+    ${claims([
+      v('All undergraduate applications go through UCAS, which can take up to 5 choices. Oxford, Cambridge and most Medicine, Dentistry and Veterinary Medicine/Science courses close **15 October 2026, 18:00 UK time**; the main “equal consideration” deadline for most other undergraduate courses is **13 January 2027, 18:00 UK time**.', [src('ucas.com', 'https://www.ucas.com/applying/applying-to-university/dates-and-deadlines-for-uni-applications')]),
+      r('Your NSC results only come out in January, after the 13 January deadline – UK universities usually get around this by making **conditional offers** off your Grade 11 and Grade 12 prelim marks, then confirming the place once your final NSC is out.', []),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities with published South Africa (NSC/IEB) entry rules')}
+  <div class="stack">
+    ${[
+      { name: 'University of Edinburgh (Scotland)', field: 'Arts, Humanities & Social Sciences', need: 'Grade 6 (70%) in at least 4 NSC subjects (excluding Life Orientation), with Grade 4 (50%) in English Home/First Additional Language.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa' },
+      { name: 'University of Edinburgh (Scotland)', field: 'Medicine (MBChB)', need: '4 subjects at Grade 7 (80%) including Physical Sciences, Life Sciences and Maths, plus Grade 6 (70%) in English.', url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa' },
+      { name: 'University of Sheffield (England)', field: 'Most undergraduate degrees', need: '5 subjects at Grade 6 (70%), with any subject the specific degree requires at Grade 7 (80%). NSC English grade 4 or above accepted instead of IELTS.', url: 'https://sheffield.ac.uk/international/entry-requirements/south-africa' },
+      { name: 'University of Manchester (England)', field: 'Guide, varies by course', need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.', url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/' },
+      { name: 'University of Leeds (England)', field: 'Guide, varies by course', need: 'Accepts the NSC with matriculation endorsement or the International Secondary Certificate. Grade bands range from 77666–66655 up to 77776 depending on the course. NSC/ISC English grade 4/C or above accepted instead of IELTS.', url: 'https://www.leeds.ac.uk/admissions-qualifications/21927/south-africa' },
+      { name: 'University of Birmingham (England)', field: 'Guide, varies by course', need: 'Explicitly names both the NSC and IEB as accepted. Grade-band table in 5 subjects (excluding Life Orientation): A*AA-equivalent 77766, AAA-equivalent 77666, AAB-equivalent 76666, ABB–BBB-equivalent 66666. Separate, stricter requirements apply for Medicine and Dentistry.', url: 'https://www.birmingham.ac.uk/International/students/country/south-africa/index.aspx' },
+      { name: 'University of Nottingham (England)', field: 'Guide, varies by course', need: 'Considers direct entry with 5+ NSC subject passes (Life Orientation excluded), typically accepting grades from 77777 down to 66665 in relevant subjects.', url: 'https://www.nottingham.ac.uk/studywithus/international-applicants/country-info/countryinformation/south-africa.aspx' },
+      { name: 'University of Glasgow (Scotland)', field: 'Guide, varies by course', need: 'Grade-band table from A*AA-equivalent down to BBB-equivalent. Explicitly states the NSC does not satisfy entry for Medicine or Dentistry – A-levels recommended instead. Accepts both NSC and IEB.', url: 'https://www.gla.ac.uk/international/country/southafrica/' },
+      { name: 'University of Warwick (England)', field: 'Guide, varies by course', need: 'Considers direct entry from NSC 77777/AAAAA down to 76666/ABBBB, with specific subjects usually needed at grade 7/A. Also runs a Warwick International Foundation Programme for lower marks.', url: 'https://warwick.ac.uk/study/international/countryinformation/africa/southafrica/' },
+      { name: 'University of Bristol (England)', field: 'Guide, varies by course', need: 'Considers NSC holders with grades of 7, 6 and 5 for bachelor’s degree courses, needing good grades in five subjects excluding Life Orientation.', url: 'https://www.bristol.ac.uk/international/countries/south-africa.html' },
+      { name: 'University of Liverpool (England)', field: 'Guide, varies by course', need: 'Grade-band table in 5 subjects: AAA-equivalent 77666, AAB-equivalent 76666, ABB-equivalent 66666, BBB-equivalent 66665. Considers NSC (with Matriculation Endorsement) or IEB for certain science-linked courses.', url: 'https://www.liverpool.ac.uk/international/countries/southafrica.php' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">A handful of examples, not a full list. Some courses don’t take the NSC at all (e.g. QMUL’s London MBBS/BDS, or Medicine/Dentistry at Glasgow), and Maths Literacy usually doesn’t count where Mathematics is required – always check the specific course page.</p>
+</section>`,
+  },
+  {
+    id: 'ireland', name: 'Ireland', published: true,
+    teaser: 'Why SA applicants go direct to the university, not through the CAO – Trinity and UCD compared.',
+    lead: 'Bachelor’s degrees take 3–4 years, teaching is in English, and both major universities publish exactly what they want from an NSC or IEB certificate.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">How you apply</h2>
+    ${claims([
+      v('South African applicants are normally “non-EU” (this depends on where you live, not your nationality), which means you apply **directly to the university**, not through Ireland’s central CAO system – the CAO is for EU/EEA/UK/Swiss applicants. Trinity College Dublin applies through my.tcd.ie; University College Dublin through UCD Global.', [src('tcd.ie', 'https://www.tcd.ie/study/country/south-africa/')]),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'What the universities ask for')}
+  <div class="stack">
+    ${[
+      { name: 'Trinity College Dublin', field: 'Guide, varies by course', need: 'Publishes four NSC/IEB “bands” based on your five strongest subjects (excluding Life Orientation): Special Entry 77777, Band 1 77776, Band 2 77766, Band 3 77666. You must also meet minimum matriculation requirements: passes in English, Mathematics and a language other than English. Needs “a high level of competence in English” via a recognised exam system.', url: 'https://www.tcd.ie/study/country/south-africa/' },
+      { name: 'University College Dublin (UCD)', field: 'Guide, varies by course', need: 'Asks for the award of the NSC (or the old Senior Certificate with matric endorsement), plus whatever grades the specific course sets. Its NSC English requirement is reported as 40% if taught through English or Home Language level, otherwise 60%.', url: 'https://www.ucd.ie/global/study-at-ucd/undergraduate/entryrequirements/southafrica/', level: 'reported' },
+      { name: 'University College Cork (UCC)', field: 'NSC (from 2008), minimum 5 subjects', need: 'Genuinely programme-tiered: Band 1 programmes need a minimum NSC average of grade 7, Band 2 grade 6, Band 3 grade 5. Where Mathematics or a lab science is required, those need at least grade 6.', url: 'https://www.ucc.ie/en/study/comparison/undergrad/africa-me-india/south-africa/' },
+      { name: 'University of Galway', field: 'Senior Certificate with matriculation endorsement, 5 subjects', need: 'Five bands by NSC achievement: Band I 60–64%, Band II 64–69%, Band III 70–79%, Band IV 80–90%, Band V 90–100% (Life Orientation excluded). Specific programmes may need a higher band.', url: 'https://www.universityofgalway.ie/global-galway/studyinireland/yourcountry/southafrica/' },
+      { name: 'University of Limerick', field: 'NSC accepted – no published grade thresholds', need: 'Confirms it accepts the NSC (AS level), but publishes no specific percentages or grade bands – only that some programmes may set a higher bar, and a portfolio, and that meeting minimum grades doesn’t guarantee a place. Worth contacting directly.', url: 'https://www.ul.ie/courses/south-africa', level: 'reported' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">Both Trinity and UCD also offer an International Foundation route (the Trinity International Foundation Programme and the UCD International Foundation Year) if your marks fall short of direct entry.</p>
+</section>`,
+  },
+  {
+    id: 'netherlands', name: 'Netherlands', published: true,
+    teaser: 'Why a plain matric usually isn’t enough for a research university – HAVO vs VWO explained.',
+    lead: 'Read this before assuming your matric is enough – the Netherlands is one of the harder destinations for a plain NSC, and most pages that cover it skip why.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="callout callout--warn">
+    <h3>${iconOrEmoji('⚠️')} HAVO vs VWO – why this matters</h3>
+    ${claims([
+      v('**Nuffic**, the Dutch government body that compares foreign qualifications, rates an NSC as comparable to a **HAVO diploma** when the certificate itself shows you’ve met the minimum admission requirements for a Higher Certificate, (National) Diploma and/or Bachelor’s programme in South Africa – that’s a property of the NSC endorsement, not a separate completed year of study. An IEB-issued NSC meeting that same condition is rated “at least” a HAVO diploma.', [src('nuffic.nl', 'https://www.nuffic.nl/en/education-systems/south-africa/level-of-diplomas')]),
+      g('HAVO is the level for **universities of applied sciences** (hogescholen/HBO). Dutch **research universities** (WO) normally ask for VWO, one level higher. So a plain matric usually gets you into a university of applied sciences, but often not straight into a research university.'),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities that take the NSC directly')}
+  <div class="stack">
+    ${[
+      { name: 'University of Groningen', field: 'Guide, varies by faculty', need: 'Requires the NSC with 7 examination subjects and an overall average of 70% (Life Orientation and Mathematical Literacy excluded); Science/Engineering, Economics and Medical Sciences also set their own required subjects.', url: 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/with-non-dutch-diploma/bachelor/bachelor-entry-requirements/bachelorlinkscountry/south-africa?lang=en' },
+      { name: 'Vrije Universiteit (VU) Amsterdam', field: 'Guide, varies by faculty', need: 'Accepts the NSC (from Umalusi) or IEB with 7 examination subjects, an overall average of 70% (excluding Life Orientation) and no single subject below 65%, where the certificate confirms you’ve met South Africa’s own Bachelor’s-admission minimum.', url: 'https://vu.nl/en/education/more-about/list-of-diplomas-per-country' },
+      { name: 'Erasmus University Rotterdam', field: 'General bachelor’s admission', need: 'Accepts the NSC with an overall average of 70%, each individual subject at 55% or higher, and the certificate confirming you’ve met South Africa’s Bachelor’s-admission minimum.', url: 'https://www.eur.nl/en/education/practical-matters/bachelor-admission-and-application/diploma-overview' },
+      { name: 'Erasmus University College (EUC)', field: 'Selective liberal-arts college within Erasmus Rotterdam', need: 'A stricter bar than Erasmus’s own general bachelor’s admission above, from the same university: minimum overall NSC score of 70%, with Mathematics at achievement level 6 or higher.', url: 'https://www.eur.nl/en/euc/application-admissions/admission-requirements' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">Treat these as confirmed exceptions, not a rule – most Dutch research universities still ask for VWO. Always check the specific faculty’s own page.</p>
+</section>
+
+<section class="section wrap wrap--narrow">
+  ${sectionHead('🎓', 'Universities that need more than a plain matric')}
+  <div class="stack">
+    ${[
+      { name: 'TU Delft – a worked example of “not equivalent” in practice', need: 'States the NSC/IEB is “not considered to be equivalent” to the Dutch pre-university (VWO) diploma. Requires South African applicants to have completed at least the first year (60 ECTS) of a BSc/BEng at an accredited academic university, in the same or a closely related field, with a GPA of at least 75%.', url: 'https://www.tudelft.nl/en/education/admission-and-application/bsc-international-diploma/admission-requirements/country-specific-requirements' },
+      { name: 'University of Amsterdam – PPLE (Politics, Psychology, Law & Economics)', need: 'Needs the NSC (with the South Africa Bachelor’s-admission endorsement) AND a successfully completed first year of full-time South African university Bachelor’s study, with a university GPA of at least 70, a supplementary maths exam, and an English score of at least 75.', url: 'https://pple.uva.nl/how-to-apply/entry-requirements/requirements-per-diploma-type/your-entry-requirements.html' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">Both ask for university-level study on top of your NSC, not instead of it – the “not equivalent to VWO” pattern, applied by two different universities.</p>
+</section>`,
+  },
+  {
+    id: 'germany', name: 'Germany', published: false,
+    teaser: 'The anabin/DAAD process, the blocked account you need, and why it needs checking case by case.',
+    lead: 'Expect an extra step, and expect it to differ by university – Germany doesn’t have one simple rule for an NSC, so this page explains the system rather than inventing a number.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="callout callout--warn">
+    <h3>${iconOrEmoji('⚠️')} How access is decided</h3>
+    ${claims([
+      g('Germany decides access through the **anabin** database (run by the Central Office for Foreign Education, ZAB) and the **DAAD admission database**, with universities – often working through **uni-assist’s** preliminary review (VPD) – making the final call. anabin rates individual schools/institutions, by classifying them H+ (direct access), H+/− (conditional – usually a Studienkolleg route) or H− (not sufficient on its own). There is no single anabin “rule” for the NSC as a whole – it depends on your specific school’s classification. An old 2013 DAAD brochure describing a general NSC rule is outdated – the only reliable check is DAAD’s own current admission database and anabin, per school and university.'),
+      g('We searched directly on thirteen major German universities’ own international-admissions pages (TU Munich, LMU Munich, RWTH Aachen, Heidelberg, Humboldt Berlin, TU Berlin, Freiburg, Mannheim, Bonn, Stuttgart, Constructor University Bremen, KIT Karlsruhe, TU Dresden) and found none that publish South Africa or NSC-specific entry figures – every one routes international applicants to uni-assist and anabin instead. That absence is itself the finding: unlike the UK, Ireland or the Netherlands, German universities generally don’t publish their own NSC pages, because the classification is centrally brokered.'),
+      g('Language also depends on the course: German-taught degrees need a German-language certificate such as the DSH, and Studienkollegs are taught entirely in German.'),
+    ])}
+    ${checksBox([
+      { label: 'DAAD admission database', url: 'https://www2.daad.de/deutschland/nach-deutschland/voraussetzungen/en/' },
+      { label: 'anabin, Central Office for Foreign Education', url: 'https://anabin.kmk.org' },
+      { label: 'uni-assist, preliminary review (VPD)', url: 'https://www.uni-assist.de' },
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Money: the blocked account (Sperrkonto)</h2>
+    ${claims([
+      r('A German student visa needs a blocked account – reported at roughly **€11,904/year (€992/month)**, released to you monthly after you arrive, plus any provider’s own set-up fee on top. This figure is consistently cited across multiple sources, but we couldn’t get a clean direct read of the German missions’ own page in this pass – confirm it yourself before you budget around it.', [src('German missions in Africa, blocked account', 'https://germanyinafrica.diplo.de/zadz-en/sperrkonto/388600')]),
+    ])}
+  </div>
+</section>`,
+  },
+  {
+    id: 'canada', name: 'Canada', published: true,
+    teaser: 'Study-permit proof-of-funds rules, and what changed for applications from September 2026.',
+    lead: 'The study-permit money rule changed for the 2026/27 intake – here’s the current figure, checked directly on canada.ca.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Study permit: proof of funds</h2>
+    ${claims([
+      v('For study-permit applications submitted on or after **1 September 2026**, a single student outside Quebec must show **CAD 23,448** for one year of living expenses (up from CAD 22,895) – this is on top of first-year tuition and travel costs, not instead of them. Quebec sets its own, separate figure.', [src('canada.ca', 'https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/financial-support.html')]),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities with published South Africa entry rules', 'Canada has no single national equivalency rule like the UK’s UCAS – each university sets its own.')}
+  <div class="stack">
+    ${[
+      { name: 'University of British Columbia (UBC, Vancouver)', field: 'Programme-specific course requirements', need: 'Needs the National Senior Certificate; past years required around a 75% average (minimum pass 40%). Specific course prerequisites vary by programme, e.g. Applied Science (Engineering) and Science need Pre-Calculus Maths and Physical Sciences; Commerce needs Pre-Calculus Maths; Dental Hygiene needs Life Science, Physical Science, and an interview.', url: 'https://you.ubc.ca/applying-ubc/requirements/international-high-schools/' },
+      { name: 'Western University', field: 'Programme-specific course requirements', need: 'Needs the Senior Certificate with Matriculation endorsement; typically admits with the equivalent of a B (3.0) average. Required subjects vary: Medical Sciences needs Biology, Chemistry and Maths; Nursing needs Biology, Chemistry, English and Maths; Arts & Humanities has none.', url: 'https://welcome.uwo.ca/next-steps/requirements/international-high-school/south-africa.html' },
+      { name: 'University of Ottawa', field: 'General undergraduate entry', need: 'Applicants straight from the NSC need a minimum 75% average (higher for some programmes); applicants with some post-secondary study already need a minimum 70% average.', url: 'https://www.uottawa.ca/study/undergraduate-studies/international-applicants/south-africa' },
+      { name: 'University of Toronto', field: 'General undergraduate entry, no published percentage', need: 'Requires the National Senior Certificate with matriculation endorsement, but publishes no specific percentage – admission is competitive review on top of meeting the matriculation endorsement.', url: 'https://future.utoronto.ca/international-high-school-requirements-country?page=6' },
+      { name: 'McGill University', field: 'General undergraduate entry', need: 'Accepts “Senior Certificates” with a minimum requirement equivalent to a B+ average – most programmes set a higher bar.', url: 'https://www.mcgill.ca/undergraduate-admissions/apply/requirements/international/other' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">A handful of examples, not a full list – always check the specific university’s own international-admissions page, since course prerequisites can differ a lot within one university.</p>
+</section>`,
+  },
+  {
+    id: 'australia', name: 'Australia', published: true,
+    teaser: 'Subclass 500 visa fee, living-cost funds, and what UNSW, UWA and Sydney actually ask South Africans for.',
+    lead: 'Several Australian universities convert your NSC average directly into an entry score, and the visa money rules are published in plain figures.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Student visa (subclass 500)</h2>
+    ${claims([
+      v('Visa application fee: **AUD 2,500 from 1 July 2026**, up from AUD 2,000, unless you qualify for an exemption.', [src('studyaustralia.gov.au', 'https://www.studyaustralia.gov.au/en/plan-your-move/your-guide-to-visas/student-visa-subclass-500')]),
+      v('Proof of funds required: at least **AUD 29,710**, on top of first-year tuition and travel costs. You also need an electronic Confirmation of Enrolment (eCoE), Overseas Student Health Cover (OSHC) for your whole stay, and to meet the Genuine Student requirement.', [src('studyaustralia.gov.au', 'https://www.studyaustralia.gov.au/en/plan-your-move/visa-application-process')]),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities with published South Africa (NSC) entry rules')}
+  <div class="stack">
+    ${[
+      { name: 'UNSW Sydney', field: 'Guide, 2027 entry, varies by degree', need: 'Publishes an NSC-to-degree table: your NSC average (best 4 subjects, excluding Life Orientation) needs to be around 62% for most Arts/Science/Social Science degrees, 70% for Engineering (Hons), 72% for Commerce or Combined Law, up to 77% for the Medical Studies/MD pathway and 79% for Actuarial Studies.', url: 'https://www.unsw.edu.au/content/dam/pdfs/future-students/2027-int-ug-entry-table.pdf' },
+      { name: 'University of Western Australia', field: 'Guide, varies by course', need: 'Converts your NSC average (best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98 – the course itself then sets its own cut-off.', url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate' },
+      { name: 'University of Sydney', field: 'Programme-specific, 2027 International Admission Guide', need: 'Publishes an exact NSC average (best 4 subjects, excluding Life Orientation) needed per degree, e.g. Arts 81, Science 84, Commerce 94, Engineering Honours (most streams) 87, Design in Architecture 90, Music 77, Psychology 80 (Honours 91), Physiotherapy 95. Medicine runs through a separate pathway.', url: 'http://www.sydney.edu.au/dam/corporate/documents/study/how-to-apply/international-admission-guide.pdf' },
+      { name: 'University of Queensland (UQ)', field: '⚠️ Addressed to SA-schooled Queensland-domestic applicants, not the standard international pathway', need: 'UQ’s own “South African National Senior Certificate information sheet” gives the most precise NSC-to-score conversion we found anywhere: minimum pass is NSC grade 4 (50%) since 2008, with a full table converting your average of best 5 subjects into a Selection Rank (e.g. 6.00 → Rank 93.00; 5.27 → Rank 82.00). It explicitly addresses domestic/Queensland-resident applicants who did SA schooling – check with UQ which pathway applies to you.', url: 'https://study.uq.edu.au/sites/default/files/2020-03/south-african-senior-certificate-info-sheet.pdf' },
+      { name: 'Australian National University (ANU)', field: 'NSC average to ANU Entrance Rank', need: 'Publishes a direct conversion table from your NSC indicative score to an ANU Entrance Rank, e.g. 64 → 80, 70 → 90, 76 → 95, 82 → 98, 85 → 99.', url: 'https://study.anu.edu.au/apply/indicative-entry-requirement/south-african-national-senior-certificate' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">A handful of examples, not a full list.</p>
+</section>`,
+  },
+  {
+    id: 'usa', name: 'United States', published: true,
+    teaser: 'The SEVIS fee, F-1 visa steps, and where the NSC fits into a Common App application.',
+    lead: 'Applications go through each university individually (or the Common App), and the visa process has its own fees and steps separate from admission itself.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">F-1 student visa: fees and steps</h2>
+    ${claims([
+      v('SEVIS I-901 fee: **US$350** for F-1 students, paid before your visa interview and separate from any university application fee.', [src('ice.gov', 'https://www.ice.gov/sevis/i901')]),
+      r('Visa application (MRV) fee: reported at **US$185**, unchanged through 2026. A separate US$250 “Visa Integrity Fee” was created by US law for FY2026 and applies broadly to nonimmigrant visa categories including F-1, but as of the most recent reporting we found, it was **not yet being collected**. This could change at short notice, so confirm the current total on travel.state.gov before you budget.', [src('travel.state.gov', 'https://travel.state.gov/content/travel/en/us-visas/study/student-visa.html')]),
+      g('Broad steps: your university issues the I-20 → you pay the SEVIS fee → you complete the DS-160 form → you interview at a US Embassy or Consulate.'),
+    ])}
+    ${checksBox([{ label: 'Common App', url: 'https://www.commonapp.org' }])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities with published South Africa entry rules')}
+  <div class="stack">
+    ${[
+      { name: 'University of Southern Indiana', field: 'General undergraduate entry', need: 'States its equivalent-credentials requirement for South African applicants as the National Senior Certificate (NSC, from 2008 onwards) with 130 credits.', url: 'https://www.usi.edu/international/admissions/how-to-apply/equivalent-credentials' },
+      { name: 'Oregon State University', field: 'General undergraduate entry, 3 pathways', need: 'Its country-requirements table (headed “Senior Certificate,” which may be older terminology but matches the NSC’s post-2008 achievement scale) sets: 55% average for its foundation pathway; 60% average (minimum 40% per subject) for direct/accelerated entry; 55% on transferable coursework for direct transfer.', url: 'https://admissions.oregonstate.edu/sites/admissions.oregonstate.edu/files/ug_country_requirements_1.pdf' },
+      { name: 'University of Iowa', field: 'General undergraduate entry', need: 'Names the National Senior Certificate directly: minimum grade “B or 70%” for certificates issued since 2008, “C or 60%” for pre-2008 certificates. South African applicants are exempt from the usual English-proficiency requirement.', url: 'https://admissions.uiowa.edu/apply/academic-requirements-country' },
+      { name: 'Andrews University', field: 'General undergraduate entry', need: 'Names the NSC directly: at least five subjects passed, including English and Maths, with a minimum GPA of 2.50 on the NSC’s 7-point achievement scale.', url: 'https://www.andrews.edu/services/international/ugcountryreqs/africa-ug.html' },
+      { name: 'University of Memphis', field: 'Document acceptance, no stated minimum average', need: 'Its South Africa-specific page lists which SA certificates it accepts (NSC, Senior Certificate, Senior Certificate with Matriculation Exemption, and several provincial variants) but publishes no numeric minimum average – a separate general English-proficiency requirement still applies.', url: 'https://www.memphis.edu/admissions/international/southafrica.pdf' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">A handful of examples, not a full list. Some universities require your NSC to be independently evaluated by a service like World Education Services (WES) before they’ll accept it, separately from admission itself.</p>
+</section>`,
+  },
+  {
+    id: 'hungary', name: 'Hungary', published: false,
+    teaser: 'Stipendium Hungaricum – the clearest fully-funded undergraduate scholarship open to South Africans.',
+    lead: 'Most fully-funded scholarships overseas are postgraduate only. Stipendium Hungaricum is the clearest exception – it’s open to undergraduates, and South Africa is an eligible country.',
+    body: `
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">What it covers</h2>
+    ${claims([
+      v('Full tuition, a contribution toward accommodation, a monthly stipend and medical insurance. It explicitly covers **Bachelor’s (undergraduate)** level, not just Master’s or PhD study, at Hungarian universities.', [src('stipendiumhungaricum.hu', 'https://stipendiumhungaricum.hu'), src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow">
+  <div class="card">
+    <h2 class="h3">Eligibility and how to apply</h2>
+    ${claims([
+      v('DHET’s published eligibility rules for South African applicants: a South African citizen in good health; born before 31 August 2008; a minimum 60% NSC average for undergraduate applicants (Life Orientation excluded) or 60% in your previous degree for postgraduate applicants; a genuine interest in studying in Hungary and a commitment to South Africa’s development; meets the chosen programme’s own entry requirements; not already self-funded at the same or a lower level in Hungary.', [src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
+      r('You apply online to the Tempus Public Foundation, plus nomination through South Africa’s DHET process. For the cycle that closed 15 January 2026 (for September 2026 entry), those were the live rules. DHET hadn’t yet published the next cycle’s (2027/28) dates at the time of this check – secondary sources estimate a similar mid-January deadline by pattern, but that is not officially confirmed.', []),
+    ])}
+  </div>
+</section>
+
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'A university with published South Africa entry rules')}
+  <div class="stack">
+    ${[
+      { name: 'University of Pécs', field: 'General admission, undergraduate (BA/BSc) and preparatory programmes', need: 'Names South Africa specifically: accepts the National Senior Certificate (from Umalusi or IEB), as long as the certificate indicates you’ve met South Africa’s own minimum requirement for admission to a Bachelor’s programme.', url: 'https://international.pte.hu/sites/international.pte.hu/files/2025-10/general-admission-diploma-requirements_1.pdf' },
+    ].map(uniCard).join('')}
+  </div>
+  <p class="small muted">We directly checked Semmelweis, Debrecen, ELTE, BME, Szeged, Corvinus and several others – Pécs is the only one that names South Africa or the NSC/IEB on its own published admissions page. The rest use generic “equivalent foreign certificate” wording with no country list, so this is a genuine gap, not something we haven’t looked for.</p>
+</section>`,
+  },
+];
+
+function countryHub() {
+  const published = COUNTRIES.filter((c) => c.published);
+  return `
+<section class="section wrap wrap--narrow" id="money-visas">
+  ${sectionHead('💰', 'Money, visas and deadlines – pick a country', 'Visa fees and living-cost rules change most years, and most pages that quote them are already out of date. Each guide below is checked against that government’s own site, with every figure linked to where it came from.')}
+  <div class="grid grid--2">
+    ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
+  </div>
+  <p class="small muted">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany and Hungary are researched but held back for now, for the same reason.</p>
+</section>`;
+}
+
+function scholarshipsSection() {
+  return `
+<section class="section wrap wrap--narrow" id="scholarships">
+  ${sectionHead('🎓', 'Scholarships open to South Africans', 'Most fully-funded scholarships overseas are postgraduate only. These are the ones we could confirm cover undergraduate study.')}
+  <div class="stack">
+    <article class="card">
+      <h3>Stipendium Hungaricum (Hungary)</h3>
+      ${claims([
+        v('Covers full tuition and contributes toward accommodation, plus a monthly stipend and medical insurance, at undergraduate and postgraduate level.', [src('stipendiumhungaricum.hu', 'https://stipendiumhungaricum.hu'), src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
+        v('Eligibility for South Africa: SA citizen in good health, born before 31 August 2008, NSC with a Bachelor’s pass, minimum 60% NSC average for undergraduate applicants (Life Orientation excluded). Apply online through the Tempus Public Foundation, with nomination via South Africa’s DHET process.', [src('dhet.gov.za', 'https://www.internationalscholarships.dhet.gov.za/index.php/scholarships/undergraduate-scholarships/253-hungary-stipendium-hungaricum-for-south-africa-2027')]),
+      ])}
+    </article>
+    <article class="card">
+      <h3>Mastercard Foundation Scholars Program</h3>
+      ${claims([
+        v('Covers undergraduate and postgraduate study, but only through partner universities – in South Africa that’s UCT, UP and UWC, each confirmed current. You apply through the partner university directly, not to Mastercard Foundation itself, and those universities’ own closing dates apply.', [
+          src('UCT', 'https://uct.ac.za/mastercardfdn/how-apply'), src('UP', 'https://www.up.ac.za/mastercard-foundation-scholars-program'), src('UWC', 'https://www.uwc.ac.za/study/partnerships/mastercard-foundation-scholars-program'),
+        ]),
+      ])}
+    </article>
+    <article class="card">
+      <h3>Chevening (UK)</h3>
+      ${claims([g('Postgraduate only, so it doesn’t apply straight out of matric. Worth bookmarking for after your first degree.')])}
+    </article>
+  </div>
+  <p class="small muted">DAAD, MEXT (Japan), GKS (Korea), Türkiye Bursları, Commonwealth, Fulbright and Erasmus+ scholarships may also be open to South Africans at various levels – we haven’t checked their current terms yet, so they’re left out rather than guessed at.</p>
+</section>`;
+}
+
 export function abroadPage() {
   const body = `
 <section class="hero hero--slim">
@@ -143,6 +475,8 @@ export function abroadPage() {
   </div>
   <p class="small muted">These are general undergraduate entry grades – the exact subjects and grade a specific degree needs (e.g. a science degree wanting Maths at a higher grade) can be stricter. Always check the course page itself before you plan around a number here.</p>
 </section>
+${countryHub()}
+${scholarshipsSection()}
 
 <section class="section wrap wrap--narrow">
   ${sectionHead('🗓️', 'What to line up, and roughly when')}
@@ -187,4 +521,32 @@ export function abroadPage() {
     body,
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Study abroad', path: '/study-abroad' }],
   }];
+}
+
+/** One page per published country - see COUNTRIES above. Germany and Hungary are
+ * researched but `published: false`, so they generate no page and no link until a
+ * later pass finishes them (more universities, confirmed figures where we're still
+ * "reported"). */
+export function abroadCountryPages() {
+  return COUNTRIES.filter((c) => c.published).map((c) => ({
+    path: `/study-abroad/${c.id}`,
+    title: `Studying in ${c.name === 'United States' ? 'the United States' : c.name === 'United Kingdom' ? 'the UK' : c.name} from South Africa`,
+    description: `${c.teaser} Checked against official sources, with every figure linked to where it came from.`,
+    body: `
+<section class="hero hero--slim">
+  <div class="wrap wrap--narrow">
+    <p class="eyebrow"><a href="/study-abroad">Study abroad</a> › ${esc(c.name)}</p>
+    <h1>${iconOrEmoji('🌍')} Studying in ${c.name === 'United States' ? 'the United States' : c.name === 'United Kingdom' ? 'the UK' : esc(c.name)}</h1>
+    <p class="lead">${esc(c.lead)}</p>
+  </div>
+</section>
+${c.body}
+<section class="section wrap wrap--narrow">
+  <div class="callout">
+    <h3>Not sure ${esc(c.name)} is the right fit?</h3>
+    <p><a href="/study-abroad">See every country we’ve checked →</a></p>
+  </div>
+</section>`,
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Study abroad', path: '/study-abroad' }, { name: c.name, path: `/study-abroad/${c.id}` }],
+  }));
 }

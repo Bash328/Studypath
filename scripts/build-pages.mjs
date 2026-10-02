@@ -23,7 +23,7 @@ import { askUniversityPage } from '../site/pages/askuni.mjs';
 import { datesPage } from '../site/pages/dates.mjs';
 import { nbtPage } from '../site/pages/nbt.mjs';
 import { moneyPage } from '../site/pages/money.mjs';
-import { abroadPage } from '../site/pages/abroad.mjs';
+import { abroadPage, abroadCountryPages } from '../site/pages/abroad.mjs';
 import { dataSourcesPage } from '../site/pages/datasources.mjs';
 import { privacyPage, notFoundPage } from '../site/pages/misc.mjs';
 import { weakestLevel } from '../site/lib/html.mjs';
@@ -38,8 +38,9 @@ const write = (rel, content) => {
 
 const data = loadData();
 
-// Start clean so a removed career or university can't leave a stale page behind.
-for (const dir of ['careers', 'universities']) rmSync(join(PUBLIC, dir), { recursive: true, force: true });
+// Start clean so a removed career, university or study-abroad country can't leave a
+// stale page behind (e.g. one flipped back to `published: false` in abroad.mjs).
+for (const dir of ['careers', 'universities', 'study-abroad']) rmSync(join(PUBLIC, dir), { recursive: true, force: true });
 
 // ---------------------------------------------------------------- pages
 const pages = [
@@ -47,7 +48,7 @@ const pages = [
   ...careersIndex(data), ...careerPages(data),
   ...universitiesIndex(data), ...universityPages(data),
   ...grade10Page(data), ...faqPage(data), ...askPage(), ...askUniversityPage(data),
-  ...datesPage(data), ...nbtPage(data), ...moneyPage(data), ...abroadPage(),
+  ...datesPage(data), ...nbtPage(data), ...moneyPage(data), ...abroadPage(), ...abroadCountryPages(),
   ...dataSourcesPage(data), ...privacyPage(), ...notFoundPage(),
 ];
 
@@ -85,7 +86,7 @@ for (const f of engine) copyFileSync(join(ROOT, 'src', f), join(PUBLIC, 'assets/
 
 // ---------------------------------------------------------------- sitemap + robots
 const today = new Date().toISOString().slice(0, 10);
-const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|careers|universities|dates|grade-10-subjects)$/.test(p) ? '0.9' : /^\/(careers|universities)\//.test(p) ? '0.7' : '0.6');
+const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|careers|universities|dates|grade-10-subjects)$/.test(p) ? '0.9' : /^\/(careers|universities|study-abroad)\//.test(p) ? '0.7' : '0.6');
 const indexable = pages.filter((p) => !p.noindex);
 write('sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
