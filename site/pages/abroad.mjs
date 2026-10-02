@@ -354,12 +354,12 @@ const COUNTRIES = [
 function countryHub() {
   const published = COUNTRIES.filter((c) => c.published);
   return `
-<section class="section wrap wrap--narrow" id="money-visas">
-  ${sectionHead('💰', 'Money, visas and deadlines – pick a country', 'Visa fees and living-cost rules change most years, and most pages that quote them are already out of date. Each guide below is checked against that government’s own site, with every figure linked to where it came from.')}
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'Universities, money, visas and deadlines – pick a country', 'A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
   <div class="grid grid--2">
     ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
   </div>
-  <p class="small muted">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany and Hungary are researched but held back for now, for the same reason.</p>
+  <p class="small muted">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany, Hungary and New Zealand are researched but held back for now, for the same reason.</p>
 </section>`;
 }
 
@@ -417,20 +417,6 @@ export function abroadPage() {
   </div>
 </section>
 
-<section class="section wrap wrap--narrow" id="examples">
-  ${sectionHead('🎓', 'Universities', 'A few foreign universities publish exactly what NSC/matric grades they want – we read their own pages and quoted them below. This is a handful of examples, not a full list, so it never gets stale.')}
-  <div class="stack">
-    ${REAL_EXAMPLES.map((e) => `
-    <article class="card">
-      <div class="badge-row">${verificationTag('verified')}</div>
-      <h3>${esc(e.name)}</h3>
-      <p class="card__meta">${esc(e.field)}</p>
-      <p>${esc(e.need)}</p>
-      <p class="source"><span class="source__label">Source:</span> ${link(e.url, hostOf(e.url))}</p>
-    </article>`).join('')}
-  </div>
-  <p class="small muted">These are general undergraduate entry grades – the exact subjects and grade a specific degree needs (e.g. a science degree wanting Maths at a higher grade) can be stricter. Always check the course page itself before you plan around a number here.</p>
-</section>
 ${countryHub()}
 ${scholarshipsSection()}
 
