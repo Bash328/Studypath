@@ -14,41 +14,37 @@
 // `type` is the traditional / comprehensive / university-of-technology label. Only the
 // "of Technology" names are self-evident; the traditional-vs-comprehensive split is from
 // general knowledge and is shown to students as UNVERIFIED until checked against DHET.
-//
-// `country_id` matches an id in db/data/countries.mjs. Every university here is South
-// African, so it's the same value 26 times today - but it's what the /countries hub
-// filters universities by, so a second country's universities slot in without a rewrite.
 
 export const universities = [
-  { id: 'uct',  name: 'University of Cape Town',         short_name: 'UCT',    website: 'https://www.uct.ac.za',  type: 'Traditional', country_id: 'south-africa' },
-  { id: 'wits', name: 'University of the Witwatersrand', short_name: 'Wits',   website: 'https://www.wits.ac.za', type: 'Traditional', country_id: 'south-africa' },
-  { id: 'su',   name: 'Stellenbosch University',         short_name: 'SU',     website: 'https://www.sun.ac.za',  type: 'Traditional', country_id: 'south-africa' },
-  { id: 'up',   name: 'University of Pretoria',          short_name: 'UP',     website: 'https://www.up.ac.za',   type: 'Traditional', country_id: 'south-africa' },
-  { id: 'ukzn', name: 'University of KwaZulu-Natal',     short_name: 'UKZN',   website: 'https://www.ukzn.ac.za', type: 'Traditional', cao: true, country_id: 'south-africa' },
-  { id: 'uj',   name: 'University of Johannesburg',      short_name: 'UJ',     website: 'https://www.uj.ac.za',   type: 'Comprehensive', country_id: 'south-africa' },
-  { id: 'uwc',  name: 'University of the Western Cape',  short_name: 'UWC',    website: 'https://www.uwc.ac.za',  type: 'Traditional', country_id: 'south-africa' },
-  { id: 'ru',   name: 'Rhodes University',               short_name: 'Rhodes', website: 'https://www.ru.ac.za',   type: 'Traditional', country_id: 'south-africa' },
-  { id: 'nwu',  name: 'North-West University',           short_name: 'NWU',    website: 'https://www.nwu.ac.za',  type: 'Traditional', country_id: 'south-africa' },
-  { id: 'ufs',  name: 'University of the Free State',    short_name: 'UFS',    website: 'https://www.ufs.ac.za',  type: 'Traditional', country_id: 'south-africa' },
+  { id: 'uct',  name: 'University of Cape Town',         short_name: 'UCT',    website: 'https://www.uct.ac.za',  type: 'Traditional' },
+  { id: 'wits', name: 'University of the Witwatersrand', short_name: 'Wits',   website: 'https://www.wits.ac.za', type: 'Traditional' },
+  { id: 'su',   name: 'Stellenbosch University',         short_name: 'SU',     website: 'https://www.sun.ac.za',  type: 'Traditional' },
+  { id: 'up',   name: 'University of Pretoria',          short_name: 'UP',     website: 'https://www.up.ac.za',   type: 'Traditional' },
+  { id: 'ukzn', name: 'University of KwaZulu-Natal',     short_name: 'UKZN',   website: 'https://www.ukzn.ac.za', type: 'Traditional', cao: true },
+  { id: 'uj',   name: 'University of Johannesburg',      short_name: 'UJ',     website: 'https://www.uj.ac.za',   type: 'Comprehensive' },
+  { id: 'uwc',  name: 'University of the Western Cape',  short_name: 'UWC',    website: 'https://www.uwc.ac.za',  type: 'Traditional' },
+  { id: 'ru',   name: 'Rhodes University',               short_name: 'Rhodes', website: 'https://www.ru.ac.za',   type: 'Traditional' },
+  { id: 'nwu',  name: 'North-West University',           short_name: 'NWU',    website: 'https://www.nwu.ac.za',  type: 'Traditional' },
+  { id: 'ufs',  name: 'University of the Free State',    short_name: 'UFS',    website: 'https://www.ufs.ac.za',  type: 'Traditional' },
 
   // Not yet researched for requirements. Listed so students can still find their contacts
   // and closing dates; they join the calculator once their programmes are captured.
-  { id: 'nmu',     name: 'Nelson Mandela University',                 short_name: 'NMU',     website: 'https://www.mandela.ac.za',  type: 'Comprehensive', country_id: 'south-africa' },
-  { id: 'ul',      name: 'University of Limpopo',                     short_name: 'UL',      website: 'https://www.ul.ac.za',       type: 'Traditional', country_id: 'south-africa' },
-  { id: 'univen',  name: 'University of Venda',                       short_name: 'Univen',  website: 'https://www.univen.ac.za',   type: 'Comprehensive', country_id: 'south-africa' },
-  { id: 'wsu',     name: 'Walter Sisulu University',                  short_name: 'WSU',     website: 'https://www.wsu.ac.za',      type: 'Comprehensive', country_id: 'south-africa' },
-  { id: 'ufh',     name: 'University of Fort Hare',                   short_name: 'UFH',     website: 'https://www.ufh.ac.za',      type: 'Traditional', country_id: 'south-africa' },
-  { id: 'spu',     name: 'Sol Plaatje University',                    short_name: 'SPU',     website: 'https://www.spu.ac.za',      type: 'Traditional', country_id: 'south-africa' },
-  { id: 'ump',     name: 'University of Mpumalanga',                  short_name: 'UMP',     website: 'https://www.ump.ac.za',      type: 'Traditional', country_id: 'south-africa' },
-  { id: 'cut',     name: 'Central University of Technology',          short_name: 'CUT',     website: 'https://www.cut.ac.za',      type: 'University of Technology', country_id: 'south-africa' },
-  { id: 'cput',    name: 'Cape Peninsula University of Technology',   short_name: 'CPUT',    website: 'https://www.cput.ac.za',     type: 'University of Technology', country_id: 'south-africa' },
-  { id: 'dut',     name: 'Durban University of Technology',           short_name: 'DUT',     website: 'https://www.dut.ac.za',      type: 'University of Technology', cao: true, country_id: 'south-africa' },
-  { id: 'tut',     name: 'Tshwane University of Technology',          short_name: 'TUT',     website: 'https://www.tut.ac.za',      type: 'University of Technology', country_id: 'south-africa' },
-  { id: 'mut',     name: 'Mangosuthu University of Technology',       short_name: 'MUT',     website: 'https://www.mut.ac.za',      type: 'University of Technology', cao: true, country_id: 'south-africa' },
-  { id: 'vut',     name: 'Vaal University of Technology',             short_name: 'VUT',     website: 'https://vut.ac.za',          type: 'University of Technology', country_id: 'south-africa' },
-  { id: 'unizulu', name: 'University of Zululand',                    short_name: 'UniZulu', website: 'https://www.unizulu.ac.za',  type: 'Comprehensive', cao: true, country_id: 'south-africa' },
-  { id: 'unisa',   name: 'University of South Africa',                short_name: 'UNISA',   website: 'https://www.unisa.ac.za',    type: 'Comprehensive (distance)', country_id: 'south-africa' },
-  { id: 'smu',     name: 'Sefako Makgatho Health Sciences University', short_name: 'SMU',    website: 'https://www.smu.ac.za',      type: 'Traditional (health)', country_id: 'south-africa' },
+  { id: 'nmu',     name: 'Nelson Mandela University',                 short_name: 'NMU',     website: 'https://www.mandela.ac.za',  type: 'Comprehensive' },
+  { id: 'ul',      name: 'University of Limpopo',                     short_name: 'UL',      website: 'https://www.ul.ac.za',       type: 'Traditional' },
+  { id: 'univen',  name: 'University of Venda',                       short_name: 'Univen',  website: 'https://www.univen.ac.za',   type: 'Comprehensive' },
+  { id: 'wsu',     name: 'Walter Sisulu University',                  short_name: 'WSU',     website: 'https://www.wsu.ac.za',      type: 'Comprehensive' },
+  { id: 'ufh',     name: 'University of Fort Hare',                   short_name: 'UFH',     website: 'https://www.ufh.ac.za',      type: 'Traditional' },
+  { id: 'spu',     name: 'Sol Plaatje University',                    short_name: 'SPU',     website: 'https://www.spu.ac.za',      type: 'Traditional' },
+  { id: 'ump',     name: 'University of Mpumalanga',                  short_name: 'UMP',     website: 'https://www.ump.ac.za',      type: 'Traditional' },
+  { id: 'cut',     name: 'Central University of Technology',          short_name: 'CUT',     website: 'https://www.cut.ac.za',      type: 'University of Technology' },
+  { id: 'cput',    name: 'Cape Peninsula University of Technology',   short_name: 'CPUT',    website: 'https://www.cput.ac.za',     type: 'University of Technology' },
+  { id: 'dut',     name: 'Durban University of Technology',           short_name: 'DUT',     website: 'https://www.dut.ac.za',      type: 'University of Technology', cao: true },
+  { id: 'tut',     name: 'Tshwane University of Technology',          short_name: 'TUT',     website: 'https://www.tut.ac.za',      type: 'University of Technology' },
+  { id: 'mut',     name: 'Mangosuthu University of Technology',       short_name: 'MUT',     website: 'https://www.mut.ac.za',      type: 'University of Technology', cao: true },
+  { id: 'vut',     name: 'Vaal University of Technology',             short_name: 'VUT',     website: 'https://vut.ac.za',          type: 'University of Technology' },
+  { id: 'unizulu', name: 'University of Zululand',                    short_name: 'UniZulu', website: 'https://www.unizulu.ac.za',  type: 'Comprehensive', cao: true },
+  { id: 'unisa',   name: 'University of South Africa',                short_name: 'UNISA',   website: 'https://www.unisa.ac.za',    type: 'Comprehensive (distance)' },
+  { id: 'smu',     name: 'Sefako Makgatho Health Sciences University', short_name: 'SMU',    website: 'https://www.smu.ac.za',      type: 'Traditional (health)' },
 ];
 
 // Sources for the statements above, so the site can cite them.

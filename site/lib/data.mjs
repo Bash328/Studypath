@@ -3,7 +3,6 @@
 // sourced programme data, so a page can never say something the data does not.
 
 import { universities, DIRECTORY_SOURCES } from '../../db/data/universities.mjs';
-import { countries } from '../../db/data/countries.mjs';
 import { careers } from '../../db/data/careers.mjs';
 import { uctPrograms } from '../../db/data/programs-uct.mjs';
 import { witsPrograms } from '../../db/data/programs-wits.mjs';
@@ -89,19 +88,6 @@ export function loadData() {
     programCount: programs.filter((p) => p.university.id === u.id).length,
   }));
 
-  // Each country's own slice, so the study-abroad page's country picker never has to be
-  // told these numbers by hand - they're computed the same way every other stat here is.
-  const countryList = countries.map((c) => {
-    const unisHere = unis.filter((u) => u.country_id === c.id);
-    return {
-      ...c,
-      universities: unisHere,
-      universityCount: unisHere.length,
-      universitiesWithData: unisHere.filter((u) => u.hasRequirements).length,
-    };
-  });
-  const countryById = Object.fromEntries(countryList.map((c) => [c.id, c]));
-
   const contactsByUni = {};
   for (const c of contacts) (contactsByUni[c.university_id] ||= []).push(c);
   const datesByUni = {};
@@ -132,7 +118,6 @@ export function loadData() {
   return {
     universities: unis, uniById, careers, careerById, programs, researchLog, contacts, contactsByUni,
     dates, datesByUni, fees: APPLICATION_FEES, faq, bursaries, flagCounts, grade10,
-    countries: countryList, countryById,
     stats: {
       programs: programs.length,
       universities: unis.length,

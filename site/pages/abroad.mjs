@@ -1,40 +1,6 @@
-import { esc, claims, claim, checksBox, tag, link, hostOf, plural } from '../lib/html.mjs';
+import { esc, claims, claim, checksBox, tag, link, hostOf } from '../lib/html.mjs';
 import { sectionHead, verificationTag } from '../lib/components.mjs';
 import { iconOrEmoji } from '../lib/icons.mjs';
-
-// Universities, money, visas and deadlines used to be separate top-level pages with no
-// link between them. They're really one question - "studying in country X" - so this
-// page now opens with a country picker: pick a country, then its universities, money,
-// visas (this page's own content, below) and deadlines. Today there's one country, so
-// the picker has one real card, but it reads from db/data/countries.mjs rather than
-// being hand-written, so a second country's four links slot in without a rewrite.
-function countryHub(country) {
-  if (!country) return '';
-  const links = [
-    { label: 'Universities', href: '/universities',
-      text: `${plural(country.universityCount, 'public university', 'public universities')}, what each one requires, and how it scores your marks.` },
-    { label: 'Money', href: '/bursaries',
-      text: 'Application fees, NSFAS and verified bursaries.' },
-    { label: 'Visas', href: '#visas', current: true,
-      text: `The visa and application process for studying abroad from ${esc(country.name)} - this page.` },
-    { label: 'Deadlines', href: '/dates',
-      text: 'Every closing date, open day and NBT sitting.' },
-  ];
-
-  return `
-<section class="section wrap wrap--narrow" id="country-hub">
-  <p class="eyebrow">Country</p>
-  <h2 class="h3">${esc(country.name)}</h2>
-  <div class="grid grid--2">
-    ${links.map((l) => `
-    <a class="card card--link" href="${esc(l.href)}"${l.current ? ' aria-current="true"' : ''}>
-      <h3>${esc(l.label)}</h3>
-      <p>${l.text}</p>
-    </a>`).join('')}
-  </div>
-  <p class="small muted">We only cover South Africa in full today. More countries are on the list - this picker is built so one slots in without changing this page’s address.</p>
-</section>`;
-}
 
 const g = (text) => ({ level: 'general', text, sources: [] });
 
@@ -99,9 +65,7 @@ const TIMELINE = [
   ['After results', 'Qualification assessment, visa application, proof of funds, accommodation.'],
 ];
 
-export function abroadPage(data) {
-  const country = data && data.countryById ? data.countryById['south-africa'] : null;
-
+export function abroadPage() {
   const body = `
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
@@ -111,9 +75,7 @@ export function abroadPage(data) {
   </div>
 </section>
 
-${countryHub(country)}
-
-<section class="wrap wrap--narrow" id="visas">
+<section class="wrap wrap--narrow">
   <div class="callout callout--warn">
     <h3>Why most of this page has no entry requirements</h3>
     <p>Everywhere else on Studypath, every requirement links to the official page it came from. We’ve only verified a handful of foreign universities’ requirements so far (see below) – for everywhere else, rather than repeat what agents and forums say, <strong>we’ve left the numbers out</strong>.</p>

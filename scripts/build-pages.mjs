@@ -47,7 +47,7 @@ const pages = [
   ...careersIndex(data), ...careerPages(data),
   ...universitiesIndex(data), ...universityPages(data),
   ...grade10Page(data), ...faqPage(data), ...askPage(), ...askUniversityPage(data),
-  ...datesPage(data), ...nbtPage(data), ...moneyPage(data), ...abroadPage(data),
+  ...datesPage(data), ...nbtPage(data), ...moneyPage(data), ...abroadPage(),
   ...dataSourcesPage(data), ...privacyPage(), ...notFoundPage(),
 ];
 
