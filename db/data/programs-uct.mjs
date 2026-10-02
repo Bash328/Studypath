@@ -6,11 +6,13 @@ import { pct, engPct, manual, flag } from './_helpers.mjs';
 // UCT's Faculty Points Score (FPS) for Commerce, EBE, Humanities and Law IS the APS:
 // English% + the 5 best other subjects excluding Life Orientation, out of 600.
 // Science doubles Maths and Physical Sciences (out of 800) and Health Sciences adds
-// NBT scores (out of 900). Law and Science's faculty-wide FPS bands were found in a
-// follow-up pass (2026-10-01) via web search, since this environment's fetch tool could
-// not decode the prospectus or faculty admission-criteria PDFs (binary/stream content
-// only) - see uct-law-fps and uct-science-fps in research-log.mjs. Health Sciences' FPS
-// (out of 900, needs NBT) is still not captured, so it remains a logged gap.
+// NBT scores (out of 900) - the Health Sciences bands are shown in each programme's
+// notes but can't be computed by the calculator since we don't know the student's NBT
+// result. Every FPS figure in this file (Law, Science, Humanities included) has now
+// been confirmed by a raw `pdftotext` read of the 2027 prospectus PDF - see
+// research-log.mjs uct-raw-pdf-read-2026-10-02 for how (this environment's WebFetch
+// can download the PDF but its own summariser can't parse it; piping the saved file
+// through pdftotext -raw recovers clean text).
 //
 // Band A = guaranteed offer (FPS). Band B = likely (WPS, which adds a 0-10% disadvantage
 // factor we cannot compute from marks alone). Band C = redress categories only.
@@ -70,18 +72,17 @@ export const uctPrograms = [
     notes: bands(450, 420, 390) },
 
   // ---------------- Law (FPS out of 600) ----------------
-  // RESOLVED 2026-10-01 (search-synthesis, not a raw PDF read - see research-log.mjs
-  // uct-law-fps): the 2027 prospectus PDF repeatedly returned binary/undecoded content
-  // to the fetch tool (both a direct prospectus fetch and the Law Faculty's own "Choose
-  // Law 2026" PDF), so these figures come from two independent web searches surfacing
-  // UCT Law's own admission guidelines, which agree with each other.
-  { ...base, id: 'uct-llb', career_id: 'lawyer', name: 'LLB',
+  // RESOLVED 2026-10-02 via a raw read: a prior pass's fetch tool couldn't decode the
+  // prospectus PDF (binary/stream content) and fell back to web-search synthesis - this
+  // pass downloaded the same PDF and ran `pdftotext -raw` on it directly (see
+  // research-log.mjs uct-raw-pdf-read-2026-10-02), which recovered clean text and
+  // corrected Band B (WPS 500, not the 485 the earlier search-synthesis pass had found).
+  { ...base, id: 'uct-llb', career_id: 'lawyer', name: 'LLB (undergraduate, 4-year route)',
     faculty: 'Law', duration_years: 4, min_aps: 500, score_type: 'band_a',
-    source_url: 'https://law.uct.ac.za/sites/default/files/media/documents/choose-law-2026_1.pdf',
     subject_requirements: [
-      manual('NBT', 'NBTs are compulsory for all applicants: Band A needs Academic Literacy Proficient and Quantitative Literacy Intermediate. International applicants also write the AL test.'),
+      manual('NBT', 'NBTs are compulsory for all applicants: Band A and B need Academic Literacy Proficient and Quantitative Literacy Intermediate or above; Band C needs both Proficient. International applicants need an extra 10 FPS points (probable admission at 510) and also write the AL test.'),
     ],
-    notes: flag('partially-verified', bands(500, 485, 470) + ' Found via web search surfacing UCT Law’s own published admission guidelines (the prospectus PDF and the Law Faculty’s "Choose Law" PDF both returned undecoded binary content to this pass’s fetch tool, so this is search-synthesis, not a raw page read) - re-check against the live document before fully relying on it.') },
+    notes: bands(500, 500, 470) + ' This is the direct-entry undergraduate LLB, capped at 10 international places. UCT also offers two other routes to the same LLB degree: a combined Humanities/Commerce-and-Law route (5+ years, apply to the Humanities or Commerce degree first, then compete for the law major with a 65%/63% first-year GPA), and a 3-year graduate LLB for those who already hold an unrelated degree.' },
 
   { ...base, id: 'uct-bas-architecture', career_id: 'architect', name: 'Bachelor of Architectural Studies',
     faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 450, score_type: 'band_a',
@@ -164,20 +165,22 @@ export const uctPrograms = [
     notes: bands(500, 525, '475-479, Education Development Unit only') },
 
   // ---------------- Science ----------------
-  // This row was already in the database before the bulk import (the first row of the
-  // project), so it is preserved with its original wording and source. UCT Science uses
-  // an FPS out of 800, which the calculator now computes - but the numeric cut-off is on
-  // pages of the 2027 prospectus that could not be read, so no points figure is shown.
+  // RESOLVED 2026-10-02 via a raw read (see research-log.mjs uct-raw-pdf-read-2026-10-02): a prior
+  // pass's fetch tool couldn't decode the prospectus PDF and used web search instead;
+  // this pass downloaded the PDF and ran `pdftotext -raw` on it directly, confirming the
+  // FPS figures the earlier search-synthesis pass had found, and that Physical Sciences
+  // is a Faculty-wide requirement (not just a Computer-Science-specific one - it applies
+  // to everyone admitted to the Science Faculty, Computer Science included).
   { ...base, id: 'uct-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science',
     faculty: 'Science', duration_years: null, min_aps: 660, score_type: 'band_a',
-    source_url: 'https://sit.uct.ac.za/our-degrees-undergraduates/bsc-degrees',
-    scoring_system: 'UCT_FPS800', intake_year: null, document_date: null,
-    subject_requirements: [pct('Mathematics', 70)],
-    notes: flag('partially-verified', bands(660, 640, 550) + ' Mathematics 70%+ and Physical Science 60%+ are also needed for Bands A/B at the faculty level. UCT’s own Computer Science page states the Maths minimum directly but defers full admission rules to the Science Faculty Handbook, so whether Physical Science is required for Computer Science specifically (rather than only mattering for the faculty-wide FPS calculation) is not separately confirmed - not shown as a subject requirement above to avoid overclaiming it. These FPS figures come from a web search surfacing UCT Science’s own admissions-criteria PDF (which returned undecoded binary content to this pass’s fetch tool), not a raw page read, and from a document that was not confirmed as the 2027-specific version - re-check before fully relying on it.') },
+    scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' Confirmed directly from the 2027 prospectus: the Science Faculty admits on these faculty-wide bands (Mathematics 70%+ and Physical Sciences 60%+ for all three bands), then places you into a major - Computer Science (and its associated majors) is one of a handful capacity-limited once you are in, selected on first-year academic performance rather than your entry score. Where Physical Sciences was not taken, Information Technology may substitute for the Computer Science/Business Computing combination specifically.' },
 
   // ---------------- Humanities ----------------
-  // Requirements are confirmed; the numeric FPS cut-off was in the truncated part of
-  // the prospectus, so min_aps stays null rather than being invented.
+  // FPS figures confirmed 2026-10-02 by a raw pdftotext read of the prospectus PDF (see
+  // research-log.mjs uct-raw-pdf-read-2026-10-02) - exactly matching an earlier pass's
+  // web-search-synthesised figures, so only the confidence tier changed, not the numbers.
   { ...base, id: 'uct-ba-humanities', career_id: 'humanities-generalist', name: 'BA / BSocSc',
     faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
     subject_requirements: [
@@ -185,7 +188,7 @@ export const uctPrograms = [
       manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
       manual('Major-specific', 'An Economics major needs Maths 60%. A Psychology major needs Maths 50% or a Proficient NBT Quantitative Literacy result.'),
     ],
-    notes: flag('partially-verified', bands(450, 450, 380) + ' The subject requirements here are confirmed from the UCT 2027 prospectus; the FPS figures above come from a web search surfacing UCT Humanities’ own admission guidelines (the prospectus PDF returned undecoded binary content to this pass’s fetch tool), not a raw page read - re-check before fully relying on it.') },
+    notes: bands(450, 450, 380) },
   { ...base, id: 'uct-ba-psychology', career_id: 'clinical-psychologist', name: 'BA / BSocSc (with Psychology as a major)',
     faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
     subject_requirements: [
@@ -193,7 +196,7 @@ export const uctPrograms = [
       pct('Mathematics', 50),
       manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out. UCT’s own page says a Psychology major specifically accepts Maths 50% OR a Proficient NBT Quantitative Literacy result instead - we show the Maths route above since it’s the one we can check from marks alone.'),
     ],
-    notes: flag('partially-verified', bands(450, 450, 380) + ' You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year - UCT is one of the few universities that publishes a major-specific subject note for Psychology, which is why the Maths requirement above is more specific than the general BA entry. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise. The FPS figures come from a web search surfacing UCT Humanities’ own admission guidelines, not a raw page read - re-check before fully relying on it.') },
+    notes: bands(450, 450, 380) + ' You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year - UCT is one of the few universities that publishes a major-specific subject note for Psychology, which is why the Maths requirement above is more specific than the general BA entry. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise.' },
   { ...base, id: 'uct-ba-psychology-counselling', career_id: 'counselling-educational-psychologist', name: 'BA / BSocSc (with Psychology as a major)',
     faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
     subject_requirements: [
@@ -201,12 +204,12 @@ export const uctPrograms = [
       pct('Mathematics', 50),
       manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out. UCT’s own page says a Psychology major specifically accepts Maths 50% OR a Proficient NBT Quantitative Literacy result instead - we show the Maths route above since it’s the one we can check from marks alone.'),
     ],
-    notes: flag('partially-verified', bands(450, 450, 380) + ' You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise. The FPS figures come from a web search surfacing UCT Humanities’ own admission guidelines, not a raw page read - re-check before fully relying on it.') },
+    notes: bands(450, 450, 380) + ' You’re admitted to the general BA/BSocSc (same entry point as humanities-generalist) and choose Psychology as a major from second year. This is the undergraduate entry point only - see the career page for the Honours/Master’s route required to actually practise.' },
   { ...base, id: 'uct-ba-journalism', career_id: 'journalist-communications', name: 'BA / BSocSc (with a media/communications-related major)',
     faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
     subject_requirements: [
       engPct(50, 60), pct('Life Orientation', 50),
       manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.'),
     ],
-    notes: flag('partially-verified', bands(450, 450, 380) + ' UCT does not list Journalism as its own admission line - you’re admitted to the general BA/BSocSc and choose your major from second year. Confirm which specific major UCT offers in this area before relying on it. The FPS figures come from a web search surfacing UCT Humanities’ own admission guidelines, not a raw page read - re-check before fully relying on it.') },
+    notes: bands(450, 450, 380) + ' UCT does not list Journalism as its own admission line - you’re admitted to the general BA/BSocSc and choose your major from second year. Confirm which specific major UCT offers in this area before relying on it.' },
 ];

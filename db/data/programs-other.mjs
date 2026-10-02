@@ -33,13 +33,13 @@ const ujEng = (id, career_id, name, url) => ({
   ...ujBase, id, career_id, name, faculty: 'Engineering & the Built Environment',
   duration_years: 4, min_aps: 32, source_url: url,
   subject_requirements: [engLvl(5, 5), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), lvl('Physical Sciences', 5)],
-  notes: flag('partially-verified', 'Captured from the UJ BEng Civil Engineering page; UJ lists the same requirements on the matching Electrical & Electronic and Mechanical Engineering pages. ' + UJ_CAVEAT),
+  notes: flag('partially-verified', 'RESOLVED 2026-10-02: originally captured only from the Civil Engineering page, with Electrical and Mechanical assumed to match rather than independently checked (and both wrongly pointing at Civil’s URL as their source). A web search surfacing each programme’s own uj.ac.za page (uj.ac.za is blocked for a raw fetch in this environment) independently confirms Civil, Electrical & Electronic, and Mechanical all share this exact APS 32 / English 5 / Mathematics 5 / Physical Science 5 formula - each now cites its own page. ' + UJ_CAVEAT),
 });
 
 const ujPrograms = [
   ujEng('uj-beng-civil', 'civil-engineer', 'BEng Civil Engineering', 'https://www.uj.ac.za/university-courses/beng-in-civil-engineering/'),
-  ujEng('uj-beng-electrical', 'electrical-engineer', 'BEng Electrical & Electronic Engineering', 'https://www.uj.ac.za/university-courses/beng-in-civil-engineering/'),
-  ujEng('uj-beng-mechanical', 'mechanical-engineer', 'BEng Mechanical Engineering', 'https://www.uj.ac.za/university-courses/beng-in-civil-engineering/'),
+  ujEng('uj-beng-electrical', 'electrical-engineer', 'BEng Electrical & Electronic Engineering', 'https://www.uj.ac.za/university-courses/beng-in-electrical-and-electronic-engineering/'),
+  ujEng('uj-beng-mechanical', 'mechanical-engineer', 'BEng Mechanical Engineering', 'https://www.uj.ac.za/university-courses/beng-in-mechanical-engineering/'),
 
   { ...ujBase, id: 'uj-bsc-compsci', career_id: 'software-engineer', name: 'BSc Computer Science & Informatics',
     faculty: 'Science', duration_years: 3, min_aps: 30,

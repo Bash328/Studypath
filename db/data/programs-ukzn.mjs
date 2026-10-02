@@ -19,8 +19,14 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 // unchanged in APS - MBChB and BCom Accounting are now cited to those current pages.
 // BSc Computer Science & IT's English/Life Orientation levels turned out to be higher
 // (level 5, not 4) on its own school's page than in the 2026 brochure - a genuine
-// conflict, shown via flag('conflict', ...) rather than silently resolved. Engineering
-// and BCom General were not re-checked this pass.
+// conflict, shown via flag('conflict', ...) rather than silently resolved.
+//
+// Follow-up pass (2026-10-02, see ukzn-engineering-bcom-2026-10-02 in research-log.mjs):
+// BCom General re-checked and confirmed unchanged against its own live clms.ukzn.ac.za
+// page. Engineering's faculty-wide formula spot-checked via Agricultural Engineering's
+// own live engineering.ukzn.ac.za page and confirmed unchanged; other engineering
+// disciplines' own pages don't publish their figures yet, so they still rest on the
+// brochure/faculty-wide convention rather than their own confirmed page.
 
 const BROCHURE = 'https://studyatukzn.ukzn.ac.za/wp-content/uploads/2026/02/Study@UKZN-BROCHURE-2026.pdf';
 
@@ -38,7 +44,7 @@ const DATED = 'This comes from the Study@UKZN 2026 brochure, the most recent off
 const eng = (id, career_id, name) => ({
   ...base, id, career_id, name, faculty: 'Agriculture, Engineering & Science', duration_years: 4, min_aps: 33,
   subject_requirements: [pct('Mathematics', 65), pct('Physical Sciences', 65), lvl('English', 4), lvl('Life Orientation', 4)],
-  notes: flag('dated-document', 'The published APS range is 48-33. ' + DATED),
+  notes: flag('dated-document', 'The published APS range is 48-33. Spot-checked 2026-10-02 via a direct fetch of Agricultural Engineering’s own live discipline page (engineering.ukzn.ac.za), which confirmed this exact formula unchanged - other disciplines’ own pages (e.g. Civil Engineering’s) don’t yet show their own admission figures ("currently being uploaded"), so they’re shown on the same faculty-wide formula rather than their own confirmed page. ' + DATED),
 });
 
 export const ukznPrograms = [
@@ -102,8 +108,9 @@ export const ukznPrograms = [
     notes: 'Confirmed unchanged by a direct fetch of UKZN’s own School of Commerce page (2026-10-01 spot-check): "National senior certificate degree with Mathematics level 5, English and Life Orientation level 4. Minimum, 32 NSC points." An Extended Curriculum version also exists at APS 28.' },
   { ...base, id: 'ukzn-bcom-general', career_id: 'business-manager', name: 'BCom General', faculty: 'Law & Management Studies',
     duration_years: 3, min_aps: 30,
+    source_url: 'https://clms.ukzn.ac.za/bachelor-of-commerce-general-bcom/',
     subject_requirements: [lvl('English', 4), lvl('Life Orientation', 4), lvl('Mathematics', 4)],
-    notes: flag('dated-document', 'The published APS range is 48-30. ' + DATED) },
+    notes: 'Confirmed unchanged by a direct fetch of UKZN’s own programme page (2026-10-02 spot-check): "NSC Degree with a minimum of 30 NSC points (excluding Life Orientation), Level 4 Mathematics, Level 4 English (home or first additional language), and Level 4 Life Orientation." A Matriculation Exemption route (36 points, Mathematics HG ‘D’ or SG ‘B’) also exists for non-NSC applicants.' },
 
   // ---------------- Humanities ----------------
   { ...base, id: 'ukzn-bed', career_id: 'teacher', name: 'BEd Foundation / Intermediate / Senior-FET Phase', faculty: 'Humanities',
