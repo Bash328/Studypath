@@ -6,21 +6,23 @@ import { lvl, pct, engLvl, engPct, anyOf, manual, flag } from './_helpers.mjs';
 
 // =====================================================================
 // University of Johannesburg - APS excludes Life Orientation.
-// CAVEAT: these figures come from official UJ programme pages, but the text was
-// captured from search-engine indexes of those pages; full-page fetches returned only
-// the navigation menu and the 2027 prospectus PDF could not be fetched. Every row is
-// flagged [partially-verified]. Rows whose exact programme-page URL was not captured
-// were left out entirely rather than cited to a generic listing page - they are in
-// research_log instead.
+// RESOLVED 2026-10-02 (see uj-full-prospectus-2026-10-02 in research-log.mjs): every row
+// below was originally captured from search-engine indexes (uj.ac.za blocks automated
+// fetches outright), then upgraded as the user screenshotted individual pages, and is
+// now fully cross-checked against the user-supplied 2027 Undergraduate Prospectus PDF -
+// the actual primary document, not an index or a single page. Every figure matched
+// except duration_years, which several rows had as null (not previously found) and the
+// prospectus states plainly; one real gap was found and fixed (BCom in Industrial
+// Psychology's Mathematical Literacy alternative path, previously missing entirely).
 // =====================================================================
 const ujBase = {
   university_id: 'uj',
   scoring_system: 'UJ_APS_exLO',
+  source_url: 'https://www.uj.ac.za/wp-content/uploads/2026/07/uj_undergrad_prospectus2027_online_25jun2026.pdf',
   score_type: 'minimum',
-  intake_year: null,
-  document_date: null,
+  intake_year: 2027,
+  document_date: '2026-04-01',
 };
-const UJ_CAVEAT = 'This figure was read from the search-engine index of the official UJ programme page rather than from the full page, and UJ’s 2027 prospectus PDF could not be fetched. Confirm it on the UJ page before you rely on it.';
 // Confirmed 2026-10-01 (see uj-health in research-log.mjs): UJ's Faculty of Health
 // Sciences has no MBChB, Pharmacy or Physiotherapy department - its own department list
 // is Biomedical Sciences, Biomedical Technology, Chiropractic, Complementary Medicine,
@@ -33,7 +35,7 @@ const ujEng = (id, career_id, name, url) => ({
   ...ujBase, id, career_id, name, faculty: 'Engineering & the Built Environment',
   duration_years: 4, min_aps: 32, source_url: url,
   subject_requirements: [engLvl(5, 5), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), lvl('Physical Sciences', 5)],
-  notes: 'CONFIRMED 2026-10-02 by screenshots of each programme’s own live page (uj.ac.za is blocked for automated fetches, so the user checked manually): Civil, Electrical & Electronic, and Mechanical all share this exact APS 32 / English 5 (60%) / Mathematics or Technical Mathematics 5 (60%) / Physical Science 5 (60%) formula, each on its own page.',
+  notes: 'CONFIRMED 2026-10-02 both by screenshots of each programme’s own live page and against the user-supplied 2027 Undergraduate Prospectus PDF (B6CS0Q/B6ES0Q/B6MS0Q): Civil, Electrical & Electronic, and Mechanical all share this exact APS 32 / English 5 (60%) / Mathematics or Technical Mathematics 5 (60%) / Physical Science 5 (60%) formula.',
 });
 
 const ujPrograms = [
@@ -45,7 +47,7 @@ const ujPrograms = [
     faculty: 'Science', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bsc-in-computer-science-and-informatics/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (programme code B2I02Q): APS 30, English 5 (60%+), Mathematics 6 (70%+).' },
   { ...ujBase, id: 'uj-bsc-compsci-ai', career_id: 'software-engineer', name: 'BSc Computer Science & Informatics (Specialising in AI)',
     faculty: 'Science', duration_years: 3, min_aps: 34,
     source_url: 'https://www.uj.ac.za/university-courses/bsc-in-computer-science-and-informatics-specialising-in-ai-artificial-intelligence/',
@@ -69,13 +71,13 @@ const ujPrograms = [
     faculty: 'Economic & Financial Sciences', duration_years: 3, min_aps: 33,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-accounting-ca-stream/',
     subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5)],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (ACCOUNTING (CA), B34CAQ): APS 33, English 4 (50%+), Mathematics 5 (60%+) - Mathematical Literacy and Technical Mathematics are explicitly not accepted.' },
 
   { ...ujBase, id: 'uj-ba', career_id: 'humanities-generalist', name: 'Bachelor of Arts',
-    faculty: 'Humanities', duration_years: null, min_aps: 27,
+    faculty: 'Humanities', duration_years: 3, min_aps: 27,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-arts/',
     subject_requirements: [engLvl(5, 5)],
-    notes: flag('partially-verified', 'UJ does not state a duration on this page. ' + UJ_CAVEAT) },
+    notes: 'CORRECTED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (BA, B7023Q): APS 27, English 5 (60%+), 3 years - the duration wasn’t stated on the live page we had before and was shown as unknown; the prospectus confirms it. Technical Mathematics is not accepted as a major; if Mathematics is chosen as a major, the Faculty of Science’s own minimum (4, 50%+) applies to that module.' },
 
   // ---- Follow-up pass (2026-10-01): 11 more UJ programmes, same capture method/caveat
   // as above. See uj-pass-2 in research-log.mjs. ----
@@ -86,22 +88,22 @@ const ujPrograms = [
     notes: 'CONFIRMED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 28, English HL 5 (60%+) or FAL 6 (70%+), Mathematics 3 (40%+) or Mathematical Literacy/Technical Mathematics 5 (60%+).' },
 
   { ...ujBase, id: 'uj-bed-senior-fet-maths', career_id: 'teacher', name: 'BEd Senior Phase & FET Teaching (Mathematics)',
-    faculty: 'Education', duration_years: null, min_aps: 28,
+    faculty: 'Education', duration_years: 4, min_aps: 28,
     source_url: 'https://www.uj.ac.za/university-courses/bed-in-senior-phase-and-fet-teaching-mathematics/',
-    subject_requirements: [engLvl(5, 6), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4), lvl('Mathematical Literacy', 6))],
-    notes: flag('partially-verified', UJ_CAVEAT + ' UJ offers this same BEd Senior Phase & FET stream in several other subject specialisations (e.g. Physical Science, Life Sciences, Geography, Afrikaans, Business Management, Sepedi, IsiZulu) at the same APS - only the Mathematics and Physical Science specialisations are shown here.') },
+    subject_requirements: [engLvl(5, 6), lvl('Mathematics', 4)],
+    notes: 'CORRECTED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (MATHEMATICS, B5SMMQ): APS 28, English Home Language 5 (60%+) or Additional Language 6 (70%+), Mathematics 4 (50%+). The prospectus doesn’t list a Mathematical Literacy or Technical Mathematics alternative for this specific teaching specialisation (unlike Foundation/Intermediate Phase) - that alternative previously shown here looked implausible for a Mathematics-teaching qualification and has been dropped. 4 years, matching every other BEd programme in this prospectus. UJ offers this same BEd Senior Phase & FET stream in several other subject specialisations (e.g. Life Sciences, Geography, Afrikaans, Business Management, Sepedi, IsiZulu) at the same APS - only Mathematics and Physical Science are shown here.' },
 
   { ...ujBase, id: 'uj-bed-senior-fet-physci', career_id: 'teacher', name: 'BEd Senior Phase & FET Teaching (Physical Science)',
-    faculty: 'Education', duration_years: null, min_aps: 28,
+    faculty: 'Education', duration_years: 4, min_aps: 28,
     source_url: 'https://www.uj.ac.za/university-courses/bed-in-senior-phase-and-fet-teaching-physical-science/',
-    subject_requirements: [engLvl(5, 6), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), lvl('Physical Sciences', 4)],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    subject_requirements: [engLvl(5, 6), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
+    notes: 'CORRECTED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (PHYSICAL SCIENCE, B5SPSQ): APS 28, English Home Language 5 (60%+) or Additional Language 6 (70%+), Mathematics 4 (50%+) AND Physical Science 4 (50%+) - both required, not an either/or as this row previously implied, and the prospectus doesn’t list a Technical Mathematics alternative here. 4 years, matching every other BEd programme in this prospectus.' },
 
   { ...ujBase, id: 'uj-bsc-it', career_id: 'information-systems', name: 'BSc Information Technology',
-    faculty: 'Science', duration_years: null, min_aps: 30,
+    faculty: 'Science', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bsc-in-information-technology/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 6)],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (INFORMATION TECHNOLOGY, B2I01Q): APS 30, English 5 (60%+), Mathematics 6 (70%+), 3 years.' },
 
   { ...ujBase, id: 'uj-bsocwork', career_id: 'social-worker', name: 'Bachelor of Social Work',
     faculty: 'Humanities', duration_years: 4, min_aps: 31,
@@ -110,34 +112,34 @@ const ujPrograms = [
     notes: 'RESOLVED 2026-10-02 by a screenshot of the live page (uj.ac.za is blocked for automated fetches, so the user checked manually): APS 31, English 5 (60%+) - settles the earlier 31-vs-31.5 conflict between two indexed copies of this page in favour of 31. No Mathematics/Mathematical Literacy requirement is stated.' },
 
   { ...ujBase, id: 'uj-bcom-indpsych', career_id: 'industrial-psychologist', name: 'BCom in Industrial Psychology',
-    faculty: 'Economic & Financial Sciences', duration_years: null, min_aps: 26,
+    faculty: 'Economic & Financial Sciences', duration_years: 3, min_aps: 26,
     source_url: 'https://www.uj.ac.za/university-courses/bcom-in-industrial-psychology/',
-    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4)],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 5))],
+    notes: 'CORRECTED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (INDUSTRIAL PSYCHOLOGY, B34I7Q): a real gap, not just a confidence-tier upgrade - APS 26 applies with Mathematics 4 (50%+), but APS 28 with Mathematical Literacy 5 (60%+) also qualifies, an alternative path this row previously had no record of at all. English 4 (50%+). 3 years.' },
 
   { ...ujBase, id: 'uj-barch', career_id: 'architect', name: 'Bachelor of Architecture',
     faculty: 'Art, Design and Architecture', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-architecture/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), manual('Portfolio & entrance assessment', 'An entrance assessment and a prescribed portfolio are required; Mathematical Literacy is not accepted.')],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (B ARCHITECTURE, B8BA3Q): APS 30, English 5 (60%+), Mathematics 5 (60%+) - Mathematical Literacy and Technical Mathematics both explicitly not accepted. 3 years.' },
 
   { ...ujBase, id: 'uj-bengtech-industrial', career_id: 'industrial-engineer', name: 'BEngTech in Industrial Engineering',
-    faculty: 'Engineering & the Built Environment', duration_years: null, min_aps: 30,
+    faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/beng-tech-in-industrial-engineering/',
     subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), anyOf(lvl('Physical Sciences', 5), lvl('Technical Sciences', 5))],
-    notes: flag('partially-verified', UJ_CAVEAT + ' An extended (4-year) version is available at APS 24 with the same subject levels.') },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (INDUSTRIAL ENGINEERING, B6IN2Q): APS 30, English 4 (50%+), Mathematics/Technical Mathematics 5 (60%+), Physical/Technical Science 5 (60%+), 3 years. An extended (4-year) version, B6IX2Q, is confirmed at APS 24 with the same subject levels.' },
 
   { ...ujBase, id: 'uj-bengtech-mining', career_id: 'mining-engineer', name: 'BEngTech in Mining Engineering',
-    faculty: 'Engineering & the Built Environment', duration_years: null, min_aps: 23,
+    faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 23,
     source_url: 'https://www.uj.ac.za/university-courses/beng-tech-in-mining-engineering/',
     subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), anyOf(lvl('Physical Sciences', 5), lvl('Technical Sciences', 5))],
-    notes: flag('partially-verified', UJ_CAVEAT) },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (MINING ENGINEERING, B6MINQ): APS 23, English 4 (50%+), Mathematics/Technical Mathematics 5 (60%+), Physical/Technical Science 5 (60%+), 3 years.' },
 
   { ...ujBase, id: 'uj-bsc-construction', career_id: 'quantity-surveyor', name: 'BSc in Construction',
-    faculty: 'Engineering & the Built Environment', duration_years: null, min_aps: 30,
+    faculty: 'Engineering & the Built Environment', duration_years: 3, min_aps: 30,
     source_url: 'https://www.uj.ac.za/university-courses/bachelor-of-science-in-construction/',
     subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 5), lvl('Technical Mathematics', 5)), anyOf(lvl('Physical Sciences', 5), lvl('Technical Sciences', 5))],
-    notes: flag('partially-verified', UJ_CAVEAT + ' Feeds into the BSc Honours in Quantity Surveying.') },
+    notes: 'CONFIRMED 2026-10-02 against the user-supplied 2027 Undergraduate Prospectus PDF (CONSTRUCTION, B6CN0Q): APS 30, English 4 (50%+), Mathematics/Technical Mathematics 5 (60%+), Physical/Technical Science 5 (60%+), 3 years. Feeds into the BSc Honours in Quantity Surveying. An extended (4-year) version, B6SC0Q, exists at APS 26.' },
 
   { ...ujBase, id: 'uj-bcom-accounting-std', career_id: 'chartered-accountant', name: 'BCom in Accounting',
     faculty: 'Economic & Financial Sciences', duration_years: 3, min_aps: 28,
@@ -152,9 +154,8 @@ const ujPrograms = [
 // src/scoring-audit.js), so the calculator computes it. A follow-up pass (2026-10-01)
 // found LLB's and BCom (Law)'s own per-subject minimums via web search, surfacing their
 // official law.uwc.ac.za pages - the page itself was not raw-fetched (this environment's
-// network egress blocks direct fetches to university domains), so this is the same
-// "search-engine indexed text of an official page" confidence tier used elsewhere in
-// this file (see UJ_CAVEAT), not a full page read.
+// network egress blocks direct fetches to university domains), so this is
+// "search-engine indexed text of an official page" confidence tier, not a full page read.
 // =====================================================================
 const UWC_POINTS = 'https://www.uwc.ac.za/admission-point-score-calculator/south-african-aps-calculator';
 const UWC_CAVEAT = 'UWC counts seven subjects (English, an additional language, Mathematics or Mathematical Literacy, Life Orientation and your three best others) with English and Mathematics weighted most, for a total out of 65. Scoring rule: ' + UWC_POINTS;
