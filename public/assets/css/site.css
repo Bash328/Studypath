@@ -124,6 +124,8 @@ strong { font-weight: 700; }
 .site-header__inner { display: flex; align-items: center; gap: 14px; padding-block: 10px; }
 .logo { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; font-size: 1.2rem; color: var(--ink); text-decoration: none; letter-spacing: -.03em; }
 .logo:hover { color: var(--ink); }
+.logo__text-group { display: flex; flex-direction: column; line-height: 1.15; }
+.logo__slogan { font-size: .62rem; font-weight: 600; letter-spacing: .02em; color: var(--ink-soft); }
 .logo__mark {
   width: 34px; height: 34px; border-radius: 11px; flex: none;
   background: linear-gradient(140deg, var(--brand), var(--accent));

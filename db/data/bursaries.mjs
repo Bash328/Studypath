@@ -6,10 +6,11 @@
 // scams are common and students are exactly who they target.
 //
 // Researching bursaries is ONGOING. NSFAS, Eskom, the FirstRand Empowerment Foundation
-// bursary and Vodacom's are `verified` (each one's provider/administrator page was fetched
-// directly this pass). The rest are `reported` - sourced to the provider's own page by an
-// earlier Studypath research pass, not re-fetched by us this pass. Do not add a bursary here
-// without at least a provider page for `source_url`.
+// bursary, Vodacom's, and the six added 2026-10-02 (Funza Lushaka, Harmony Gold, Implats,
+// Nedbank, GCRA and Masakh'iSizwe) are `verified` (each one's provider/administrator page
+// was fetched directly in the relevant pass). The rest are `reported` - sourced to the
+// provider's own page by an earlier Studypath research pass, not re-fetched by us this pass.
+// Do not add a bursary here without at least a provider page for `source_url`.
 //
 // Fields match the D1 `bursaries` table.
 
@@ -148,5 +149,97 @@ export const bursaries = [
     active: 1,
     note: 'The eligibility rules above are confirmed on SAICA’s own "Apply to the Thuthuka Bursary" page, but its closing date and time were not shown there - sources disagree on both the exact date and whether it’s an AM or PM cut-off, so we show no deadline rather than guess. Search "SAICA Thuthuka" and confirm the current closing date yourself.',
     verification: 'reported',
+  },
+  // The six below were added 2026-10-02, each verified by a direct fetch of the provider's
+  // own page this pass.
+  {
+    id: 'funza-lushaka-2027',
+    name: 'Funza Lushaka Bursary Programme',
+    provider: 'Department of Basic Education (DBE)',
+    field_of_study: 'B.Ed degree or PGCE, specialising in two or more priority teaching subjects/phases (e.g. Mathematics, Science, languages, Foundation Phase, Technology)',
+    deadline: '2027-01-31',
+    amount_covers: null, // not itemised on the pages we read
+    eligibility:
+      'South African citizen under 30; accepted into an approved B.Ed or PGCE programme specialising in two or more priority areas; an exemption/endorsement or "admission to bachelor degree studies" matric pass; at least a level 4 (50%) pass in the matric subject linked to the chosen priority area (Foundation Phase specialists also need a Mathematics or Mathematical Literacy pass plus level 4 Home Language; Technology/CAT specialists without those subjects at matric need at least level 4 Mathematics); does not fund extended programmes. Recipients must teach at a public school - wherever placed by a Provincial Education Department - for the same number of years the bursary was held.',
+    apply_url: 'https://www.eservices.gov.za/FunzaLushaka/',
+    source_url: 'https://www.eservices.gov.za/FunzaLushaka/',
+    active: 1,
+    note: 'New applications for the 2027 academic year close 31 January 2027 (secondary sources say returning bursars close earlier, 30 November 2026, which we have not independently confirmed). This closes a gap flagged in an earlier Studypath pass, which found DBE pages confirming eligibility but no 2027-specific closing date. Coverage amounts (tuition, accommodation, stipend) are not itemised on either official page we read (the main site or its National Selection Criteria PDF).',
+    verification: 'verified',
+  },
+  {
+    id: 'harmony-gold-2027',
+    name: 'Harmony Gold Bursary Programme',
+    provider: 'Harmony Gold Mining Company',
+    field_of_study: 'Mining-related disciplines - the company describes its intake as "60% core and critical, 30% non-core but mining-related, 10% other disciplines", varying annually; Engineering applicants specifically need Mathematics and Physical Science',
+    deadline: '2026-10-09',
+    amount_covers: 'Full-time financial support for students from communities near Harmony’s mining operations (exact components not itemised on the page we read)',
+    eligibility:
+      '18-35 years old; South African citizen with a valid ID; National Senior Certificate with at least 60% in all subjects (Engineering applicants need at least 70% in Mathematics and Physical Science); current tertiary students must maintain at least 60% average in major subjects; full-time study; a 3-page CV is required.',
+    apply_url: 'https://www.harmony.co.za/careers/opportunities-for-students/',
+    source_url: 'https://www.harmony.co.za/careers/opportunities-for-students/',
+    active: 1,
+    note: 'Closing date is for the 2027 academic year, per Harmony’s own careers page.',
+    verification: 'verified',
+  },
+  {
+    id: 'implats-bursary-2027',
+    name: 'Implats Bursary Programme',
+    provider: 'Impala Platinum Holdings (Implats)',
+    field_of_study: 'Engineering, mining, metallurgy, electrical (heavy current), chemistry, geology, accounting and survey, and human resources (BCom) - several to Honours level',
+    deadline: null,
+    amount_covers: 'Registration and tuition fees for the duration of the course, residence fees, and a cash allowance',
+    eligibility:
+      'Specific academic thresholds are not itemised on the page we read; applicants download and complete Implats’ own bursary application form and email it to bursaries@implats.co.za. Recipients must work for the company for the full period of the bursary and complete vacation work each year.',
+    apply_url: 'https://www.implats.co.za/young-talent.php',
+    source_url: 'https://www.implats.co.za/young-talent.php',
+    active: 1,
+    note: 'The page we read does not state a closing date for the current intake - aggregator sites claim 31 August, but we could not confirm that on implats.co.za itself, so we show no deadline rather than guess. Email bursaries@implats.co.za to confirm the current window.',
+    verification: 'verified',
+  },
+  {
+    id: 'nedbank-external-2027',
+    name: 'Nedbank External Bursary Programme',
+    provider: 'Nedbank (Nedbank Educational Trust)',
+    field_of_study: 'Science, Technology, Engineering, Mathematics (STEM) and green-economy fields',
+    deadline: null,
+    amount_covers: 'Full-time undergraduate or Honours study funding (exact components not itemised on the page we read)',
+    eligibility:
+      'South African citizen; proven financial need based on household income; at least 65% average including 65% in subjects relevant to the chosen degree; Mathematical Literacy does not qualify; admission to a South African public university or university of technology.',
+    apply_url: 'https://group.nedbank.co.za/careers/graduates-and-bursaries.html',
+    source_url: 'https://group.nedbank.co.za/careers/graduates-and-bursaries.html',
+    active: 1,
+    note: 'Nedbank’s own page states applications for the 2027 academic year are already closed, with the next window opening in 2027 for 2028 study - so no deadline is shown here rather than guessed. Other (non-Nedbank) sources describe an annual 1 February - 30 April window, which we have not independently confirmed on Nedbank’s own page.',
+    verification: 'verified',
+  },
+  {
+    id: 'gcra-gauteng-bursary',
+    name: 'Gauteng City Region Academy (GCRA) Bursary',
+    provider: 'Gauteng Department of Education (GCRA)',
+    field_of_study: 'Any undergraduate or postgraduate programme at an accredited Post-School Education and Training (PSET) institution (university or TVET college)',
+    deadline: null,
+    amount_covers: 'Full cost of study, subject to conditions in the bursary contract',
+    eligibility:
+      'South African citizen aged 18-35; resident in Gauteng (proof of residence required); completed matric and accepted at an accredited PSET institution. The top 3 Grade 12 learners from Gauteng no-fee, SSIP and LSEN government schools automatically qualify but must still apply online.',
+    apply_url: 'https://gcrabursary.gauteng.gov.za/',
+    source_url: 'https://gcrabursary.gauteng.gov.za/',
+    active: 1,
+    note: 'The page we read states the bursary application is closed for the current cycle but does not itself state the exact closing date it used (a secondary source claimed 28 February 2026, which we have not confirmed on the Gauteng government page), so we show no deadline rather than guess. Check the page directly for when the next cycle opens.',
+    verification: 'verified',
+  },
+  {
+    id: 'masakhisizwe-2027',
+    name: 'Masakh’iSizwe Bursary Programme',
+    provider: 'Western Cape Government (Department of Infrastructure)',
+    field_of_study: 'Engineering and built-environment degrees/diplomas: property studies, geomatics, electrical/electronic engineering, civil engineering, construction management, mechanical engineering, quantity surveying, town/city and regional planning, architecture',
+    deadline: null,
+    amount_covers: 'Full-time tertiary study funding, plus a support-services programme, internship/learning opportunities and graduate employment placement assistance',
+    eligibility:
+      'Full-time study at UCT, Stellenbosch University or CPUT only. The programme states it prioritises disadvantaged learners, especially women, students with disabilities and learners from rural communities. Awards are competitive and, in the page’s own words, "not guaranteed".',
+    apply_url: 'https://wa-dtpw-misbursary-prod-zan.azurewebsites.net/',
+    source_url: 'https://www.westerncape.gov.za/service/masakhisizwe-bursary-programme',
+    active: 1,
+    note: 'The page states applications close "31 August" every year but does not state which year on that notice itself (the page separately references both a 2026 date and a "2027 Advert" document elsewhere), so we show no deadline rather than guess the year. Limited to study at UCT, Stellenbosch or CPUT specifically.',
+    verification: 'verified',
   },
 ];

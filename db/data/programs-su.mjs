@@ -120,12 +120,14 @@ export const suPrograms = [
   ...[
     ['su-bcom-management', 'business-manager', 'BCom Management Sciences'],
     ['su-bcom-economics', 'economist', 'BCom Economic Sciences'],
-    ['su-bcom-financial-accounting', 'financial-manager', 'BCom Financial Accounting'],
     ['su-bcom-industrial-psych', 'industrial-psychologist', 'BCom Industrial Psychology'],
   ].map(([id, career_id, name]) => ({
     ...base, id, career_id, name, faculty: 'Economic & Management Sciences', duration_years: 3, min_aps: 65,
     subject_requirements: [pct('Mathematics', 60)], notes: flag('selection', SELECTION),
   })),
+  { ...base, id: 'su-bcom-financial-accounting', career_id: 'chartered-accountant', name: 'BCom Financial Accounting (ACCA)', faculty: 'Economic & Management Sciences',
+    duration_years: 3, min_aps: 65, subject_requirements: [pct('Mathematics', 60)],
+    notes: flag('selection', SELECTION + ' SU’s own programme page states this prepares graduates "for a career as a Chartered Certified Accountant" via ACCA (the UK-based body), not SAICA/CA(SA) like the BAcc above - SU says it carries the maximum nine-paper ACCA exemption. A real but different route to chartered-accountant status from the BAcc.') },
   { ...base, id: 'su-bcom-maths', career_id: 'mathematician', name: 'BCom Mathematical Sciences', faculty: 'Economic & Management Sciences',
     duration_years: 3, min_aps: 70, subject_requirements: [pct('Mathematics', 75)],
     notes: flag('selection', SELECTION) },

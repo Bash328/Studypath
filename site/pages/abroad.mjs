@@ -8,8 +8,9 @@ const g = (text) => ({ level: 'general', text, sources: [] });
 // official source we verified, so every paragraph is marked that way and each section
 // points the student at places to confirm it. The one exception is REAL_EXAMPLES below:
 // a short list of foreign universities whose own page we actually read and quoted (UK:
-// Edinburgh x2, Sheffield, Manchester; Australia: UNSW Sydney, UWA), kept deliberately
-// small so every row stays something we checked ourselves.
+// Edinburgh x2, Sheffield, Manchester; Australia: UNSW Sydney, UWA; Netherlands: Groningen;
+// Ireland: Trinity College Dublin; New Zealand: Auckland; USA: University of Southern
+// Indiana), kept deliberately small so every row stays something we checked ourselves.
 
 // Each requirement is quoted from the university's own international-admissions page
 // (fetched and read directly), not from an agent site or forum. "NSC Grade 7/80%" etc
@@ -45,6 +46,26 @@ const REAL_EXAMPLES = [
     need: 'Converts your NSC average (achievement level of your best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98 – the course itself then sets its own ATAR cut-off.',
     url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate',
   },
+  {
+    name: 'University of Groningen (Netherlands)', field: 'Guide, varies by faculty',
+    need: 'Requires the NSC with 7 examination subjects and an overall average of 70% (Life Orientation and Mathematical Literacy excluded from the calculation); Science/Engineering, Economics and Medical Sciences programmes also set their own required subjects (Mathematics, Physics, Chemistry or Biology depending on the degree).',
+    url: 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/with-non-dutch-diploma/bachelor/bachelor-entry-requirements/bachelorlinkscountry/south-africa?lang=en',
+  },
+  {
+    name: 'Trinity College Dublin (Ireland)', field: 'Guide, varies by course',
+    need: 'Publishes four NSC/IEB "bands" based on your five strongest subjects (excluding Life Orientation): Special Entry 77777, Band 1 77776, Band 2 77766, Band 3 77666 – which band a specific course needs depends on demand and the course’s own subject requirements.',
+    url: 'https://www.tcd.ie/study/country/south-africa/',
+  },
+  {
+    name: 'University of Auckland (New Zealand)', field: 'Guide, varies by programme',
+    need: 'Converts the NSC (an aggregate of your best 6 subjects, excluding Life Orientation) into a required aggregate score per programme, e.g. 27 for most Arts/Science/Architecture degrees, 30 for Business/Creative Arts, 36 for a Bachelor of Commerce, and 37 for Law or Health Sciences (which must include Mathematics and Physical Sciences).',
+    url: 'https://www.auckland.ac.nz/assets/study/applications-and-admissions/entry-requirements/undergraduate-entry-requirements/overseas-secondary-school-applicants/2025-Undergraduate-programme-specific-entry-requirements-J-Z-Final%20v2.pdf',
+  },
+  {
+    name: 'University of Southern Indiana (USA)', field: 'General undergraduate entry',
+    need: 'States its equivalent-credentials requirement for South African applicants as the National Senior Certificate (NSC, from 2008 onwards) with 130 credits.',
+    url: 'https://www.usi.edu/international/admissions/how-to-apply/equivalent-credentials',
+  },
 ];
 
 const ROUTES = [
@@ -55,7 +76,14 @@ const ROUTES = [
     ],
     checks: [
       { label: 'The university’s own page for international applicants', url: null },
-      { label: 'The official student-visa page of the country’s government', url: null },
+      { label: 'UK undergraduate applications: UCAS, the centralised application service', url: 'https://www.ucas.com' },
+      { label: 'US undergraduate applications: Common App', url: 'https://www.commonapp.org' },
+      { label: 'UK: the Student visa page, gov.uk', url: 'https://www.gov.uk/student-visa' },
+      { label: 'Australia: the Student visa (subclass 500) page, Study Australia (Australian Government)', url: 'https://www.studyaustralia.gov.au/en/plan-your-move/your-guide-to-visas/student-visa-subclass-500' },
+      { label: 'Ireland: study-visa information, Immigration Service Delivery', url: 'https://www.irishimmigration.ie/coming-to-study-in-ireland/what-are-my-study-options/planning-to-study-in-ireland/' },
+      { label: 'New Zealand: student visas, Immigration New Zealand', url: 'https://www.immigration.govt.nz/study/study-visas/' },
+      { label: 'Canada: the study permit page, IRCC', url: 'https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit.html' },
+      { label: 'USA: Study in the States, US Department of Homeland Security', url: 'https://studyinthestates.dhs.gov/' },
     ] },
   { emoji: '🔁', title: 'Route 2 – Start in South Africa, go abroad part-way',
     paras: [
@@ -132,6 +160,10 @@ export function abroadPage() {
     <div class="card"><h3>What does it really cost?</h3>${claims([g('Compare the full multi-year total against the same degree here, including the rand weakening. International student fees are usually much higher than local ones.')])}</div>
     <div class="card"><h3>Can you work while studying?</h3>${claims([g('Student-visa work rules vary by country. Plans that depend on part-time income can fall apart if the visa doesn’t allow it.')])}</div>
     <div class="card"><h3>Who is advising you?</h3>${claims([g('Some agents are paid commission by the universities they recommend. That doesn’t make them dishonest, but verify everything on the university’s own site.')])}</div>
+    <div class="card"><h3>Will your NSC need independent evaluation?</h3>${claims([
+      { level: 'reported', text: 'Some countries want your NSC checked by a credential-evaluation service before a university or visa office will accept it, separately from the university’s own admissions decision – UK ENIC (formerly UK NARIC) does this for the UK, and World Education Services (WES) is commonly required for the USA and Canada.', sources: [{ label: 'UK ENIC', url: 'https://www.enic.org.uk' }, { label: 'World Education Services (WES)', url: 'https://www.wes.org' }] },
+      g('Even where your NSC was taught in English, some universities still ask for an English test like IELTS or TOEFL – whether you’re exempt depends on the specific university, not a general rule, so check the course page itself.'),
+    ])}</div>
   </div>
   ${checksBox([
     { label: 'The registration body for your profession', url: null },

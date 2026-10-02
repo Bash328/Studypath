@@ -59,13 +59,19 @@ DB.raw.exec(`INSERT INTO bursaries (id,name,provider,field_of_study,deadline,app
  ('b3','No date','P','Law',NULL,'https://c.ac.za','https://c.ac.za',1),
  ('b4','Inactive','P','Engineering','2026-10-01','https://d.ac.za','https://d.ac.za',0)`);
 r = await get('/api/bursaries');
-// Order includes 3 new verified entries added in a 2026-10-01 pass (Eskom, FirstRand
-// Empowerment Foundation/StudyTrust, Vodacom) - see research-log.mjs - slotted in by deadline.
+// Order includes 3 verified entries added in a 2026-10-01 pass (Eskom, FirstRand
+// Empowerment Foundation/StudyTrust, Vodacom) and 6 more added 2026-10-02 (Funza Lushaka,
+// Harmony Gold, Implats, Nedbank, GCRA, Masakh'iSizwe) - see research-log.mjs - all slotted
+// in by deadline (null-deadline rows keep insertion order, which is why saica-thuthuka-2027
+// comes before the later-added null-deadline rows, which come before the test's own b3 row).
 ok('bursaries: soonest first, undated last, inactive hidden',
-  r.b.bursaries.map(b => b.id).join() === 'allan-gray-orbis-2027,sasol-mainstream-2027,sasol-foundation-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,investec-tertiary-2027,b2,nsfas-2027,b1,saica-thuthuka-2027,b3',
+  r.b.bursaries.map(b => b.id).join() === 'allan-gray-orbis-2027,sasol-mainstream-2027,sasol-foundation-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,investec-tertiary-2027,harmony-gold-2027,b2,nsfas-2027,b1,funza-lushaka-2027,saica-thuthuka-2027,implats-bursary-2027,nedbank-external-2027,gcra-gauteng-bursary,masakhisizwe-2027,b3',
   r.b.bursaries.map(b=>b.id).join());
 r = await get('/api/bursaries?field=Engineering');
-ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'sasol-mainstream-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,b2,b1', r.b.bursaries.map(b=>b.id).join());
+// harmony-gold-2027 matches via a lowercase "engineering" in its field_of_study text - SQLite's
+// LIKE is case-insensitive for ASCII, which is also why this filter was already case-insensitive
+// before this pass.
+ok('bursaries field filter', r.b.bursaries.map(b => b.id).join() === 'sasol-mainstream-2027,vodacom-external-2027,eskom-bursary-2027,firstrand-empowerment-2027,harmony-gold-2027,b2,b1,implats-bursary-2027,nedbank-external-2027,masakhisizwe-2027', r.b.bursaries.map(b=>b.id).join());
 
 // reminders: stored, and a second sign-up for the same address updates rather than errors
 const post = (body) => get('/api/reminders', { method: 'POST', body: JSON.stringify(body) });

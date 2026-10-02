@@ -53,6 +53,19 @@ const S = {
   gazette: { label: 'Government Gazette 42100 (2018) - the research pack saw it only in secondary copies, not on dhet.gov.za', url: null },
   dhetFramework: { label: 'DHET "Staffing South Africa’s Universities Framework" (named in the research pack; page not re-read by us)', url: null },
   usaf: { label: 'Universities South Africa (USAf), as quoted in the research pack', url: 'https://www.usaf.ac.za' },
+
+  // Added 2026-10-02: university FAQ pages, degree-types explainer sources.
+  witsApply: src('Wits - Apply to Wits', 'https://www.wits.ac.za/undergraduate/apply-to-wits/'),
+  suApply2027: src('Stellenbosch - How to apply, 2027 intake (PDF)', 'https://blogs.sun.ac.za/open-day/files/2026/03/How-to-Apply-Undergraduate-programmes-2027-intake.pdf'),
+  ukznFaqs: src('Study@UKZN FAQs', 'https://studyatukzn.ukzn.ac.za/faqs/'),
+  uwcAppInfo: src('UWC application information', 'https://www.uwc.ac.za/admission-and-financial-aid/undergraduate-admission/application-information'),
+  ujPolicy: src('UJ Policy on Applications and Selections (PDF)', 'https://www.uj.ac.za/wp-content/uploads/2023/02/applications-and-selections.pdf'),
+  nwuChange1: src('NWU LibAnswers - How do I change my qualifications after applying?', 'https://nwu.libanswers.com/faq/356446'),
+  nwuChange2: src('NWU LibAnswers - Can I change my course after I have applied?', 'https://nwu.libanswers.com/faq/369144'),
+  saqaLevels: src('SAQA Level Descriptors for the National Qualifications Framework (2012)', 'https://saqa.org.za/wp-content/uploads/2023/02/level_descriptors.pdf'),
+  heqsf: src('CHE Higher Education Qualifications Sub-Framework (2013)', 'https://che.ac.za/sites/default/files/inline-files/PUB_Higher%20Education%20Qualifications%20Sub-Framework%20(HEQSF)%202013.pdf'),
+  ecsaReg: src('ECSA - Registration categories', 'https://www.ecsa.co.za/ecsa-registration/'),
+  ujBengTech: src('UJ - BEng Tech in Civil Engineering (example programme page)', 'https://www.uj.ac.za/university-courses/beng-tech-in-civil-engineering/'),
 };
 
 const v = (text, sources) => ({ level: 'verified', text, sources });
@@ -210,9 +223,42 @@ export const faq = [
     question: 'Do I have to send my matric results to the university?',
     answer: [
       r('If you wrote the NSC in South Africa, UCT "will obtain your results directly from your examination authority." Applicants with international qualifications need to send certified results.', [S.uctFaq]),
+      r('Once you accept an offer, several universities want more than just your results. **Wits** asks already-matriculated applicants for certified copies of matric certificates (or foreign school-leaving certificates), and anyone who has studied at another tertiary institution for certified academic transcripts plus a statement of good conduct/standing. **UKZN** requires a certified copy of your Statement of Results and a certified copy of your ID when you accept an offer. **UWC** asks post-matric applicants for a certified NSC/Senior Certificate and a certified ID, with extra documents (an official transcript, a certificate of good conduct) for transfer students.', [S.witsApply, S.ukznFaqs, S.uwcAppInfo]),
       g('Other universities may work differently - check the "documents" section of the application form.'),
     ],
     checks: [{ label: 'The "how to apply" page of the university', url: null }],
+  },
+  {
+    id: 'multiple-applications', category: 'applying',
+    question: 'Can I apply to more than one programme, or more than one university, at the same time?',
+    answer: [
+      v('Yes to both, and most students do. Each university is a **separate application** with its own fee, and within one university you can usually choose more than one programme on a single application: **UCT** allows up to 2 programme choices (which can span different faculties), **Wits** and **Stellenbosch** allow up to 3, and **UJ** and **UWC** allow up to 2.', [S.uctFaq, S.witsApply, S.suApply2027, S.ujPolicy, S.uwcAppInfo]),
+      v('If you qualify for more than one of your choices you can receive **multiple offers**, but you can only hold one active acceptance at a time - accepting a new offer normally replaces whichever one you accepted before.', [S.suApply2027, S.ukznFaqs]),
+      g('Applying to several universities as a backup is normal and sensible - just track each one’s own closing date and application fee separately.'),
+    ],
+    checks: [{ label: 'Each university’s own "how to apply" page', url: null }],
+  },
+  {
+    id: 'conditional-offer', category: 'applying',
+    question: 'What is a conditional offer, and what happens if my final results don’t meet it?',
+    answer: [
+      v('A conditional offer is made before your final results are out, usually from Grade 11 or mid-year Grade 12 marks: it admits you **on condition** that your final National Senior Certificate results still meet the programme’s requirements. A firm/final offer follows once your actual results are in. Stellenbosch and UCT both describe conditional offers this way.', [S.suApply2027, S.uctFaq]),
+      v('UKZN works the same way: a conditional offer applies when you’ve applied with Grade 11 results, and is checked against your real results once they are released.', [S.ukznFaqs]),
+      r('If your final results do not meet the condition, UCT says plainly that the application becomes unsuccessful and you will be told. We have not found an official page from another university promising anything different, so a conditional offer should be treated as genuinely conditional.', [S.uctFaq]),
+      g('What happens next if you fall short - a different programme, a diploma route, a deferral - depends entirely on the university and programme, so ask its admissions office directly rather than assuming.'),
+    ],
+    checks: [{ label: 'The university’s own offer letter - it states the exact condition', url: null }],
+  },
+  {
+    id: 'change-programme', category: 'applying',
+    question: 'Can I change my programme choice after I’ve already applied?',
+    answer: [
+      v('It depends on the university, and most set a deadline. **UCT** lets you change your choices for free up to 31 August. **Wits** lets you amend your choices yourself through its online portal any time before that programme’s applications close, and its own guidance is explicit: "do not submit a new application." **Stellenbosch** requires any change request to reach its Client Services Centre by the application closing date (31 July for the 2027 intake); after that it is up to the faculty whether to accommodate you.', [S.uctFaq, S.witsApply, S.suApply2027]),
+      v('**NWU** does not allow changes once an application is submitted at all - you can only apply once per academic year - though accepted students can apply to change their qualification during an "amendment period" in their first year, subject to space being available.', [S.nwuChange1, S.nwuChange2]),
+      r('**UWC** asks you not to submit a new application if you change your mind, and instead to contact its Contact Centre about changing your choice. **UJ**’s own admissions policy states that once an application is submitted, no changes, modifications or additions can be made.', [S.uwcAppInfo, S.ujPolicy]),
+      g('Policies differ enough between universities that the only safe approach is to check your specific university’s page and act well before its closing date.'),
+    ],
+    checks: [{ label: 'The "how to apply" or admissions FAQ page of the university you applied to', url: null }],
   },
   {
     id: 'cao', category: 'applying',
@@ -282,6 +328,32 @@ export const faq = [
     checks: [
       { label: 'Universities South Africa (usaf.ac.za)', url: 'https://www.usaf.ac.za' },
       { label: 'Department of Higher Education and Training (dhet.gov.za)', url: 'https://www.dhet.gov.za' },
+    ],
+  },
+  {
+    id: 'qualification-types', category: 'words',
+    question: 'What is the difference between a Higher Certificate, Diploma, Advanced Diploma and Bachelor’s Degree?',
+    answer: [
+      v('South Africa’s Higher Education Qualifications Sub-Framework (HEQSF), set by the Council on Higher Education, pegs each qualification type to a specific NQF level and a minimum number of credits (roughly 10 study hours per credit). A **Higher Certificate** sits at **NQF level 5** (120 credits, about 1 year). A **Diploma** sits at **NQF level 6** (240 or 360 credits, 2-3 years - the 360-credit version can include up to 120 credits of workplace-based learning). An **Advanced Diploma** sits at **NQF level 7** (120 credits, about 1 further year on top of a Diploma or Bachelor’s degree - it is not something a school leaver enrols into directly). A **Bachelor’s Degree** can sit at **NQF level 7** (360 credits, 3 years, a "general" degree) or **NQF level 8** (480 credits, 4 years, a more demanding "professional" degree - the track most accredited engineering, law and similar degrees use). A **Bachelor Honours Degree** sits at **NQF level 8** (120 credits, about 1 further year on top of a Bachelor’s degree).', [S.heqsf]),
+      v('The jump in level is about more than time. SAQA’s own level descriptors describe **level 6** as applying known methods to solve problems in **unfamiliar contexts**, **level 7** as **integrating** knowledge across a field and applying research methods to resolve problems, and **level 8** as engaging with knowledge **at the forefront** of a field and critically evaluating how that knowledge was produced.', [S.saqaLevels]),
+      g('In everyday conversation people often use "diploma" loosely for any shorter, career-focused qualification. The HEQSF names above are the precise, registered meaning, and what programme listings on this site use.'),
+    ],
+    checks: [
+      { label: 'CHE Higher Education Qualifications Sub-Framework (2013)', url: S.heqsf.url },
+      { label: 'SAQA Level Descriptors for the NQF', url: S.saqaLevels.url },
+    ],
+  },
+  {
+    id: 'beng-vs-engtech', category: 'words',
+    question: 'What’s the difference between a BEng/BSc(Eng) and a BEngTech or engineering Diploma?',
+    answer: [
+      v('These lead to **different professional registration categories with the Engineering Council of South Africa (ECSA)**, not just different-sounding names. ECSA’s own registration page sets out three categories: a **Professional Engineer (Pr Eng)**, whose benchmark qualification is a 4-year **BEng or BSc(Eng)**, who solves "complex engineering problems"; a **Professional Engineering Technologist (Pr Tech Eng)**, whose qualification is a **Bachelor of Engineering Technology (BEngTech)**, who applies "established engineering principles and advanced technological knowledge" to more narrowly-scoped work; and a **Professional Engineering Technician (Pr Techni Eng)**, whose qualification is a **National Diploma/Diploma in Engineering**, who solves "well-defined engineering problems."', [S.ecsaReg]),
+      r('BEngTech is itself a Bachelor’s degree, not a diploma - it typically sits at **NQF level 7** with 360 credits over **3 years**, offered at universities of technology, and is the current route into the Pr Tech Eng category (the older standalone BTech top-up qualification is being phased out). We found this stated consistently across several universities-of-technology programme pages but have not read a single CHE/SAQA document that states the BEngTech level directly, so this paragraph is reported rather than verified.', [S.ujBengTech]),
+      g('Practically: this site lists many engineering qualifications at universities of technology (CPUT, CUT, DUT, MUT, TUT, VUT) as BEngTech or National Diploma programmes rather than BEng. These are real, respected, accredited routes into engineering - including into a Professional Engineering Technologist or Technician career - but they sit in a **different ECSA category from a BEng/BSc(Eng)**, which is specifically the route to becoming a Professional Engineer. If your goal is specifically "Professional Engineer," check whether a programme is accredited as a BEng/BSc(Eng) before applying - the university’s own faculty page will say so.'),
+    ],
+    checks: [
+      { label: 'ECSA - Registration categories', url: S.ecsaReg.url },
+      { label: 'The programme’s own page - check whether it is accredited as BEng/BSc(Eng), BEngTech, or a Diploma', url: null },
     ],
   },
 

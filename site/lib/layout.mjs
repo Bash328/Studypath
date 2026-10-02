@@ -100,7 +100,7 @@ ${jsonLdScripts(ld)}
 
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a class="logo" href="/" aria-label="Studypath home"><span class="logo__mark" aria-hidden="true">SP</span><span class="logo__text">Studypath</span></a>
+    <a class="logo" href="/" aria-label="Studypath home"><span class="logo__mark" aria-hidden="true">SP</span><span class="logo__text-group"><span class="logo__text">Studypath</span><span class="logo__slogan">Find your way</span></span></a>
     <nav class="nav" aria-label="Main">
       ${NAV.map(([href, label]) => `<a href="${href}"${cur(path, href)}>${esc(label)}</a>`).join('\n      ')}
       <a class="nav__cta" href="/calculator"${cur(path, '/calculator')}>What do I qualify for?</a>
