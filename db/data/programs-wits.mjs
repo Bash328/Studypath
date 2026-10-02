@@ -5,31 +5,18 @@ import { lvl, pct, engLvl, anyOf, manual, flag } from './_helpers.mjs';
 // English and Maths getting +2 at level 5 and above, and Life Orientation scoring
 // only 4 / 3 / 2 / 1 at levels 8 / 7 / 6 / 5.
 //
-// Two sources. Source A is the Wits schools-liaison Grade 12 guide, which is headed
-// "prospective students for 2026" - every row that rests on it alone is flagged
-// [dated-document]. Source B is the individual 2027 course-finder pages, which are
-// current. Where both give a figure, they usually agree.
-//
-// Spot-check pass (2026-10-01, see wits-slo-2026-label in research-log.mjs): Civil,
-// Chemical and Electrical Engineering, BCom (General), BSc Computer Science and MBBCh
-// were each re-checked against their live course-finder pages (direct fetches succeeded
-// for wits.ac.za in this pass) and found unchanged - moved onto Source B. LLB (4-year)
-// was also re-checked and is APS-unchanged but has a genuine Mathematics-level conflict
-// with the schools-liaison guide, shown via flag('conflict', ...) rather than silently
-// resolved. BCom with Law was spot-checked by search only (no working course-finder URL
-// found) and is unchanged.
-//
-// Follow-up pass (2026-10-02, see wits-raw-read-sweep-2026-10-02 in research-log.mjs):
-// every remaining Source A row except BCom with Law was re-checked by a direct fetch of
-// its own course-finder page and moved onto Source B. Two real corrections came out of
-// it: Architectural Studies' true minimum is APS 29 (not the 34 a prior search-synthesis
-// pass had shown, with no 29-33 discretionary band - that distinction doesn't exist),
-// and Actuarial Science is APS 44 (not 42). BCom with Law remains the one unresolved row
-// - the general BCom page gives APS 38, not Law's reported 43, so a Law-major-specific
-// page still needs to be found.
-
-const SLO = 'https://www.wits.ac.za/media/wits-university/study/schools-liaison/documents/Wits%20SLO%20Grade%2012_100125.pdf';
-const CF = 'https://www.wits.ac.za/course-finder/undergraduate';
+// Every row in this file is now cited to its own live 2027 course-finder page (see
+// wits-raw-read-sweep-2026-10-02 and wits-health-sciences-raw-read-2026-10-02 in
+// research-log.mjs) - the 2026 schools-liaison guide this file used to fall back to is
+// no longer cited anywhere. Real corrections found along the way: Architectural
+// Studies' true minimum is APS 29 (not 34, and there's no 29-33 discretionary band -
+// that distinction doesn't exist); Actuarial Science is APS 44 (not 42); Pharmacy,
+// Physiotherapy, Occupational Therapy, Nursing, Clinical Medical Practice and Oral
+// Health Sciences all accept Life Sciences as an alternative to Physical Sciences
+// (previously shown as Physical Sciences only); Occupational Therapy and Oral Health
+// Sciences both need a job shadowing certificate (previously not noted). BCom with Law
+// is resolved too - its APS 43 belongs to the part-time route specifically, not a
+// separate full-time degree.
 
 const base = {
   university_id: 'wits',
@@ -37,14 +24,6 @@ const base = {
   score_type: 'minimum',
   intake_year: 2027,
 };
-
-// Row sourced only from the 2026-labelled schools-liaison guide.
-const sourceA = {
-  ...base,
-  source_url: SLO,
-  document_date: '2025-01-10',
-};
-const datedNote = 'This figure comes from the Wits schools-liaison Grade 12 guide, which is headed for 2026 entry. We have not yet found a 2027 course-finder page confirming it, so treat it as the most recent official figure rather than a confirmed 2027 one.';
 
 const ENG_APS = [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)];
 const engNote = 'Wits notes that level 5 across the board means you are likely to be wait-listed; level 6 is advised.';
@@ -128,17 +107,18 @@ export const witsPrograms = [
     notes: flag('no-cutoff-published', 'Wits Health Sciences does not use APS. It uses a Composite Index: 75% school average across 5 subjects and 25% NBT. Wits does not publish the Composite Index cut-off scores, so nobody - including us - can tell you the number you need. Applications close 30 June 2026.') },
 
   ...[
-    ['wits-dental', 'dentist', 'Bachelor of Dental Science', 5, [engLvl(5, 5), lvl('Mathematics', 5), lvl('Life Sciences', 5), lvl('Physical Sciences', 5), manual('Job shadowing', 'Job shadowing is required.')]],
-    ['wits-pharmacy', 'pharmacist', 'Bachelor of Pharmacy', 4, [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5)]],
-    ['wits-physio', 'physiotherapist', 'Bachelor of Physiotherapy', 4, [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5), manual('Job shadowing', 'Job shadowing is required.')]],
-    ['wits-ot', 'occupational-therapist', 'Bachelor of Occupational Therapy', 4, [engLvl(4, 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)]],
-    ['wits-nursing', 'nurse', 'Bachelor of Nursing', 4, [engLvl(4, 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)]],
-    ['wits-clinical-practice', 'clinical-associate', 'Bachelor of Clinical Medical Practice', 3, [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 7)), lvl('Physical Sciences', 4)]],
-    ['wits-oral-health', 'oral-hygienist', 'Bachelor of Oral Health Sciences', 3, [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 7)), lvl('Physical Sciences', 4)]],
-  ].map(([id, career_id, name, duration_years, subject_requirements]) => ({
-    ...sourceA, id, career_id, name, faculty: 'Health Sciences', duration_years, min_aps: null,
+    ['wits-dental', 'dentist', 'Bachelor of Dental Science', 5, [engLvl(5, 5), lvl('Mathematics', 5), lvl('Life Sciences', 5), lvl('Physical Sciences', 5), manual('Job shadowing', 'A job shadowing certificate of attendance (minimum 16 hours) is required.')], 'dental-science'],
+    ['wits-pharmacy', 'pharmacist', 'Bachelor of Pharmacy', 4, [engLvl(5, 5), lvl('Mathematics', 5), anyOf(lvl('Life Sciences', 5), lvl('Physical Sciences', 5))], 'pharmacy'],
+    ['wits-physio', 'physiotherapist', 'Bachelor of Physiotherapy', 4, [engLvl(5, 5), lvl('Mathematics', 5), anyOf(lvl('Life Sciences', 5), lvl('Physical Sciences', 5)), manual('Job shadowing', 'A job shadowing certificate of attendance (minimum 16 hours) is required.')], 'physiotherapy'],
+    ['wits-ot', 'occupational-therapist', 'Bachelor of Occupational Therapy', 4, [engLvl(4, 4), lvl('Mathematics', 4), anyOf(lvl('Life Sciences', 4), lvl('Physical Sciences', 4)), manual('Job shadowing', 'A job shadowing certificate of attendance (minimum 16 hours) is required.')], 'occupational-therapy'],
+    ['wits-nursing', 'nurse', 'Bachelor of Nursing', 4, [engLvl(4, 4), lvl('Mathematics', 4), anyOf(lvl('Life Sciences', 4), lvl('Physical Sciences', 4))], 'nursing'],
+    ['wits-clinical-practice', 'clinical-associate', 'Bachelor of Clinical Medical Practice', 3, [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 7)), anyOf(lvl('Life Sciences', 4), lvl('Physical Sciences', 4))], 'clinical-medical-practice'],
+    ['wits-oral-health', 'oral-hygienist', 'Bachelor of Oral Health Sciences', 3, [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 7)), anyOf(lvl('Life Sciences', 4), lvl('Physical Sciences', 4)), manual('Job shadowing', 'A job shadowing certificate of attendance (minimum 16 hours) is required.')], 'oral-health-sciences'],
+  ].map(([id, career_id, name, duration_years, subject_requirements, slug]) => ({
+    ...base, id, career_id, name, faculty: 'Health Sciences', duration_years, min_aps: null,
     scoring_system: 'WITS_COMPOSITE_INDEX', subject_requirements,
-    notes: flag(['no-cutoff-published', 'dated-document'], 'Wits Health Sciences uses a Composite Index (75% school average across 5 subjects, 25% NBT), not APS, and does not publish the cut-off scores. ' + datedNote),
+    source_url: `https://www.wits.ac.za/course-finder/undergraduate/health/${slug}/`,
+    notes: flag('no-cutoff-published', 'CONFIRMED 2026-10-02 by a direct fetch of the live course-finder page (both figures and the Life Sciences AND/OR Physical Sciences alternative, previously shown as Physical Sciences only): Wits Health Sciences uses a Composite Index (75% school average across 5 subjects, 25% NBT), not APS, and does not publish the cut-off scores - the NBT must be written in person by 17 August.'),
   })),
 
   // ---------------- Commerce, Law & Management ----------------
