@@ -9,67 +9,9 @@ const src = (label, url) => ({ label, url });
 
 // Everything on this page is general guidance about a PROCESS. None of it comes from an
 // official source we verified, so every paragraph is marked that way and each section
-// points the student at places to confirm it. The one exception is REAL_EXAMPLES below:
-// a short list of foreign universities whose own page we actually read and quoted (UK:
-// Edinburgh x2, Sheffield, Manchester; Australia: UNSW Sydney, UWA; Netherlands: Groningen;
-// Ireland: Trinity College Dublin; New Zealand: Auckland; USA: University of Southern
-// Indiana), kept deliberately small so every row stays something we checked ourselves.
-
-// Each requirement is quoted from the university's own international-admissions page
-// (fetched and read directly), not from an agent site or forum. "NSC Grade 7/80%" etc
-// is the South African matric scale, not a percentage on a foreign exam.
-const REAL_EXAMPLES = [
-  {
-    name: 'University of Edinburgh (Scotland)', field: 'Arts, Humanities & Social Sciences',
-    need: 'Grade 6 (70%) in at least 4 NSC subjects (excluding Life Orientation), with Grade 4 (50%) in English Home/First Additional Language.',
-    url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa',
-  },
-  {
-    name: 'University of Edinburgh (Scotland)', field: 'Medicine (MBChB)',
-    need: '4 subjects at Grade 7 (80%) including Physical Sciences, Life Sciences and Maths, plus Grade 6 (70%) in English.',
-    url: 'https://www.ed.ac.uk/studying/international/country/africa/south-africa',
-  },
-  {
-    name: 'University of Sheffield (England)', field: 'Most undergraduate degrees',
-    need: '5 subjects at Grade 6 (70%), with any subject the specific degree requires at Grade 7 (80%).',
-    url: 'https://sheffield.ac.uk/international/entry-requirements/south-africa',
-  },
-  {
-    name: 'University of Manchester (England)', field: 'Guide, varies by course',
-    need: 'Publishes an NSC-to-A-level conversion table, e.g. NSC 77766 ≈ A-level AAA, NSC 76666 ≈ A-level ABB – the exact grades needed still depend on the course.',
-    url: 'https://www.manchester.ac.uk/study/international/country-specific-information/south-africa/entry-requirements/',
-  },
-  {
-    name: 'UNSW Sydney (Australia)', field: 'Guide, 2027 entry, varies by degree',
-    need: 'Publishes an NSC-to-degree table: your NSC average (best 4 subjects, excluding Life Orientation) needs to be around 62% for most Arts/Science/Social Science degrees, 70% for Engineering (Hons), 72% for Commerce or Combined Law, up to 77% for the Medical Studies/MD pathway and 79% for Actuarial Studies.',
-    url: 'https://www.unsw.edu.au/content/dam/pdfs/future-students/2027-int-ug-entry-table.pdf',
-  },
-  {
-    name: 'University of Western Australia (Australia)', field: 'Guide, varies by course',
-    need: 'Converts your NSC average (achievement level of your best six subjects, excluding Life Orientation, on the 1–7 scale) to an ATAR equivalent, e.g. 4.6 ≈ ATAR 80, 5.8 ≈ ATAR 90, 6.8 ≈ ATAR 98 – the course itself then sets its own ATAR cut-off.',
-    url: 'https://www.uwa.edu.au/study/how-to-apply/international-and-overseas-qualifications/south-african-national-certificate',
-  },
-  {
-    name: 'University of Groningen (Netherlands)', field: 'Guide, varies by faculty',
-    need: 'Requires the NSC with 7 examination subjects and an overall average of 70% (Life Orientation and Mathematical Literacy excluded from the calculation); Science/Engineering, Economics and Medical Sciences programmes also set their own required subjects (Mathematics, Physics, Chemistry or Biology depending on the degree).',
-    url: 'https://www.rug.nl/education/application-enrolment-tuition-fees/admission/procedures/application-informatie/with-non-dutch-diploma/bachelor/bachelor-entry-requirements/bachelorlinkscountry/south-africa?lang=en',
-  },
-  {
-    name: 'Trinity College Dublin (Ireland)', field: 'Guide, varies by course',
-    need: 'Publishes four NSC/IEB "bands" based on your five strongest subjects (excluding Life Orientation): Special Entry 77777, Band 1 77776, Band 2 77766, Band 3 77666 – which band a specific course needs depends on demand and the course’s own subject requirements.',
-    url: 'https://www.tcd.ie/study/country/south-africa/',
-  },
-  {
-    name: 'University of Auckland (New Zealand)', field: 'Guide, varies by programme',
-    need: 'Converts the NSC (an aggregate of your best 6 subjects, excluding Life Orientation) into a required aggregate score per programme, e.g. 27 for most Arts/Science/Architecture degrees, 30 for Business/Creative Arts, 36 for a Bachelor of Commerce, and 37 for Law or Health Sciences (which must include Mathematics and Physical Sciences).',
-    url: 'https://www.auckland.ac.nz/assets/study/applications-and-admissions/entry-requirements/undergraduate-entry-requirements/overseas-secondary-school-applicants/2025-Undergraduate-programme-specific-entry-requirements-J-Z-Final%20v2.pdf',
-  },
-  {
-    name: 'University of Southern Indiana (USA)', field: 'General undergraduate entry',
-    need: 'States its equivalent-credentials requirement for South African applicants as the National Senior Certificate (NSC, from 2008 onwards) with 130 credits.',
-    url: 'https://www.usi.edu/international/admissions/how-to-apply/equivalent-credentials',
-  },
-];
+// points the student at places to confirm it. The exception is the "pick a country"
+// section below: universities whose own page we actually read and quoted, grouped under
+// the country they belong to instead of in one flat list here.
 
 const ROUTES = [
   { emoji: '🌍', title: 'Route 1 – Apply straight to a foreign university',
@@ -391,6 +333,20 @@ const COUNTRIES = [
     ].map(uniCard).join('')}
   </div>
   <p class="small muted">We directly checked Semmelweis, Debrecen, ELTE, BME, Szeged, Corvinus and several others – Pécs is the only one that names South Africa or the NSC/IEB on its own published admissions page. The rest use generic “equivalent foreign certificate” wording with no country list, so this is a genuine gap, not something we haven’t looked for.</p>
+</section>`,
+  },
+  {
+    id: 'newzealand', name: 'New Zealand', published: false,
+    teaser: 'One confirmed university so far – held back until we’ve checked a few more, and the visa and money rules.',
+    lead: 'We’ve only checked one New Zealand university’s own page so far, and haven’t yet checked its visa or money rules – this page is held back until there’s enough here to be useful.',
+    body: `
+<section class="section wrap wrap--narrow" id="examples">
+  ${sectionHead('🎓', 'A university with published South Africa entry rules')}
+  <div class="stack">
+    ${[
+      { name: 'University of Auckland', field: 'Guide, varies by programme', need: 'Converts the NSC (an aggregate of your best 6 subjects, excluding Life Orientation) into a required aggregate score per programme, e.g. 27 for most Arts/Science/Architecture degrees, 30 for Business/Creative Arts, 36 for a Bachelor of Commerce, and 37 for Law or Health Sciences (which must include Mathematics and Physical Sciences).', url: 'https://www.auckland.ac.nz/assets/study/applications-and-admissions/entry-requirements/undergraduate-entry-requirements/overseas-secondary-school-applicants/2025-Undergraduate-programme-specific-entry-requirements-J-Z-Final%20v2.pdf' },
+    ].map(uniCard).join('')}
+  </div>
 </section>`,
   },
 ];
