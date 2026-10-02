@@ -82,7 +82,7 @@ export function datesPage(data) {
     <thead><tr><th scope="col">University</th><th scope="col">Application fee</th><th scope="col">How sure?</th></tr></thead>
     <tbody>${fees.map((f) => `<tr><th scope="row">${esc(uniById[f.university_id].name)}</th><td data-label="Application fee">${esc(f.fee)}</td><td data-label="How sure?">${verificationTag(f.verification)} ${link(f.source_url, hostOf(f.source_url))}</td></tr>`).join('')}</tbody>
   </table></div>
-  <p class="small muted">Only universities where we found a fee are listed. For the rest, check the application page.</p>
+  <p class="small muted jargon-key">Only universities where we found a fee are listed. For the rest, check the application page.</p>
 </section>`;
 
   return [{

@@ -485,7 +485,7 @@ function countryHub() {
   <div class="grid grid--2">
     ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
   </div>
-  <p class="small muted">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany, Hungary and New Zealand are researched but held back for now, for the same reason.</p>
+  <p class="small muted jargon-key">${iconOrEmoji('🔜')} More countries are added once we can verify their universities and visa rules against official sources – Germany, Hungary and New Zealand are researched but held back for now, for the same reason.</p>
 </section>`;
 }
 

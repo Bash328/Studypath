@@ -107,10 +107,15 @@ export function loadData() {
   for (const { rule } of rules) mathsTotals[rule]++;
 
   const engineeringCareers = new Set(['civil-engineer', 'electrical-engineer', 'mechanical-engineer', 'chemical-engineer', 'industrial-engineer', 'mining-engineer', 'aeronautical-engineer', 'biomedical-engineer', 'agricultural-engineer']);
+  // db/data/universities.mjs is already ordered by reputation (traditional research
+  // universities first, then other traditional/comprehensive, then universities of
+  // technology) - reuse that order rather than inventing a second ranking.
+  const uniRank = Object.fromEntries(unis.map((u, i) => [u.id, i]));
   const grade10 = {
     mathsTotals,
     mathsByGroup,
-    acceptsLit: rules.filter((r) => r.rule === 'accepts-lit').map((r) => r.p),
+    acceptsLit: rules.filter((r) => r.rule === 'accepts-lit').map((r) => r.p)
+      .sort((a, b) => uniRank[a.university.id] - uniRank[b.university.id]),
     medicine: programs.filter((p) => p.career && p.career.id === 'doctor'),
     engineering: programs.filter((p) => p.career && engineeringCareers.has(p.career.id)),
   };

@@ -1,4 +1,4 @@
-import { esc, claims, checksBox, tag, weakestLevel } from '../lib/html.mjs';
+import { esc, claims, checksBox, tag } from '../lib/html.mjs';
 import { FAQ_CATEGORIES } from '../lib/data.mjs';
 import { sectionHead } from '../lib/components.mjs';
 import { iconOrEmoji } from '../lib/icons.mjs';
@@ -9,18 +9,15 @@ export const answerText = (f) => f.answer.map((p) => plain(p.text)).join(' ');
 export function faqPage(data) {
   const { faq } = data;
 
-  const item = (f) => {
-    const worst = weakestLevel(f.answer);
-    return `
+  const item = (f) => `
   <details class="faq" id="${esc(f.id)}" data-cat="${esc(f.category)}" data-text="${esc((f.question + ' ' + answerText(f)).toLowerCase())}">
-    <summary><span class="faq__q">${esc(f.question)}</span>${worst === 'verified' ? '' : tag(worst)}</summary>
+    <summary><span class="faq__q">${esc(f.question)}</span><span class="small muted">From our research</span></summary>
     <div class="faq__body">
       ${f.conflict ? `<div class="callout callout--warn"><p>${tag('conflict')} ${esc(f.conflict)}</p></div>` : ''}
       ${claims(f.answer)}
       ${checksBox(f.checks)}
     </div>
   </details>`;
-  };
 
   const body = `
 <section class="hero hero--slim">

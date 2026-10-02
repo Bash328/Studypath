@@ -47,7 +47,7 @@ const EMOJI_ICON = {
   '✅': 'requirements-captured', '🔜': 'coming-soon',
   '🧱': 'bare-minimum', '➗': 'maths-vs-mathlit', '🏛️': 'architecture-property',
   '🧪': 'physical-life-sciences', '🪤': 'pitfalls', '🗣️': 'who-to-ask',
-  '🧾': 'application-cost', '✉️': 'email',
+  '🧾': 'application-cost', '✉️': 'email', '🕓': 'deadline-clock', '🔗': 'external-link',
   '💳': 'cost-to-apply', '📲': 'whatsapp-reminder', '🛡️': 'stay-safe',
   '📝': 'applying',
   '🤔': 'questions-to-ask', '📒': 'university-glance',

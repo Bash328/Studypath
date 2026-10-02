@@ -89,7 +89,7 @@ export function nbtPage(data) {
   ${sectionHead('📞', 'Questions about the NBT?')}
   <p>The NBT Project is run from UCT, and UCT’s own contacts page lists its NBT office:</p>
   ${nbtContact ? contactCard(nbtContact) : ''}
-  <p class="small">For a question about <em>your</em> application, ask the university you’re applying to – they decide what they’ll accept.</p>
+  <p class="small jargon-key">For a question about <em>your</em> application, ask the university you’re applying to – they decide what they’ll accept.</p>
 </section>
 
 <section class="section wrap wrap--narrow">

@@ -40,7 +40,7 @@ export function calculator(data) {
     <div class="card result-key"><h3><span class="pill pill--nearly">${matchBadge('nearly')} Nearly</span></h3><p>You’re within a few points, or a few percent in one subject. We tell you what’s missing, like “2% to go in Maths”.</p></div>
     <div class="card result-key"><h3><span class="pill pill--unknown">${matchBadge('unknown')} Can’t tell</span></h3><p>Either the university publishes no points cut-off for that degree, or we don’t calculate its score because we couldn’t confirm how. We’d rather say so than guess.</p></div>
   </div>
-  <p class="small muted">How sure are we of each formula? ${tag('verified')} means we read the rule on the official page – <a href="/data-sources#scoring">see every formula and its source</a>.</p>
+  <p class="small muted jargon-key">How sure are we of each formula? ${tag('verified')} means we read the rule on the official page – <a href="/data-sources#scoring">see every formula and its source</a>.</p>
 </section>
 
 <section class="section wrap wrap--narrow" aria-labelledby="why">

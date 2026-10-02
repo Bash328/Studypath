@@ -48,11 +48,13 @@ export function dataSourcesPage(data) {
   const logGroup = (status, title, tone) => {
     const list = researchLog.filter((r) => r.status === status);
     if (!list.length) return '';
-    return `<h3 class="uni-head">${esc(title)} (${list.length})</h3>
-    <div class="grid grid--2">${list.map((e) => {
-      const u = e.university_id ? data.uniById[e.university_id] : null;
-      return `<div class="card"><div class="badge-row"><span class="badge badge--${tone}">${esc(u ? u.short_name : 'General')}</span></div><h4>${esc(e.faculty_or_program)}</h4><p class="small muted">${esc(e.notes)}</p></div>`;
-    }).join('')}</div>`;
+    return `<details class="more-table">
+      <summary>${esc(title)} (${list.length})</summary>
+      <div class="grid grid--2">${list.map((e) => {
+        const u = e.university_id ? data.uniById[e.university_id] : null;
+        return `<div class="card"><div class="badge-row"><span class="badge badge--${tone}">${esc(u ? u.short_name : 'General')}</span></div><h4>${esc(e.faculty_or_program)}</h4><p class="small muted">${esc(e.notes)}</p></div>`;
+      }).join('')}</div>
+    </details>`;
   };
 
   const body = `
@@ -95,7 +97,7 @@ export function dataSourcesPage(data) {
     <thead><tr><th scope="col">University</th><th scope="col">Degrees captured</th><th scope="col">Contact</th><th scope="col">Dates</th></tr></thead>
     <tbody>${coverageRows}</tbody>
   </table></div>
-  <p class="small muted">Contacts: ${counts.verified} checked on an official page · ${counts.reported} from our research · ${counts.unverified} unconfirmed.</p>
+  <p class="small muted jargon-key">Contacts: ${counts.verified} checked on an official page · ${counts.reported} from our research · ${counts.unverified} unconfirmed.</p>
 
   <h3 class="uni-head">Caveats carried on individual degrees</h3>
   <ul class="tidy">${Object.entries(flagCounts).sort((a, b) => b[1] - a[1]).map(([id, n]) => `<li><strong>${n}</strong> – ${esc(FLAG_EXPLAIN[id] || id)}</li>`).join('')}</ul>

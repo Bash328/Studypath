@@ -81,7 +81,7 @@ export function grade10Page(data) {
       <thead><tr><th scope="col">Area</th><th scope="col">Degrees</th><th scope="col">Need Maths</th><th scope="col">Accept Maths Lit</th></tr></thead>
       <tbody>${groups.map(([name, c]) => `<tr><th scope="row">${esc(name)}</th><td data-label="Degrees">${c.total}</td><td data-label="Need Maths">${c['needs-maths']}</td><td data-label="Accept Maths Lit">${c['accepts-lit']}</td></tr>`).join('')}</tbody>
     </table></div>
-    <p class="small muted">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each degree below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
+    <p class="small muted jargon-key">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each degree below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
   </div>
 
   <div class="grid grid--2 field-cards">${fieldCards}</div>
@@ -89,7 +89,10 @@ export function grade10Page(data) {
 
   <h3 class="uni-head">Degrees that accept Mathematical Literacy (from our data)</h3>
   <p class="small">Each of these lists Maths Literacy as an allowed alternative. Note the level or mark it asks for – it is often higher than for Mathematics.</p>
-  ${reqTable(g10.acceptsLit)}
+  <details class="more-table">
+    <summary>Show all ${g10.acceptsLit.length} degrees that accept Mathematical Literacy</summary>
+    ${reqTable(g10.acceptsLit)}
+  </details>
 </section>
 
 <section class="section wrap wrap--narrow" id="sciences">

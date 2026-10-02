@@ -76,7 +76,7 @@ export function askUniversityPage(data) {
       <tbody>${rows}</tbody>
     </table>
   </div>
-  <p class="small muted">Contacts change. We re-check them every application cycle. <strong>CAO</strong> = first-time applications go through the Central Applications Office.</p>
+  <p class="small muted jargon-key">Contacts change. We re-check them every application cycle. <strong>CAO</strong> = first-time applications go through the Central Applications Office.</p>
 </section>`;
 
   return [{

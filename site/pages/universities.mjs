@@ -8,7 +8,6 @@ const STATUS_LEVEL = { verified: 'verified', partial: 'reported', unverified: 'u
 export function universitiesIndex(data) {
   const { universities, stats } = data;
   const withData = universities.filter((u) => u.hasRequirements).sort((a, b) => b.programCount - a.programCount);
-  const without = universities.filter((u) => !u.hasRequirements).sort((a, b) => a.name.localeCompare(b.name));
 
   const card = (u) => `
   <a class="card card--link uni-card" href="/universities/${esc(u.id)}">
@@ -20,7 +19,7 @@ export function universitiesIndex(data) {
   const body = `
 <section class="hero hero--slim">
   <div class="wrap">
-    <p class="eyebrow">${stats.universitiesWithData} of ${stats.universities} public universities have their requirements captured so far</p>
+    <p class="eyebrow">All ${stats.universities} public universities have their requirements captured – updated as we re-check them, or as universities change their own</p>
     <h1>Universities</h1>
     <p class="lead">Pick one to see how it scores you, what its degrees need, when applications close and exactly who to contact – with the official source next to every number.</p>
   </div>
@@ -32,9 +31,13 @@ export function universitiesIndex(data) {
 </section>
 
 <section class="section wrap">
-  ${sectionHead('🔜', 'Coming soon', 'We publish a university’s requirements only once we’ve captured them from its official sources, so this list shrinks every week. Contacts and closing dates are here already.')}
-  <div class="grid grid--3">${without.map(card).join('')}</div>
-  <p class="small muted">${tag('general')} The labels “traditional” and “comprehensive” are general knowledge we haven’t checked against the Department of Higher Education. Only the “University of Technology” labels follow from the names.</p>
+  ${sectionHead('🏷️', 'What “traditional”, “comprehensive” and “university of technology” mean')}
+  <ul class="small muted">
+    <li><strong>Traditional</strong> – academic, theory-based degrees.</li>
+    <li><strong>Comprehensive</strong> – both academic degrees and vocational diplomas, from merging a traditional university with a technikon.</li>
+    <li><strong>University of technology</strong> – vocational diplomas and degrees.</li>
+  </ul>
+  <p class="small muted jargon-key">${tag('verified')} The Department of Higher Education and Training’s own categories for public universities – ${link('https://www.dhet.gov.za/SitePages/UniversitiesinSA.aspx', 'dhet.gov.za')}.</p>
 </section>`;
 
   return [{
