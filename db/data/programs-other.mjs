@@ -1305,6 +1305,31 @@ const dutPrograms = [
     source_url: 'https://www.dut.ac.za/faculty/arts_design/journalism/',
     subject_requirements: [lvl('English', 5), manual('Two more subjects', 'Two further subjects at level 4 or better.')],
     notes: flag(['partially-verified', 'unverified'], 'Found via web search surfacing DUT’s own faculty pages rather than a raw page read (the specific page redirected to a generic faculty landing page in this pass) - a lower confidence tier than the career-leaflet-sourced rows above. ' + DUT_CAVEAT) },
+  // New rows below, from 4 of the 44 user-supplied DUT departmental handbooks (Applied
+  // Sciences: Chemistry, Sport Studies; Arts & Design: Drama) - see dut-pass-2 in
+  // research-log.mjs. Most of the other 40 handbooks checked either have no admission
+  // table at all (pointing to "the General Handbook, Rule G7" instead) or only cover
+  // postgraduate/advanced-diploma entry, not a usable undergraduate figure.
+  { ...dutBase, id: 'dut-dip-analytical-chemistry', career_id: 'chemist', name: 'Diploma in Analytical Chemistry', faculty: 'Applied Sciences',
+    duration_years: 3, min_aps: null,
+    source_url: 'https://www.dut.ac.za',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4), lvl('Physical Sciences', 3)],
+    notes: flag(['no-cutoff-published'], 'New row, from the user-supplied Department of Chemistry handbook. No single APS number was stated for this diploma, only these subject minimums.') },
+  { ...dutBase, id: 'dut-basc-chemistry', career_id: 'chemist', name: 'Bachelor of Applied Science in Chemistry', faculty: 'Applied Sciences',
+    duration_years: 3, min_aps: null,
+    source_url: 'https://www.dut.ac.za',
+    subject_requirements: [engLvl(4, 4), lvl('Physical Sciences', 4), lvl('Mathematics', 4)],
+    notes: flag(['no-cutoff-published'], 'New row, from the user-supplied Department of Chemistry handbook - the degree-level sibling to the Diploma in Analytical Chemistry above. No single APS number was stated, only these subject minimums.') },
+  { ...dutBase, id: 'dut-dip-drama', career_id: 'performer', name: 'Diploma in Drama', faculty: 'Arts & Design',
+    duration_years: 3, min_aps: 24,
+    source_url: 'https://www.dut.ac.za',
+    subject_requirements: [engLvl(4, 4), manual('Second language', 'A second language subject at level 3 (40%).'), manual('Audition', 'Candidates must pass an audition (a monologue, then a call-back audition with song, movement, improvisation and an interview).')],
+    notes: flag(['selection'], 'New row, from the user-supplied Department of Drama and Production Studies handbook.') },
+  { ...dutBase, id: 'dut-bsc-sport-science', career_id: 'sport-scientist', name: 'Bachelor of Sport Science and Management', faculty: 'Applied Sciences',
+    duration_years: null, min_aps: 28,
+    source_url: 'https://www.dut.ac.za',
+    subject_requirements: [pct('English', 60), pct('Mathematics', 60), anyOf(pct('Physical Sciences', 70), pct('Life Sciences', 70), pct('Sport Science', 70))],
+    notes: flag(['selection'], 'New row, from the user-supplied Department of Sport Studies handbook. Duration was not stated on the pages we read.') },
 ];
 
 // =====================================================================
