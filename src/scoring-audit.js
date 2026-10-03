@@ -214,9 +214,12 @@ export const SCORING_AUDIT = {
 
   UNIVEN_APS: {
     status: 'partial',
-    sources: [{ label: 'Univen 2027 Undergraduate Prospectus', url: 'https://www.univen.ac.za/wp-content/uploads/2026/09/UniVen-2027-Prospectus.pdf' }],
-    confirmed: ['"Points are calculated on the best six subjects excluding Life Orientation" (more than 7 subjects: best 7 are used); subjects under 40% are not counted; general Bachelor’s minimum is APS 26.'],
-    gaps: ['Univen’s own published scoring table (a 0-10 "A+ to G" style conversion) does not clearly match a standard NSC achievement-level scale, so we could not confirm the exact points-per-percentage arithmetic - we show each programme’s published "NSC XX" minimum as reference only, not computed.'],
+    sources: [
+      { label: 'Univen 2027 Undergraduate Prospectus', url: 'https://www.univen.ac.za/wp-content/uploads/2026/09/UniVen-2027-Prospectus.pdf' },
+      { label: 'Univen "How to calculate your APS" (user-supplied screenshot)', url: 'https://univen.ac.za/student-affairs/student-support-services/how-to-calculate-your-aps' },
+    ],
+    confirmed: ['"Points are calculated on the best six subjects excluding Life Orientation" (more than 7 subjects: best 7 are used); subjects under 40% are not counted; general Bachelor’s minimum is APS 26.', 'RESOLVED 2026-10-03: the user supplied a screenshot of Univen\'s own scoring-scale table (Matric symbol / NSC level / Percentage / Score) - the "Score" column is simply the percentage divided by 10 (e.g. 85% = 8.5), with 0 for anything under 30% (the table\'s F/G bands) - not a flat per-level score as every other university on this site uses. This matches the RU_pct_div10-style percentage formula, just with a 40%-floor twist layered on by the Prospectus text above.'],
+    gaps: ['RESOLVED 2026-10-03: now implemented and computing (best 6 excluding LO, percent/10 per subject, floored to 0 under 40%). Still "partial" rather than "verified" because we have not checked it against a real worked example with a shown total (unlike UFH), and the "best 7 if more than 7 subjects" edge case from the Prospectus text is not modelled - we always use best 6.'],
   },
   WSU_APS: {
     status: 'partial',
@@ -226,9 +229,9 @@ export const SCORING_AUDIT = {
   },
   UFH_APS: {
     status: 'partial',
-    sources: [{ label: 'UFH Admission requirements', url: 'https://www.ufh.ac.za/admission' }],
-    confirmed: ['General minimum APS of 26 or higher "depending on the programme".', 'UFH’s own online APS-calculator JavaScript sums standard NSC achievement levels (1-7) across seven subject slots (two languages, Mathematics/Mathematical Literacy, Life Orientation, three electives), with no exclusion or cap logic found in that code.'],
-    gaps: ['No UFH programme page we checked states its own numeric APS minimum, so there is nothing published yet to compute or compare a score against - min_aps is null on every UFH programme as a result.'],
+    sources: [{ label: 'UFH Admission requirements / APS Calculator (user-supplied screenshot)', url: 'https://www.ufh.ac.za/admission' }],
+    confirmed: ['General minimum APS of 26 or higher "depending on the programme".', 'UFH’s own online APS-calculator JavaScript sums standard NSC achievement levels (1-7) across seven subject slots (two languages, Mathematics/Mathematical Literacy, Life Orientation, three electives), with no exclusion or cap logic found in that code.', 'RESOLVED 2026-10-03: the user supplied a screenshot of a worked example run through UFH\'s own calculator (English HL 65%, Afrikaans FAL 55%, Mathematics 80%, Life Orientation 85%, Physical Science 75%, Life Sciences 80%, Geography 65% -> "Total APS: 41") - a plain sum of all seven subjects\' standard NSC levels (5+4+7+7+6+7+5=41) matches exactly, confirming Life Orientation is NOT halved or capped in practice despite denser policy text elsewhere suggesting it might be.'],
+    gaps: ['RESOLVED 2026-10-03: now implemented and computing, verified exactly against the worked example above. Several UFH programmes gained real min_aps figures in a 2026-10-03 pass (see ufh-pass-2 in research-log.mjs) so there is now something to compare a computed score against, closing the remaining gap from before.'],
   },
   CPUT_APS: {
     status: 'partial',
@@ -248,9 +251,10 @@ export const SCORING_AUDIT = {
       { label: 'MUT Diploma in Information Technology (programme page)', url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf' },
       { label: 'MUT First-Year Prospectus 2026 (user-supplied)', url: 'https://www.mut.ac.za' },
       { label: 'MUT Undergraduate Prospectus (user-supplied)', url: 'https://www.mut.ac.za' },
+      { label: 'MUT "Point calculation matrix" (user-supplied screenshot)', url: 'https://mut.ac.za/admission-requirements/' },
     ],
-    confirmed: ['Best six subjects excluding Life Orientation, each on the standard 1-8 NSC level scale, summed - no Life Orientation bonus at all.'],
-    gaps: ['RESOLVED 2026-10-03: a web-found "general admissions page" had once claimed best FIVE subjects, conflicting with the IT programme page\'s best SIX - two more official MUT documents (First-Year Prospectus, Undergraduate Prospectus) independently confirm best SIX, so that is now implemented and computing. Still "partial" rather than "verified" because the resolution rests on 3-against-1 agreement across documents rather than a single authoritative current page re-confirming the "five" claim was wrong or outdated.'],
+    confirmed: ['Best six subjects excluding Life Orientation, each on the standard 1-8 NSC level scale, summed - no Life Orientation bonus at all.', 'RESOLVED 2026-10-03: a 4th independent MUT document (its own admission-requirements page, screenshotted by the user) shows the identical NSC-level-to-points matrix already implemented (90-100%=8 down to 40-49%=3) - a fourth source now agrees on the six-subject, no-LO-bonus formula.'],
+    gaps: ['RESOLVED 2026-10-03: a web-found "general admissions page" had once claimed best FIVE subjects, conflicting with the IT programme page\'s best SIX - three more official MUT documents (First-Year Prospectus, Undergraduate Prospectus, and the admission-requirements page itself) independently confirm best SIX, so that is now implemented and computing. Still "partial" rather than "verified" because the resolution rests on 4-against-1 agreement across documents rather than a single authoritative current page re-confirming the "five" claim was wrong or outdated.'],
   },
   NMU_AS: {
     status: 'partial',
@@ -269,9 +273,12 @@ export const SCORING_AUDIT = {
   },
   SPU_APS: {
     status: 'partial',
-    sources: [{ label: 'SPU Faculty of Natural & Applied Sciences programmes', url: 'https://www.spu.ac.za/index.php/spu-nas-programmes/' }],
-    confirmed: ['General minimums: Bachelor’s degree APS 30, Diploma APS 25.', 'English: NSC level 4 (Home Language) or level 5 (First Additional Language).'],
-    gaps: ['SPU’s prospectus PDF (which would hold the exact points-per-subject formula) returned only unreadable binary/stream data on fetch, so the precise arithmetic is unconfirmed - each programme shows its published minimum APS as reference only.'],
+    sources: [
+      { label: 'SPU Faculty of Natural & Applied Sciences programmes', url: 'https://www.spu.ac.za/index.php/spu-nas-programmes/' },
+      { label: 'SPU APS Calculator (user-supplied screenshot)', url: 'https://spu.ac.za/index.php/admission-requirements-2/' },
+    ],
+    confirmed: ['General minimums: Bachelor’s degree APS 30, Diploma APS 25.', 'English: NSC level 4 (Home Language) or level 5 (First Additional Language).', 'RESOLVED 2026-10-03: the user supplied a screenshot of SPU\'s own live APS Calculator table (NSC Achievement Level / NSC% / SPU Points Score / Additional points for Mathematics and Language (HL) / Points for Life Orientation). It names seven fixed subject slots (Home Language, First Additional Language, Mathematics, Life Orientation, three electives), scores six of them on the standard 8-point scale (90-100%=8), gives Mathematics and the Home Language subject a further bonus from their own level (+2 at level 5+, +1 at level 3-4), and scores Life Orientation on its own separate 0-4 scale instead of the main one.'],
+    gaps: ['RESOLVED 2026-10-03: now implemented and computing from the calculator table above. Still "partial" rather than "verified" because the screenshot did not show a calculated total to check our implementation against (unlike UFH\'s matching worked example) - the arithmetic is read directly from the table, not independently confirmed end-to-end.'],
   },
   UMP_APS: {
     status: 'unverified',

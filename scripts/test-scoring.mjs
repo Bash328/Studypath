@@ -62,6 +62,21 @@ check('SU aggregate %', scores.SU_aggregate_pct.value, 74.8);
 // Rhodes: sum of 6 best non-LO percentages / 10 = 449/10 = 44.9
 check('Rhodes points', scores.RU_pct_div10.value, 44.9);
 
+console.log('\nWorked examples from user-supplied university calculator screenshots (2026-10-03)');
+// Exact marks run through UFH's own live APS calculator by the user: English HL 65%,
+// Afrikaans FAL 55%, Mathematics 80%, Life Orientation 85%, Physical Science 75%,
+// Life Sciences 80%, Geography 65% -> the calculator displayed "Total APS: 41".
+const UFH_EXAMPLE = normaliseMarks({
+  'english-hl': 65, 'afrikaans-fal': 55, mathematics: 80, 'life-orientation': 85,
+  'physical-sciences': 75, 'life-sciences': 80, geography: 65,
+});
+const ufhScores = scoreEverySystem(UFH_EXAMPLE, ['UFH_APS', 'SPU_APS', 'UNIVEN_APS']);
+check('UFH APS matches the calculator screenshot exactly', ufhScores.UFH_APS.value, 41);
+// SPU and Univen are not verified against a shown total (no screenshot displayed one) -
+// these just confirm the formulas run without throwing on the same realistic marks.
+assert('SPU APS computes on the same marks', ufhScores.SPU_APS.computable);
+assert('Univen APS computes on the same marks', ufhScores.UNIVEN_APS.computable);
+
 assert('all five computable systems produced different numbers',
   new Set([scores.UCT_FPS600.value, scores.WITS_APS_incLO.value, scores.UP_APS_exLO.value,
            scores.SU_aggregate_pct.value, scores.RU_pct_div10.value]).size === 5);
@@ -77,10 +92,15 @@ assert('Wits Composite Index returns no number, with a reason',
 // documents (First-Year Prospectus 2026, Undergraduate Prospectus) independently
 // confirmed "best six subjects excluding Life Orientation" against a web-found page
 // that had claimed best five, resolving the conflict that made it non-computable.
+// Dropped to 3 later the same day: the user supplied screenshots of UFH's, Univen's and
+// SPU's own live APS calculators/scoring tables, resolving every remaining ambiguity
+// in each formula - UFH_APS, UNIVEN_APS and SPU_APS are all now computable. UFH's
+// implementation was verified exactly against a worked example shown in its screenshot
+// (41 points). Only WITS_COMPOSITE_INDEX, UMP_APS and SMU_APS remain non-computable.
 // This count should only ever go DOWN as those gaps get closed in a future pass -
 // never up without a documented reason in scoring-audit.js.
 assert('every non-computable system beyond the known ones has a documented reason',
-  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 6);
+  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 3);
 assert('every system carries an audit record with at least one official source',
   Object.entries(SCORING_SYSTEMS).every(([, s]) => s.audit && s.audit.sources.length > 0));
 assert('partly-verified systems name what is still unconfirmed',

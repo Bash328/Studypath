@@ -121,8 +121,10 @@ console.log('\nRoutes');
   ok('meta lists all scoring systems', body.scoringSystems.length === 28, `got ${body.scoringSystems.length}`);
   // See the comment above the matching assertion in test-scoring.mjs: this count only
   // goes down as documented gaps (scoring-audit.js) get closed in a future pass.
-  // Dropped 7 to 6 on 2026-10-03 when MUT_APS became computable.
-  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 6);
+  // Dropped 7 to 6 on 2026-10-03 when MUT_APS became computable, then 6 to 3 later the
+  // same day when UFH_APS, UNIVEN_APS and SPU_APS all became computable from user-supplied
+  // calculator screenshots.
+  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 3);
   ok('meta carries an audit record for every system', body.scoringSystems.every((s) => s.audit && s.audit.status && s.audit.sources.length > 0));
 }
 {

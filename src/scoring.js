@@ -40,6 +40,8 @@ const cannot = (reason) => ({ computable: false, reason });
 
 const withoutLO = (marks) => marks.filter((m) => !isLifeOrientation(m));
 const findBase = (marks, base) => marks.find((m) => m.base === base);
+const languageByLang = (marks, lang) => marks.find((m) => m.group === 'Languages' && m.lang === lang);
+const findMaths = (marks) => findBase(marks, 'Mathematics') || findBase(marks, 'Mathematical Literacy');
 const byPercentDesc = (a, b) => b.percent - a.percent;
 const sum = (list, f) => list.reduce((s, x) => s + f(x), 0);
 const say = (list, f) => list.map(f).join(', ');
@@ -295,10 +297,16 @@ const SYSTEMS = {
   UNIVEN_APS: {
     label: 'Univen APS',
     unit: '',
-    computable: false,
+    max: 60,
+    nearMargin: 3,
     explanation:
-      'Univen publishes a minimum APS of 26 for a bachelor’s degree, worked from your best six or seven subjects excluding Life Orientation (subjects under 40% are not counted). Univen’s own published scoring table did not clearly match a standard NSC achievement-level scale when we checked, so we have not implemented the exact arithmetic - each programme shows its published minimum APS as reference only.',
-    reason: 'We could not confirm Univen’s exact APS arithmetic well enough to compute your score yet - see the published minimum on each programme instead. Contact Univen’s admissions office directly (see Contacts on Univen’s page) to confirm where you stand.',
+      'Univen takes the percentage of each of your best six subjects (excluding Life Orientation), divides each by 10, and adds them up - any subject under 40% scores 0 rather than a fraction. General minimum for a Bachelor’s degree is APS 26.',
+    compute(marks, { required = [] } = {}) {
+      const value = (m) => (m.percent >= 40 ? m.percent / 10 : 0);
+      const chosen = choose(withoutLO(marks), 6, value, required);
+      if (!chosen) return cannot('Univen counts 6 subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, value), 60, say(chosen, (m) => `${m.name} ${m.percent}% = ${value(m)}`) + countedNote(required));
+    },
   },
 
   WSU_APS: {
@@ -330,10 +338,26 @@ const SYSTEMS = {
   UFH_APS: {
     label: 'UFH APS',
     unit: '',
-    computable: false,
+    max: 49,
+    nearMargin: 3,
     explanation:
-      'UFH states a general minimum APS of 26 or higher "depending on the programme", and UFH’s own online APS calculator sums standard NSC achievement levels (1-7) across seven subject slots including Life Orientation. No UFH programme page we checked states its own numeric APS minimum, so there is nothing published yet to compute or compare your score against.',
-    reason: 'UFH does not publish a numeric APS minimum on its programme pages, so there is no cut-off for us to check your score against yet. Contact UFH’s admissions office directly (see Contacts on UFH’s page) to confirm where you stand.',
+      'UFH sums the standard NSC achievement level (1-7) of seven subjects: your Home Language, your First Additional Language, Mathematics or Mathematical Literacy, Life Orientation, and your best three others - no exclusions, caps or halving, confirmed against a worked example on UFH’s own online APS calculator.',
+    compute(marks, { required = [] } = {}) {
+      const home = languageByLang(marks, 'home');
+      const fal = languageByLang(marks, 'fal');
+      const maths = findMaths(marks);
+      const lo = marks.find(isLifeOrientation);
+      if (!home || !fal) return cannot('UFH counts a Home Language and a First Additional Language as two separate subjects - add both.');
+      if (!maths) return cannot('UFH always counts Mathematics or Mathematical Literacy - add your mark.');
+      if (!lo) return cannot('UFH counts Life Orientation as one of its seven subjects - add your mark.');
+      const used = [home, fal, maths, lo];
+      const rest = marks.filter((m) => !used.includes(m));
+      const electives = choose(rest, 3, (m) => nscLevel(m.percent), required);
+      if (!electives) return cannot('UFH counts seven subjects in total - add the rest of yours.');
+      const all = [...used, ...electives];
+      return ok(sum(all, (m) => nscLevel(m.percent)), 49,
+        say(all, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`) + countedNote(required));
+    },
   },
 
   UNIZULU_APS: {
@@ -487,10 +511,31 @@ const SYSTEMS = {
   SPU_APS: {
     label: 'SPU APS',
     unit: '',
-    computable: false,
+    max: 56,
+    nearMargin: 3,
     explanation:
-      'SPU publishes a minimum APS of 30 for a Bachelor’s degree and 25 for a Diploma, with English at NSC level 4 (Home Language) or level 5 (First Additional Language). We could not extract SPU’s prospectus PDF to confirm the exact points-per-subject formula, so each programme shows its published minimum APS as reference only.',
-    reason: 'We could not confirm SPU’s exact APS arithmetic from an official source yet - see the published minimum on each programme instead. Contact SPU’s admissions office directly (see Contacts on SPU’s page) to confirm where you stand.',
+      'SPU sums seven subjects on the 8-point scale (90-100% = 8 down to 0-29% = 1): your Home Language, First Additional Language, Mathematics, Life Orientation, and your best three others. On top of that base sum, Mathematics and your Home Language each earn a bonus from their own level (+2 at level 5+, +1 at level 3-4, +0 below) - and Life Orientation is scored on its own separate scale (4 points at level 8, down to 0 at level 4 or below) instead of the main 8-point scale. General minimums: Bachelor’s degree APS 30, Diploma APS 25.',
+    compute(marks, { required = [] } = {}) {
+      const home = languageByLang(marks, 'home');
+      const fal = languageByLang(marks, 'fal');
+      const maths = findBase(marks, 'Mathematics') || findBase(marks, 'Mathematical Literacy');
+      const lo = marks.find(isLifeOrientation);
+      if (!home || !fal) return cannot('SPU counts a Home Language and a First Additional Language as two separate subjects - add both.');
+      if (!maths) return cannot('SPU always counts Mathematics - add your mark.');
+      if (!lo) return cannot('SPU scores Life Orientation on its own scale as one of its seven subjects - add your mark.');
+      const used = [home, fal, maths, lo];
+      const rest = marks.filter((m) => !used.includes(m));
+      const electives = choose(rest, 3, (m) => witsLevel(m.percent), required);
+      if (!electives) return cannot('SPU counts seven subjects in total - add the rest of yours.');
+      const bonus = (m) => (witsLevel(m.percent) >= 5 ? 2 : witsLevel(m.percent) >= 3 ? 1 : 0);
+      const loPoints = Math.max(0, witsLevel(lo.percent) - 4);
+      const academic = [home, fal, maths, ...electives];
+      const base = sum(academic, (m) => witsLevel(m.percent));
+      const total = base + bonus(maths) + bonus(home) + loPoints;
+      const working = say(academic, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`) +
+        `, Mathematics bonus +${bonus(maths)}, ${home.name} bonus +${bonus(home)}, Life Orientation ${lo.percent}% = ${loPoints}` + countedNote(required);
+      return ok(total, 56, working);
+    },
   },
 
   UMP_APS: {
