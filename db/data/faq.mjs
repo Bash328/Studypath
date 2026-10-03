@@ -32,6 +32,7 @@ const S = {
   nbt: src('NBT Project FAQ', 'https://www.nbt.ac.za/content/faq-0'),
   nbtCost: src('NBT Project - NBT cost', 'https://www.nbt.ac.za/content/nbt-cost'),
   nsfas: src('Minister Buti Manamela: launch of the NSFAS 2027 application cycle (gov.za)', 'https://www.gov.za/news/speeches/minister-buti-manamela-launch-nsfas-2027-application-cycle-18-sep-2026'),
+  nsfasEligibility: src('NSFAS - the bursary scheme (nsfas.org.za)', 'https://nsfas.org.za/content/bursary-scheme.html'),
   sanews: src('SAnews: NSFAS 2027 application cycle opens', 'https://www.sanews.gov.za/south-africa/nsfas-2027-application-cycle-opens'),
   ukznApply: src('UKZN how to apply', 'https://studyatukzn.ukzn.ac.za/apply-at-ukzn/how-to-apply/'),
   uctContacts: src('UCT general contacts', 'https://www.uct.ac.za/general-contacts'),
@@ -283,12 +284,13 @@ export const faq = [
   // ======================================================================= Money
   {
     id: 'nsfas', category: 'money',
-    question: 'When do I apply for NSFAS?',
+    question: 'When do I apply for NSFAS, and do I qualify?',
     answer: [
       v('The NSFAS 2027 application cycle **opened on 18 September 2026 and closes on 18 November 2026**, with funding outcomes communicated in December. NSFAS is a **separate application** from applying to a university.', [S.nsfas, S.sanews]),
-      g('We saw a different closing date (31 October) on at least one other website. The Minister’s own launch speech and the SAnews report both say 18 November, so we use that - but always confirm on nsfas.org.za. We have not verified the household-income thresholds, so we do not state one.'),
+      g('We saw a different closing date (31 October) on at least one other website. The Minister’s own launch speech and the SAnews report both say 18 November, so we use that - but always confirm on nsfas.org.za.'),
+      v('To qualify, you need South African citizenship, a place (or application) at a public university or TVET college, and a combined household income of **R350,000 or less per year** - R600,000 or less if you or a sibling has a disability. Anyone whose household already receives a SASSA grant (Child Support, Foster Care or Care Dependency) automatically meets the income test. Students registered before 2018 fall under an older, lower threshold of R122,000.', [S.nsfasEligibility]),
     ],
-    checks: [{ label: 'nsfas.org.za - the application page', url: 'https://www.nsfas.org.za' }],
+    checks: [{ label: 'nsfas.org.za - the application page', url: 'https://www.nsfas.org.za' }, { label: 'Check your own eligibility', url: '/bursaries#nsfas-check' }],
     conflict: 'Sources disagree on the NSFAS closing date (18 November vs 31 October). We follow the two government sources.',
   },
   {

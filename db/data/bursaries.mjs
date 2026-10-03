@@ -23,9 +23,9 @@ export const bursaries = [
     deadline: '2026-11-18',
     amount_covers: null, // not confirmed from the sources we read, so not stated
     eligibility:
-      'South African students planning to study at a public university or TVET college. NSFAS is a separate application from applying to a university. We have not verified the household-income thresholds, so we do not state one - check nsfas.org.za.',
+      'South African citizens studying (or applying to study) at a public university or TVET college, with a combined household income of R350,000 or less per year (R600,000 or less with a disability; R122,000 for students who registered before 2018). SASSA grant recipients (Child Support, Foster Care, Care Dependency) automatically meet the income test. Confirmed directly from nsfas.org.za\'s own "bursary scheme" page.',
     apply_url: 'https://www.nsfas.org.za',
-    source_url: 'https://www.gov.za/news/speeches/minister-buti-manamela-launch-nsfas-2027-application-cycle-18-sep-2026',
+    source_url: 'https://nsfas.org.za/content/bursary-scheme.html',
     active: 1,
     // Not a D1 column - shown on the page:
     note: 'Applications opened 18 September 2026 and close 18 November 2026; funding outcomes are communicated in December. One other website gave 31 October - the Minister’s launch speech and the SAnews report both say 18 November.',

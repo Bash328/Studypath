@@ -20,6 +20,7 @@ export const NAV = [
 
 /** Everything else, for the "More" sheet on phones and the footer. */
 export const MORE = [
+  ['/browse', '\ud83d\udd0d', 'Already know your APS?'],
   ['/universities', '\ud83c\udfeb', 'Universities'],
   ['/grade-10-subjects', '\ud83e\udde0', 'Choose your subjects'],
   ['/nbt', '\u270d\ufe0f', 'The NBT explained'],

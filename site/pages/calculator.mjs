@@ -13,6 +13,7 @@ export function calculator(data) {
     <p class="eyebrow">About 2 minutes · no account · your marks stay on your device</p>
     <h1>What do I qualify for?</h1>
     <p class="lead">Pick your subjects, type your marks, and see which degrees are open to you – scored the way <strong>each university</strong> scores.</p>
+    <p class="small muted">Already know your APS or points score from a university? <a href="/browse">Skip straight to browsing what's in range →</a></p>
   </div>
 </section>
 

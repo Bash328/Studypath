@@ -15,6 +15,7 @@ import { loadData, ASK_TOPICS } from '../site/lib/data.mjs';
 import { renderPage, ORIGIN } from '../site/lib/layout.mjs';
 import { home } from '../site/pages/home.mjs';
 import { calculator } from '../site/pages/calculator.mjs';
+import { browsePage } from '../site/pages/browse.mjs';
 import { careersIndex, careerPages } from '../site/pages/careers.mjs';
 import { universitiesIndex, universityPages } from '../site/pages/universities.mjs';
 import { grade10Page } from '../site/pages/grade10.mjs';
@@ -44,7 +45,7 @@ for (const dir of ['careers', 'universities', 'study-abroad']) rmSync(join(PUBLI
 
 // ---------------------------------------------------------------- pages
 const pages = [
-  ...home(data), ...calculator(data),
+  ...home(data), ...calculator(data), ...browsePage(),
   ...careersIndex(data), ...careerPages(data),
   ...universitiesIndex(data), ...universityPages(data),
   ...grade10Page(data), ...faqPage(data), ...askPage(), ...askUniversityPage(data),
@@ -62,6 +63,7 @@ const json = (rel, obj) => write(rel, JSON.stringify(obj));
 
 json('data/programs.json', { generated: new Date().toISOString(), programs: data.programs });
 json('data/careers.json', { careers: data.careers.map((c) => ({ id: c.id, name: c.name, sector: c.sector, description: c.description, typicalSubjects: c.typical_subjects })) });
+json('data/universities.json', { universities: data.universities.map((u) => ({ id: u.id, name: u.name, shortName: u.short_name, type: u.type, hasRequirements: u.hasRequirements, programCount: u.programCount })) });
 json('data/dates.json', {
   cycle: 'Dates for the 2027 intake. The 2028 dates have not been published.',
   dates: data.dates.map((d) => ({ ...d, university: d.university_id ? data.uniById[d.university_id].short_name : null })),
@@ -86,7 +88,7 @@ for (const f of engine) copyFileSync(join(ROOT, 'src', f), join(PUBLIC, 'assets/
 
 // ---------------------------------------------------------------- sitemap + robots
 const today = new Date().toISOString().slice(0, 10);
-const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|careers|universities|dates|grade-10-subjects)$/.test(p) ? '0.9' : /^\/(careers|universities|study-abroad)\//.test(p) ? '0.7' : '0.6');
+const priority = (p) => (p === '/' ? '1.0' : /^\/(calculator|browse|careers|universities|dates|grade-10-subjects)$/.test(p) ? '0.9' : /^\/(careers|universities|study-abroad)\//.test(p) ? '0.7' : '0.6');
 const indexable = pages.filter((p) => !p.noindex);
 write('sitemap.xml',
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +

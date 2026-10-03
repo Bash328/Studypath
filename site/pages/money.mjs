@@ -53,6 +53,25 @@ export function moneyPage(data) {
   ${checksBox(f('nsfas').checks)}
 </section>
 
+<section class="section wrap wrap--narrow" id="nsfas-check">
+  ${sectionHead('✅', 'Do you qualify for NSFAS?', 'Three questions, straight from NSFAS’s own eligibility rules. This is not an application and does not send anything anywhere.')}
+  <div class="card">
+    <form id="nsfas-form" novalidate>
+      <label class="check"><input type="checkbox" id="nsfas-citizen"> <span>I am a South African citizen</span></label>
+      <label class="check"><input type="checkbox" id="nsfas-sassa"> <span>My household has received a SASSA Child Support, Foster Care or Care Dependency grant in the last 3 years</span></label>
+      <label class="check"><input type="checkbox" id="nsfas-disability"> <span>I have a disability</span></label>
+      <div class="field">
+        <label for="nsfas-income">Combined household income per year</label>
+        <input type="number" id="nsfas-income" min="0" step="1000" inputmode="numeric" placeholder="e.g. 180000">
+        <span class="hint">Everyone in your household’s income added together – salaries, wages, grants, pensions, business income.</span>
+      </div>
+      <div class="btn-row"><button type="button" class="btn btn--primary" id="nsfas-check-btn">Check</button></div>
+      <div id="nsfas-result" aria-live="polite"></div>
+    </form>
+  </div>
+  <p class="small muted jargon-key">${tag('verified')} Thresholds read directly from NSFAS’s own "bursary scheme" page. This checks the household-income rule only – NSFAS also requires a place (or application) at a public university or TVET college, and meeting it doesn’t guarantee funding. <a href="https://nsfas.org.za" target="_blank" rel="noopener">Apply at nsfas.org.za</a>.</p>
+</section>
+
 <section class="section wrap wrap--narrow" id="more">
   ${sectionHead('🔎', 'More bursaries?', 'We list a bursary only when we’ve read its closing date and terms on the provider’s own page. Researching them is ongoing, so the list is short on purpose.')}
   ${claim({ level: 'general', text: 'Many bursaries are offered by companies, professional bodies and the universities themselves, and most are aimed at particular fields of study. We haven’t verified any beyond NSFAS yet, so we don’t list them.' })}
