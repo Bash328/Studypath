@@ -789,7 +789,7 @@ const wsuPrograms = [
     subject_requirements: [lvl('Life Orientation', 5), manual('Home language', 'isiXhosa (Home Language) at level 4.'), lvl('English', 4),
       anyOf(lvl('Mathematics', 2), lvl('Mathematical Literacy', 4)),
       manual('Two more subjects', 'Any other two subjects totalling at least 8 points on WSU’s scale.')],
-    notes: flag('partially-verified', 'WSU counts Life Orientation as a required teaching subject for Education programmes, unlike most of its other degrees. ' + WSU_CAVEAT) },
+    notes: flag('verified', 'WSU counts Life Orientation as a required teaching subject for Education programmes, unlike most of its other degrees. RAW-CONFIRMED against a second, independent WSU document (the user-supplied 2024 Faculty of Education Prospectus) - Life Orientation, English, isiXhosa and the Mathematics/Mathematical Literacy figures all matched exactly, despite being 3 years apart in publication. ' + WSU_CAVEAT) },
   { ...wsuBase, id: 'wsu-nursing', career_id: 'nurse', name: 'Bachelor of Nursing', faculty: 'Medicine & Health Sciences',
     duration_years: 4, min_aps: 24,
     subject_requirements: [lvl('English', 4), manual('African language', 'Another African language at level 4.'),
