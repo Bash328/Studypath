@@ -1,5 +1,5 @@
 import { esc, md, link, hostOf, tag, claim, plural, prettyDate } from '../lib/html.mjs';
-import { programCard, contactCard, dateRow, sectionHead, verificationTag } from '../lib/components.mjs';
+import { programCard, contactCard, dateRow, sectionHead, verificationTag, jumpNav } from '../lib/components.mjs';
 import { SCORING_SYSTEMS, facultyGroup } from '../lib/data.mjs';
 import { auditLabel } from '../../src/scoring-audit.js';
 import { iconOrEmoji } from '../lib/icons.mjs';
@@ -110,6 +110,13 @@ export function universityPages(data) {
       ${u.cao ? '<span class="pill pill--warn">Apply through the CAO</span>' : ''}
       ${link(u.website, hostOf(u.website), 'pill pill--link')}
     </p>
+    ${jumpNav([
+      list.length && { href: 'scoring', label: `${iconOrEmoji('🧮')} How it scores you` },
+      { href: 'dates', label: `${iconOrEmoji('📅')} Dates` },
+      { href: 'contact', label: `${iconOrEmoji('📞')} Contact` },
+      list.length && { href: 'degrees', label: `${iconOrEmoji('🎓')} Degrees` },
+      gaps.length && { href: 'gaps', label: `${iconOrEmoji('⚠️')} What we couldn’t verify` },
+    ])}
   </div>
 </section>
 

@@ -10,6 +10,17 @@ export const levelOf = (verification) => (verification === 'verified' ? 'verifie
 
 export const verificationTag = (verification) => tag(levelOf(verification), VERIFICATION_LABELS[verification] || undefined);
 
+/** A row of links to this page's own sections, for pages with a lot on them. Plain anchor
+ * links, so jumping around still works with JavaScript off. `label` is trusted HTML (an
+ * icon plus text) built by the caller - like the rest of this file, it is not escaped here. */
+export function jumpNav(items) {
+  const usable = items.filter(Boolean);
+  if (usable.length < 2) return '';
+  return `<nav class="chip-row jump-nav" aria-label="Jump to a section">
+    ${usable.map((i) => `<a class="chip" href="#${esc(i.href)}">${i.label}</a>`).join('')}
+  </nav>`;
+}
+
 /** A heading with an emoji badge - gives every section a face. */
 export const sectionHead = (emoji, title, sub) => `<div class="sec-head">
   ${emoji ? `<span class="sec-head__emoji" aria-hidden="true">${emoji}</span>` : ''}

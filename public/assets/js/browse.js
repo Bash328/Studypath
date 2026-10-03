@@ -49,7 +49,7 @@ function renderUniPicker() {
     el('p', {}, 'Which university gave you this score?'),
     ...types.map((type) => el('div', { class: 'subj-group' },
       el('h3', {}, type),
-      el('div', { class: 'subj-chips' }, groups[type].map((u) =>
+      el('div', { class: 'uni-chips' }, groups[type].map((u) =>
         el('button', {
           type: 'button', class: 'subj', 'aria-pressed': state.uniId === u.id ? 'true' : 'false',
           onclick: () => { saveUni(u.id); state.scores = {}; saveScores(); render(); },
@@ -167,9 +167,10 @@ function renderResults() {
 }
 
 function render() {
-  if (!state.uniId) return renderUniPicker();
-  if (!state.showResults) return renderScoreEntry();
-  return renderResults();
+  if (!state.uniId) renderUniPicker();
+  else if (!state.showResults) renderScoreEntry();
+  else renderResults();
+  root.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 async function init() {

@@ -1,5 +1,5 @@
 import { esc, md, claim, claims, tag, link, hostOf, prettyDate, checksBox } from '../lib/html.mjs';
-import { sectionHead, verificationTag } from '../lib/components.mjs';
+import { sectionHead, verificationTag, jumpNav } from '../lib/components.mjs';
 import { iconOrEmoji } from '../lib/icons.mjs';
 
 export function moneyPage(data) {
@@ -36,6 +36,13 @@ export function moneyPage(data) {
     <h1>Costs & aid: application fees, NSFAS and bursaries</h1>
     <p class="lead">The biggest reason learners miss out on funding isn’t their marks – it’s a deadline that went past while they were busy. Here’s what we’ve verified.</p>
     <p class="small"><a href="#nsfas-check">${iconOrEmoji('✅')} Not sure you qualify for NSFAS? Check in 30 seconds →</a></p>
+    ${jumpNav([
+      { href: 'fees', label: `${iconOrEmoji('💳')} Application fees` },
+      { href: 'bursaries', label: `${iconOrEmoji('⏰')} Open right now` },
+      { href: 'nsfas-check', label: `${iconOrEmoji('✅')} Do I qualify for NSFAS?` },
+      { href: 'more', label: `${iconOrEmoji('🔎')} More bursaries?` },
+      { href: 'reminders', label: 'Email me reminders' },
+    ])}
   </div>
 </section>
 
@@ -45,7 +52,7 @@ export function moneyPage(data) {
   <p class="small muted">Only the universities we’ve confirmed a fee for are listed. No fee here yet usually just means we haven’t checked it – not that it’s free. The university’s own page (linked on its page here) always has the current amount.</p>
 </section>
 
-<section class="section wrap wrap--narrow">
+<section class="section wrap wrap--narrow" id="bursaries">
   ${sectionHead('⏰', 'Open right now')}
   <div class="callout callout--warn"><p><strong>NSFAS closes on ${esc(prettyDate(nsfas.date_end))}.</strong> It is a <strong>separate</strong> application from applying to a university – doing one doesn’t do the other.</p></div>
   <div class="stack" id="bursary-list">${bursaries.map(card).join('')}</div>

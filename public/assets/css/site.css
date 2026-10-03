@@ -467,6 +467,7 @@ details.faq[open] summary { border-bottom: 1px solid var(--line); }
 .subj-group { margin-bottom: 1.3rem; }
 .subj-group h3 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-faint); margin-bottom: .5rem; }
 .subj-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.uni-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
 .subj { min-height: 46px; padding: 9px 16px; border-radius: 14px; border: 2px solid var(--line); background: var(--card); font: inherit; font-weight: 650; font-size: .95rem; color: var(--ink); cursor: pointer; text-align: left; }
 .subj:hover { border-color: var(--brand); }
 .subj[aria-pressed="true"] { border-color: var(--brand); background: var(--brand-soft); color: var(--brand-ink); }
