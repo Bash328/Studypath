@@ -1443,11 +1443,16 @@ const cutPrograms = [
 ];
 
 // =====================================================================
-// Mangosuthu University of Technology - CONFLICT: MUT's own general admissions page
-// says APS uses the best FIVE subjects; its IT programme page says best SIX excluding
-// Life Orientation. We show both rather than silently pick one - see MUT_APS and the
-// [conflict] flag below. Figures are raw-extracted from official MUT PDFs (pdftotext),
-// but multi-column tables can misalign in plain-text extraction - treat accordingly.
+// Mangosuthu University of Technology - RESOLVED 2026-10-03 (see mut-pass-2 in
+// research-log.mjs): the user supplied two more official MUT documents (First-Year
+// Prospectus 2026, Undergraduate Prospectus), both independently confirming "best six
+// subjects excluding Life Orientation" against a web-found "general admissions page"
+// that had claimed best FIVE - MUT_APS is now computable (src/scoring.js). Two NEW
+// conflicts surfaced by cross-checking those documents against the existing rows:
+// the IT diploma's APS total (24 vs 25) and Environmental Health's duration (3 vs 4
+// years) - both shown rather than silently picked. Figures are raw-extracted from
+// official MUT PDFs (pdftotext), but multi-column tables can misalign in plain-text
+// extraction - treat accordingly.
 // =====================================================================
 const mutBase = {
   university_id: 'mut',
@@ -1456,30 +1461,29 @@ const mutBase = {
   intake_year: null,
   document_date: '2025-12-01',
 };
-const MUT_CONFLICT = flag('conflict', 'MUT’s general admissions page states APS is calculated from your best FIVE subjects; this programme’s own page states best SIX excluding Life Orientation. We show both rather than pick one - confirm with MUT directly. Source PDF is labelled "2026", not yet confirmed as the 2027-intake version. No official 2027 closing date was found (only unverified third-party claims).');
 
 const mutPrograms = [
   { ...mutBase, id: 'mut-dip-civil', career_id: 'civil-engineer', name: 'Diploma in Civil Engineering', faculty: 'Engineering',
     duration_years: 3, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Engineering-Faculty-Prospectus_.pdf',
     subject_requirements: [lvl('English', 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
-    notes: flag(['partially-verified', 'dated-document', 'no-cutoff-published'], 'MUT’s Engineering Faculty prospectus gives subject minimums for this programme but no single APS number in the section we read. Source PDF labelled "2026", not yet confirmed for 2027. No official closing date found.') },
+    notes: flag(['verified', 'no-cutoff-published'], 'RAW-CONFIRMED by a second MUT document (the user-supplied Undergraduate Prospectus) - same subject minimums, still no single published APS number for this diploma across either document.') },
   { ...mutBase, id: 'mut-dip-electrical', career_id: 'electrical-engineer', name: 'Diploma in Electrical Engineering', faculty: 'Engineering',
     duration_years: 3, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Engineering-Faculty-Prospectus_.pdf',
     subject_requirements: [lvl('English', 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
-    notes: flag(['partially-verified', 'dated-document', 'no-cutoff-published'], 'Includes 4 semesters of formal study plus 2 semesters of in-service training. No single APS number stated in the section we read. Source PDF labelled "2026", not yet confirmed for 2027. No official closing date found.') },
+    notes: flag(['verified', 'no-cutoff-published'], 'Includes 4 semesters of formal study plus 2 semesters of in-service training. RAW-CONFIRMED by a second MUT document (the user-supplied Undergraduate Prospectus) - same subject minimums, still no single published APS number across either document.') },
   { ...mutBase, id: 'mut-dip-it', career_id: 'information-systems', name: 'Diploma in Information Technology', faculty: 'Applied and Health Sciences',
     duration_years: 3, min_aps: 24,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
     subject_requirements: [lvl('English', 3), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 5))],
-    notes: MUT_CONFLICT },
+    notes: flag(['conflict'], 'CONFLICT: the user-supplied MUT First-Year Prospectus 2026 states "a minimum of 25 points in the best six subjects" for this same diploma, one point above the 24 shown here from the Applied and Health Sciences Handbook - both official, both labelled 2026, disagreeing on the exact number though agreeing on the six-subject method (now resolved for MUT generally - see MUT_APS). We show the lower, already-published figure rather than silently raising it. The APS formula conflict that used to apply to this row is otherwise resolved: best six subjects excluding Life Orientation.') },
   { ...mutBase, id: 'mut-bhsc-medlab', career_id: 'biologist', name: 'Bachelor of Health Sciences: Medical Laboratory Science', faculty: 'Applied and Health Sciences',
     duration_years: 4, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
     subject_requirements: [lvl('English', 4), lvl('Life Sciences', 4), lvl('Mathematics', 4), lvl('Physical Sciences', 4),
       manual('Interview and placement test', 'Applicants must undergo an interview and placement testing.')],
-    notes: flag(['partially-verified', 'unverified', 'no-cutoff-published'], 'Medical laboratory (diagnostic) science specifically, not general biology research. A "24" appeared near these subjects in the source table but its exact meaning was ambiguous in extraction, so we are not publishing it as the APS. Duration includes 6 months of work-integrated learning in year 3 and 12 months of clinical practice in year 4. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag(['verified', 'no-cutoff-published'], 'Medical laboratory (diagnostic) science specifically, not general biology research. RAW-CONFIRMED by a second MUT document (the user-supplied First-Year Prospectus 2026) - same subjects and 4-year duration, but still no single APS number stated in either document (a "24" appeared near these subjects in the original source table but its exact meaning was ambiguous, so it is still not published as the APS). Duration includes 6 months of work-integrated learning in year 3 and 12 months of clinical practice in year 4.') },
   { ...mutBase, id: 'mut-dip-accounting', career_id: 'chartered-accountant', name: 'Diploma in Accounting', faculty: 'Management Sciences',
     duration_years: 3, min_aps: 25,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Management-Sciences-Prospectus.pdf',
@@ -1490,7 +1494,7 @@ const mutPrograms = [
     duration_years: 3, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Engineering-Faculty-Prospectus_.pdf',
     subject_requirements: [lvl('English', 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4)), lvl('Engineering Graphics & Design', 4)],
-    notes: flag(['partially-verified', 'dated-document', 'no-cutoff-published'], 'Read directly (pdftotext) from the same Engineering Faculty prospectus as the Civil and Electrical diplomas above - no single APS number is given, only these subject minimums. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag(['verified', 'no-cutoff-published'], 'RAW-CONFIRMED by a second MUT document (the user-supplied Undergraduate Prospectus) - same subject minimums (that document additionally lists Engineering Graphics & Design as its own compulsory line), still no single published APS number across either document.') },
   { ...mutBase, id: 'mut-dip-agric-crop-production', career_id: 'agricultural-scientist', name: 'Diploma in Agriculture in Crop Production', faculty: 'Applied and Health Sciences',
     duration_years: 3, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
@@ -1500,7 +1504,7 @@ const mutPrograms = [
     duration_years: 3, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
     subject_requirements: [lvl('Mathematics', 4), lvl('Physical Sciences', 4), lvl('English', 4)],
-    notes: flag(['partially-verified', 'dated-document', 'no-cutoff-published'], 'Read directly (pdftotext) from MUT’s own Applied and Health Sciences Handbook - no single APS number is given, only these subject minimums. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag(['verified', 'no-cutoff-published'], 'RAW-CONFIRMED by a second MUT document (the user-supplied First-Year Prospectus 2026) - same subject minimums and 3-year duration, still no single published APS number across either document.') },
   { ...mutBase, id: 'mut-dip-nature-conservation', career_id: 'nature-conservation', name: 'Diploma in Nature Conservation', faculty: 'Applied and Health Sciences',
     duration_years: 3, min_aps: 28,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
@@ -1509,28 +1513,28 @@ const mutPrograms = [
   { ...mutBase, id: 'mut-bsc-nature-conservation', career_id: 'nature-conservation', name: 'Bachelor of Applied Science in Nature Conservation', faculty: 'Applied and Health Sciences',
     duration_years: 3, min_aps: 32,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
-    subject_requirements: [lvl('Life Sciences', 5), lvl('English', 5), manual('Mathematics', 'A pass mark (no specific level stated) is required.')],
-    notes: flag(['partially-verified', 'dated-document'], 'Read directly (pdftotext) from MUT’s own Applied and Health Sciences Handbook - the degree-level sibling to the Diploma in Nature Conservation above. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    subject_requirements: [lvl('Life Sciences', 5), lvl('English', 5), lvl('Mathematics', 4)],
+    notes: flag('verified', 'CORRECTED 2026-10-03: the user-supplied First-Year Prospectus 2026 gives Mathematics\' actual level (4) in place of the earlier vague "a pass mark is required" - the degree-level sibling to the Diploma in Nature Conservation above.') },
   { ...mutBase, id: 'mut-bsc-environmental-health', career_id: 'environmental-scientist', name: 'BSc Environmental Health', faculty: 'Applied and Health Sciences',
     duration_years: 4, min_aps: null,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf',
     subject_requirements: [lvl('Physical Sciences', 4), lvl('Mathematics', 4), lvl('Life Sciences', 4), lvl('English', 4)],
-    notes: flag(['partially-verified', 'dated-document', 'no-cutoff-published'], 'Read directly (pdftotext) from MUT’s own Applied and Health Sciences Handbook - no single APS number is given, only these subject minimums. Graduates must register with the HPCSA. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag(['conflict', 'no-cutoff-published'], 'CONFLICT: the user-supplied First-Year Prospectus 2026 states this degree is 3 years, not 4 as shown here from the Applied and Health Sciences Handbook - both official, both labelled 2026, agreeing exactly on every subject requirement but disagreeing on duration. Shown as 4 years (the original, more detailed source) pending resolution. Still no single APS number published in either document. Graduates must register with the HPCSA.') },
   { ...mutBase, id: 'mut-dip-marketing', career_id: 'business-manager', name: 'Diploma in Marketing', faculty: 'Management Sciences',
     duration_years: 3, min_aps: 25,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Management-Sciences-Prospectus.pdf',
     subject_requirements: [engLvl(3, 4), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 4), lvl('Accounting', 4)), manual('Four more subjects', 'Four further subjects at level 3 or better.')],
-    notes: flag(['partially-verified', 'dated-document'], 'Read directly (pdftotext) from MUT’s own Management Sciences Prospectus. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag('verified', 'RAW-CONFIRMED by a second MUT document (the user-supplied First-Year Prospectus 2026) - same APS and subject figures, which also notes an NCV level 4 alternative route (English 60%, Mathematics 40% or Mathematical Literacy 50%, four other subjects at 50%+).') },
   { ...mutBase, id: 'mut-dip-public-management', career_id: 'business-manager', name: 'Diploma in Public Management', faculty: 'Management Sciences',
     duration_years: 3, min_aps: 25,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Management-Sciences-Prospectus.pdf',
     subject_requirements: [engLvl(3, 4)],
-    notes: flag(['partially-verified', 'dated-document'], 'Read directly (pdftotext) from MUT’s own Management Sciences Prospectus - the full subject breakdown beyond English and the 25-point total was not stated on the page read. All admissions go through a selection process beyond just meeting the minimum. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag('verified', 'RAW-CONFIRMED by a second MUT document (the user-supplied First-Year Prospectus 2026: "Total minimum points: 25, excl. Life Orientation") - the full subject breakdown beyond English and the 25-point total is still not stated in either document. All admissions go through a selection process beyond just meeting the minimum; students who averaged 60%+ at N6 level (Public Admin/Public Management) are also considered.') },
   { ...mutBase, id: 'mut-dip-hr-management', career_id: 'industrial-psychologist', name: 'Diploma in Human Resources Management', faculty: 'Management Sciences',
     duration_years: 3, min_aps: 25,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Management-Sciences-Prospectus.pdf',
     subject_requirements: [engLvl(3, 4), anyOf(lvl('Mathematical Literacy', 3), lvl('Mathematics', 3), lvl('Accounting', 3)), manual('Four more subjects', 'Four further subjects at level 3 or better.')],
-    notes: flag(['partially-verified', 'dated-document'], 'Read directly (pdftotext) from MUT’s own Management Sciences Prospectus. Source PDF labelled "2026", not yet confirmed for 2027.') },
+    notes: flag('verified', 'RAW-CONFIRMED by a second MUT document (the user-supplied First-Year Prospectus 2026) - same APS and subject figures.') },
   { ...mutBase, id: 'mut-dip-local-government-finance', career_id: 'financial-manager', name: 'Diploma in Local Government Finance', faculty: 'Management Sciences',
     duration_years: 3, min_aps: 25,
     source_url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Management-Sciences-Prospectus.pdf',

@@ -53,6 +53,8 @@ check('Wits APS (incl. Life Orientation)', scores.WITS_APS_incLO.value, 43);
 // UP/UJ: 6 best NSC levels excluding LO: 7(82)+6(78)+6(76)+6(74)+6(71)+5(68) = 36
 check('UP APS/42', scores.UP_APS_exLO.value, 36);
 check('UJ APS/42', scores.UJ_APS_exLO.value, 36);
+// MUT: same best-6-excluding-LO level formula as UP/UJ (no Life Orientation bonus at all) = 36
+check('MUT APS/48', scores.MUT_APS.value, 36);
 
 // SU: average of 6 non-LO subjects = (78+82+76+71+68+74)/6 = 74.833 -> 74.8
 check('SU aggregate %', scores.SU_aggregate_pct.value, 74.8);
@@ -71,10 +73,14 @@ assert('Wits Composite Index returns no number, with a reason',
 // "formula confirmed but not implemented" to fully computable, leaving 7 systems still
 // non-computable for a real reason (a conflicting formula, an unconfirmed points scale,
 // no published cut-off to check, etc. - see each system's audit `gaps`).
+// Dropped to 6 on 2026-10-03: MUT_APS is now computable - two more user-supplied MUT
+// documents (First-Year Prospectus 2026, Undergraduate Prospectus) independently
+// confirmed "best six subjects excluding Life Orientation" against a web-found page
+// that had claimed best five, resolving the conflict that made it non-computable.
 // This count should only ever go DOWN as those gaps get closed in a future pass -
 // never up without a documented reason in scoring-audit.js.
 assert('every non-computable system beyond the known ones has a documented reason',
-  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 7);
+  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 6);
 assert('every system carries an audit record with at least one official source',
   Object.entries(SCORING_SYSTEMS).every(([, s]) => s.audit && s.audit.sources.length > 0));
 assert('partly-verified systems name what is still unconfirmed',

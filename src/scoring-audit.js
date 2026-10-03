@@ -243,13 +243,14 @@ export const SCORING_AUDIT = {
     gaps: ['RESOLVED 2026-10-01: implemented and computing a score - we award Life Orientation 1 point whenever it is entered (treating "maximum value of one" as "scores 1", since the page never says a passing LO mark can score 0). The one remaining uncertainty is for a student who actually FAILS Life Orientation (under 30%) - the page does not say whether that still earns 1 point or 0, and we have not found a worked example to settle it.'],
   },
   MUT_APS: {
-    status: 'unverified',
+    status: 'partial',
     sources: [
-      { label: 'MUT Admission Requirements (general page)', url: 'https://www.mut.ac.za/admission-requirements/' },
       { label: 'MUT Diploma in Information Technology (programme page)', url: 'https://www.mut.ac.za/wp-content/uploads/2025/12/2026-Applied-and-Health-Sciences-Handbook.pdf' },
+      { label: 'MUT First-Year Prospectus 2026 (user-supplied)', url: 'https://www.mut.ac.za' },
+      { label: 'MUT Undergraduate Prospectus (user-supplied)', url: 'https://www.mut.ac.za' },
     ],
-    confirmed: [],
-    gaps: ['MUT’s own general admissions page states APS is calculated from the best FIVE subjects; its IT programme page states best SIX excluding Life Orientation. The two official sources disagree, so we show both without picking one and do not compute a score.'],
+    confirmed: ['Best six subjects excluding Life Orientation, each on the standard 1-8 NSC level scale, summed - no Life Orientation bonus at all.'],
+    gaps: ['RESOLVED 2026-10-03: a web-found "general admissions page" had once claimed best FIVE subjects, conflicting with the IT programme page\'s best SIX - two more official MUT documents (First-Year Prospectus, Undergraduate Prospectus) independently confirm best SIX, so that is now implemented and computing. Still "partial" rather than "verified" because the resolution rests on 3-against-1 agreement across documents rather than a single authoritative current page re-confirming the "five" claim was wrong or outdated.'],
   },
   NMU_AS: {
     status: 'partial',

@@ -444,10 +444,16 @@ const SYSTEMS = {
   MUT_APS: {
     label: 'MUT APS',
     unit: '',
-    computable: false,
+    max: 48,
+    nearMargin: 3,
     explanation:
-      'MUT’s own pages disagree on the basic rule: its general admissions page says APS is "the best five subjects"; its IT programme page says "a minimum of 24 points in the best six subjects excluding Life Orientation". We show both rather than pick one - see each programme’s note. MUT_APS is non-computable until this is resolved with MUT directly.',
-    reason: 'MUT’s own pages disagree on whether APS uses five or six subjects, so we cannot safely compute a score. Contact MUT’s admissions office directly (see Contacts on MUT’s page) to confirm where you stand.',
+      'RESOLVED 2026-10-03: a web-found MUT admissions page once claimed "best five subjects", but three of MUT\'s own official documents (its IT programme page, 2026 First-Year Prospectus, and Undergraduate Prospectus) all independently state the same rule - the best six subjects excluding Life Orientation, each scored on the standard 1-8 NSC level scale, with no Life Orientation bonus at all.',
+    compute(marks, { required = [] } = {}) {
+      const chosen = choose(withoutLO(marks), 6, (m) => witsLevel(m.percent), required);
+      if (!chosen) return cannot('MUT counts six academic subjects excluding Life Orientation - add the rest of yours.');
+      return ok(sum(chosen, (m) => witsLevel(m.percent)), 48,
+        say(chosen, (m) => `${m.name} ${m.percent}% = ${witsLevel(m.percent)}`) + countedNote(required));
+    },
   },
 
   NMU_AS: {
