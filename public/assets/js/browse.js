@@ -71,12 +71,24 @@ function renderScoreEntry() {
   const computable = systems.filter((s) => s.computable !== false);
   const notComputable = systems.filter((s) => s.computable === false);
 
+  const hasAnyScore = () => computable.some((s) => state.scores[s.id] != null && state.scores[s.id] !== '');
+
+  const runBtn = el('button', {
+    class: 'btn btn--primary btn--big', type: 'button',
+    disabled: computable.length && !hasAnyScore() ? true : null,
+    onclick: () => { state.showResults = true; track('browse_run', { university: state.uniId }); render(); },
+  }, 'Show me what I can get into →');
+
   const inputs = computable.map((s) => el('div', { class: 'mark-row' },
     el('label', { for: `score-${s.id}` }, s.label, s.unit ? el('span', { class: 'muted' }, ` (${s.unit})`) : null),
     el('input', {
       type: 'number', inputmode: 'decimal', id: `score-${s.id}`, min: '0', step: 'any',
       value: state.scores[s.id] ?? '',
-      oninput: (e) => { state.scores[s.id] = e.target.value === '' ? undefined : Number(e.target.value); saveScores(); },
+      oninput: (e) => {
+        state.scores[s.id] = e.target.value === '' ? undefined : Number(e.target.value);
+        saveScores();
+        runBtn.disabled = !hasAnyScore();
+      },
     })));
 
   const body = el('div', {},
@@ -85,12 +97,7 @@ function renderScoreEntry() {
     inputs.length ? el('div', { class: 'stack' }, inputs) : el('p', { class: 'muted' }, 'We don’t calculate a score for this university yet.'),
     notComputable.length ? el('p', { class: 'small muted' },
       `We also don’t calculate ${notComputable.map((s) => s.label).join(' or ')} here - its degrees will show with their published minimum only, for you to compare by hand.`) : null,
-    el('div', { class: 'btn-row' },
-      el('button', {
-        class: 'btn btn--primary btn--big', type: 'button',
-        disabled: computable.length && !computable.some((s) => state.scores[s.id] != null && state.scores[s.id] !== '') ? true : null,
-        onclick: () => { state.showResults = true; track('browse_run', { university: state.uniId }); render(); },
-      }, 'Show me what I can get into →')));
+    el('div', { class: 'btn-row' }, runBtn));
 
   set(root, body);
 }
