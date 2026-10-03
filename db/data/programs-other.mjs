@@ -2172,12 +2172,20 @@ const nmuBase = {
 };
 const NMU_CAVEAT = 'From NMU’s own faculty "UG Guide" PDFs, most of which are dated/closing in 2024 - apparently covering the 2025 intake, not independently confirmed as current for 2027 (NMU appears to roll these forward with the same structure each year, but treat the figures as "last confirmed" rather than "2027-verified"). No 2027 closing date is stated.';
 
+// Cross-checked 2026-10-03 against two user-supplied current documents (the
+// Undergraduate Guide and a "Z-Card" per-programme admissions summary) - see
+// nmu-pass-3 in research-log.mjs. Architecture, Nursing, BCom (Computer Science &
+// Information Systems), LLB, and the Civil/Industrial/Marine Engineering diplomas all
+// matched exactly (Nursing also gained a confirmed 4-year duration, previously null).
+// Electrical/Mechanical Engineering, Mechatronics, BIT, BCom Law/BA Law and the other
+// BCom streams were not individually re-checked this pass - still on the older,
+// dated-2024 UG Guide tier.
 const nmuPrograms = [
   { ...nmuBase, id: 'nmu-bengtech-civil', career_id: 'civil-engineer', name: 'BEngTech Civil Engineering', faculty: 'Engineering, the Built Environment & Technology',
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
     subject_requirements: [anyOf(pct('Mathematics', 60), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 50))],
-    notes: flag(['partially-verified', 'dated-document'], NMU_CAVEAT) },
+    notes: flag('verified', 'RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-bengtech-electrical', career_id: 'electrical-engineer', name: 'BEngTech Electrical Engineering', faculty: 'Engineering, the Built Environment & Technology',
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
@@ -2187,7 +2195,7 @@ const nmuPrograms = [
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
     subject_requirements: [anyOf(pct('Mathematics', 60), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 50))],
-    notes: flag(['partially-verified', 'dated-document'], NMU_CAVEAT) },
+    notes: flag('verified', 'RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-bengtech-mechanical', career_id: 'mechanical-engineer', name: 'BEngTech Mechanical Engineering', faculty: 'Engineering, the Built Environment & Technology',
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
@@ -2197,7 +2205,7 @@ const nmuPrograms = [
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
     subject_requirements: [anyOf(pct('Mathematics', 60), pct('Technical Mathematics', 60)), anyOf(pct('Physical Sciences', 50), pct('Technical Sciences', 50))],
-    notes: flag(['partially-verified', 'dated-document'], 'There is no dedicated marine-engineering career on Studypath yet, so this is filed under the closest existing category. ' + NMU_CAVEAT) },
+    notes: flag('verified', 'There is no dedicated marine-engineering career on Studypath yet, so this is filed under the closest existing category. RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-beng-mechatronics', career_id: 'mechanical-engineer', name: 'BEng Mechatronics', faculty: 'Engineering, the Built Environment & Technology',
     duration_years: 4, min_aps: 410,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
@@ -2212,17 +2220,17 @@ const nmuPrograms = [
     duration_years: 3, min_aps: 370,
     source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
     subject_requirements: [pct('Mathematics', 55), manual('Portfolio and interview', 'A portfolio submission and interview are required; admission is only confirmed after these are held.')],
-    notes: flag(['partially-verified', 'dated-document'], 'Followed by a further BAS Honours year and a professional Master of Architecture for full registration. ' + NMU_CAVEAT) },
+    notes: flag('verified', 'Followed by a further BAS Honours year and a professional Master of Architecture for full registration. RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-nursing', career_id: 'nurse', name: 'Bachelor of Nursing', faculty: 'Health Sciences',
-    duration_years: null, min_aps: 370,
+    duration_years: 4, min_aps: 370,
     source_url: 'https://nursing.mandela.ac.za/Qualifications-Offered/Bachelor-of-Nursing',
     subject_requirements: [anyOf(pct('Mathematics', 50), pct('Mathematical Literacy', 65)), pct('Life Sciences', 60), pct('Physical Sciences', 50)],
-    notes: flag(['partially-verified', 'unverified'], 'AS 370 on the Mathematics route, 385 on the Mathematical Literacy route. Duration was not stated on the page we read. ' + NMU_CAVEAT) },
+    notes: flag('verified', 'AS 370 on the Mathematics route, 385 on the Mathematical Literacy route. RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary, which also gave the duration (4 years, previously null) and an Extended Curriculum route (5 years, AS 330/345). ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law',
     duration_years: 4, min_aps: 390,
     source_url: 'https://law.mandela.ac.za/law/media/Store/documents/Faculty%20Undergrad%20Guide/FAL-Brochure-2.pdf',
     subject_requirements: [anyOf(pct('English', 65), pct('English', 70)), pct('Mathematics', 50)],
-    notes: flag(['partially-verified', 'unverified'], 'English threshold is 65% if it is your Home Language, 70% if First Additional. A 5-year LLB Extended route also exists at a lower threshold. ' + NMU_CAVEAT) },
+    notes: flag('verified', 'English threshold is 65% if it is your Home Language, 70% if First Additional. A 5-year LLB Extended route also exists at a lower threshold. RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
   { ...nmuBase, id: 'nmu-bcom-law', career_id: 'lawyer', name: 'BCom Law', faculty: 'Law',
     duration_years: null, min_aps: 390,
     source_url: 'https://law.mandela.ac.za/law/media/Store/documents/Faculty%20Undergrad%20Guide/FAL-Brochure-2.pdf',
@@ -2257,7 +2265,27 @@ const nmuPrograms = [
     duration_years: 3, min_aps: 390,
     source_url: 'https://business.mandela.ac.za/business/media/Store/documents/Prospectus/Faculty-of-Business-and-Economic-Sciences-UG-Guide.pdf',
     subject_requirements: [pct('Mathematics', 60)],
-    notes: flag(['partially-verified', 'dated-document'], NMU_CAVEAT) },
+    notes: flag('verified', 'RAW-CONFIRMED against the user-supplied NMU Z-Card admissions summary. ' + NMU_CAVEAT) },
+  { ...nmuBase, id: 'nmu-bsc-construction', career_id: 'quantity-surveyor', name: 'BSc (Construction Economics / Construction Management)', faculty: 'Engineering, the Built Environment & Technology',
+    duration_years: 3, min_aps: 370,
+    source_url: 'https://eleceng.mandela.ac.za/eleceng/media/Store/documents/Prospectus/Faculty-of-Engineering_TheBuiltEnv-and-IT-UG-Guide.pdf',
+    subject_requirements: [pct('Mathematics', 55)],
+    notes: flag(['selection'], 'New row, from the user-supplied NMU Z-Card admissions summary - Construction Economics and Construction Studies (Construction Management) are two separate BSc streams sharing this exact AS and Mathematics figure.') },
+  { ...nmuBase, id: 'nmu-bed-intermediate', career_id: 'teacher', name: 'BEd Intermediate Phase (Grades 4-6)', faculty: 'Education',
+    duration_years: 4, min_aps: 370,
+    source_url: 'https://www.mandela.ac.za',
+    subject_requirements: [manual('English and Afrikaans/isiXhosa', 'English (Home Language or First Additional Language) at 50%, and Afrikaans or isiXhosa (Home Language or First Additional Language) at 50%.'), anyOf(pct('Mathematics', 45), pct('Mathematical Literacy', 60), pct('Technical Mathematics', 60))],
+    notes: flag(['selection'], 'New row, from the user-supplied NMU Z-Card admissions summary - AS 370 on the Mathematics route, 385 on the Mathematical Literacy/Technical Mathematics route. NMU also offers a BEd Senior Phase & FET (Grades 7-12) across several subject-combination streams, at AS 390 for the Commerce stream - not shown as its own row.') },
+  { ...nmuBase, id: 'nmu-bhsc-biokinetics', career_id: 'sport-scientist', name: 'Bachelor of Health Science (Biokinetics)', faculty: 'Health Sciences',
+    duration_years: 4, min_aps: 370,
+    source_url: 'https://www.mandela.ac.za',
+    subject_requirements: [anyOf(pct('Mathematics', 50), pct('Mathematical Literacy', 65), pct('Technical Mathematics', 65)), pct('Life Sciences', 50), manual('Medical report', 'A medical report is required.')],
+    notes: flag(['selection'], 'New row, from the user-supplied NMU Z-Card admissions summary - AS 370 on the Mathematics route, 385 on the Mathematical Literacy/Technical Mathematics route.') },
+  { ...nmuBase, id: 'nmu-bcom-industrial-psychology', career_id: 'industrial-psychologist', name: 'BCom (Industrial Psychology & Human Resource Management)', faculty: 'Business & Economic Sciences',
+    duration_years: 3, min_aps: 390,
+    source_url: 'https://business.mandela.ac.za/business/media/Store/documents/Prospectus/Faculty-of-Business-and-Economic-Sciences-UG-Guide.pdf',
+    subject_requirements: [anyOf(pct('Mathematics', 35), pct('Mathematical Literacy', 55), pct('Technical Mathematics', 55))],
+    notes: flag(['selection'], 'New row, from the user-supplied NMU Z-Card admissions summary. NMU also offers BAdmin (Public Administration) and BA (Human Resource Management) at a lower AS (350) with the same career outcome - not shown as separate rows.') },
 ];
 
 export const otherPrograms = [...ujPrograms, ...uwcPrograms, ...ruWithLO, ...nwuPrograms, ...ufsPrograms, ...univenPrograms, ...wsuPrograms, ...ufhPrograms, ...tutPrograms, ...vutPrograms, ...dutPrograms, ...cputPrograms, ...cutPrograms, ...mutPrograms, ...ulPrograms, ...spuPrograms, ...umpPrograms, ...unisaPrograms, ...smuPrograms, ...unizuluPrograms, ...nmuPrograms];
