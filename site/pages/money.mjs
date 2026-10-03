@@ -35,7 +35,6 @@ export function moneyPage(data) {
     <p class="eyebrow">Paying for it</p>
     <h1>Costs & aid: application fees, NSFAS and bursaries</h1>
     <p class="lead">The biggest reason learners miss out on funding isn’t their marks – it’s a deadline that went past while they were busy. Here’s what we’ve verified.</p>
-    <p class="small"><a href="#nsfas-check">${iconOrEmoji('✅')} Not sure you qualify for NSFAS? Check in 30 seconds →</a></p>
     ${jumpNav([
       { href: 'fees', label: `${iconOrEmoji('💳')} Application fees` },
       { href: 'bursaries', label: `${iconOrEmoji('⏰')} Open right now` },
