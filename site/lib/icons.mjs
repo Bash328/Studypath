@@ -39,7 +39,7 @@ const EMOJI_ICON = {
   '🧠': 'subjects-brain', '🎯': 'target-marks', '⏰': 'deadline-clock', '📅': 'calendar-dates',
   '🧰': 'toolbox-all', '🧭': 'careers-compass', '✍️': 'nbt-writing', '💰': 'money',
   '📞': 'phone-call', '❓': 'faq-help', '📖': 'glossary-book', '🤝': 'trust-handshake',
-  '🔎': 'data-search', '🏠': 'home', '💬': 'ask-message', '🌍': 'study-abroad-globe',
+  '🔎': 'data-search', '🔍': 'data-search', '🏠': 'home', '💬': 'ask-message', '🌍': 'study-abroad-globe',
   // --- second batch: sector icons, and everything page-specific below ---
   '🎨': 'careers-arts', '🏗️': 'careers-built-environment', '💻': 'careers-technology',
   '🍎': 'careers-education', '⚙️': 'careers-engineering', '⚕️': 'careers-health',

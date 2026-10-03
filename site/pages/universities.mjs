@@ -1,16 +1,28 @@
 import { esc, md, link, hostOf, tag, claim, plural, prettyDate } from '../lib/html.mjs';
 import { programCard, contactCard, dateRow, sectionHead, verificationTag } from '../lib/components.mjs';
-import { SCORING_SYSTEMS } from '../lib/data.mjs';
+import { SCORING_SYSTEMS, facultyGroup } from '../lib/data.mjs';
 import { auditLabel } from '../../src/scoring-audit.js';
+import { iconOrEmoji } from '../lib/icons.mjs';
 
 const STATUS_LEVEL = { verified: 'verified', partial: 'reported', unverified: 'unverified' };
+
+const TYPE_EMOJI = {
+  Traditional: '🎓', 'Traditional (health)': '⚕️', Comprehensive: '🏫',
+  'University of Technology': '⚙️', 'Comprehensive (distance)': '🌍',
+};
+
+const GROUP_EMOJI = {
+  'Engineering & built environment': '⚙️', 'Health sciences': '⚕️', 'Commerce & business': '💼',
+  Science: '🔬', Law: '⚖️', 'Humanities, education & arts': '🎓',
+};
 
 export function universitiesIndex(data) {
   const { universities, stats } = data;
   const withData = universities.filter((u) => u.hasRequirements).sort((a, b) => b.programCount - a.programCount);
+  const types = [...new Set(withData.map((u) => u.type).filter(Boolean))].sort();
 
   const card = (u) => `
-  <a class="card card--link uni-card" href="/universities/${esc(u.id)}">
+  <a class="card card--link uni-card" href="/universities/${esc(u.id)}" data-type="${esc(u.type || '')}">
     <h3>${esc(u.name)}</h3>
     <p class="card__meta">${esc(u.type || '')}${u.cao ? ' · applies via the CAO' : ''}</p>
     <p>${u.hasRequirements ? `<strong>${plural(u.programCount, 'degree', 'degrees')}</strong> with requirements and sources` : 'Contacts and closing dates – requirements coming'}</p>
@@ -27,7 +39,12 @@ export function universitiesIndex(data) {
 
 <section class="section wrap">
   ${sectionHead('✅', 'Requirements captured', 'These are in the “What do I qualify for?” calculator.')}
-  <div class="grid grid--3">${withData.map(card).join('')}</div>
+  <div class="chip-row" id="type-filters" role="group" aria-label="Filter by university type">
+    <button class="chip" type="button" data-type="" aria-pressed="true">All</button>
+    ${types.map((t) => `<button class="chip" type="button" data-type="${esc(t)}" aria-pressed="false">${iconOrEmoji(TYPE_EMOJI[t] || '')} ${esc(t)}</button>`).join('')}
+  </div>
+  <div class="grid grid--3" id="uni-grid">${withData.map(card).join('')}</div>
+  <p class="empty" id="uni-empty" hidden>No universities of that type have their requirements captured yet.</p>
 </section>
 
 <section class="section wrap">
@@ -45,6 +62,7 @@ export function universitiesIndex(data) {
     title: 'South African university admission requirements, contacts and dates',
     description: 'Admission requirements, closing dates and contact details for South African universities – UCT, Wits, Stellenbosch, UP, UKZN, UJ, Rhodes and more – with the official source for every number.',
     body,
+    scripts: ['/assets/js/universities.js'],
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities' }],
   }];
 }
@@ -69,9 +87,10 @@ export function universityPages(data) {
 
   return universities.map((u) => {
     const list = programs.filter((p) => p.university.id === u.id);
-    const byFaculty = {};
-    for (const p of list) (byFaculty[p.faculty || 'Other'] ||= []).push(p);
-    const faculties = Object.keys(byFaculty).sort();
+    const byGroup = {};
+    for (const p of list) (byGroup[facultyGroup(p.faculty)] ||= []).push(p);
+    const groups = Object.keys(byGroup).sort((a, b) => byGroup[b].length - byGroup[a].length);
+    const faculties = [...new Set(list.map((p) => p.faculty))];
     const systems = [...new Set(list.map((p) => p.scoringSystem))];
     const myContacts = contactsByUni[u.id] || [];
     const myDates = (datesByUni[u.id] || []).slice().sort((a, b) => String(a.date || '9999').localeCompare(String(b.date || '9999')));
@@ -116,9 +135,15 @@ ${list.length ? `
 ${list.length ? `
 <section class="section wrap" id="degrees">
   ${sectionHead('🎓', 'Degrees')}
-  ${faculties.map((f) => `
-  <h3 class="uni-head">${esc(f)}</h3>
-  <div class="grid grid--2">${byFaculty[f].map((p) => programCard(p, { showUniversity: false })).join('')}</div>`).join('')}
+  ${groups.length > 1 ? `<div class="chip-row" id="degree-filters" role="group" aria-label="Filter by field">
+    <button class="chip" type="button" data-group="" aria-pressed="true">All (${list.length})</button>
+    ${groups.map((g) => `<button class="chip" type="button" data-group="${esc(g)}" aria-pressed="false">${iconOrEmoji(GROUP_EMOJI[g] || '')} ${esc(g)} (${byGroup[g].length})</button>`).join('')}
+  </div>` : ''}
+  ${groups.map((g) => `
+  <div class="degree-block" data-group="${esc(g)}">
+    <h3 class="uni-head">${iconOrEmoji(GROUP_EMOJI[g] || '')} ${esc(g)}</h3>
+    <div class="grid grid--2">${byGroup[g].map((p) => programCard(p, { showUniversity: false })).join('')}</div>
+  </div>`).join('')}
 </section>` : `
 <section class="section wrap">
   <div class="callout">
@@ -153,6 +178,7 @@ ${list.length ? `
         ? `${u.name} admission requirements for ${list.length} degrees: the score you need, subject minimums, closing dates and who to contact – with the official ${u.short_name} source for every number.`
         : `How to contact ${u.name} about applying, when applications close, and where to find its entry requirements.`,
       body,
+      scripts: groups.length > 1 ? ['/assets/js/universities.js'] : [],
       breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Universities', path: '/universities' }, { name: u.name, path: `/universities/${u.id}` }],
       jsonLd: [{ '@context': 'https://schema.org', '@type': 'CollegeOrUniversity', name: u.name, alternateName: u.short_name, url: u.website, address: { '@type': 'PostalAddress', addressCountry: 'ZA' } }],
     };

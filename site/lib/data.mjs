@@ -36,7 +36,7 @@ export function requirementText(req) {
   return req.subject || '';
 }
 
-const facultyGroup = (faculty = '') => {
+export const facultyGroup = (faculty = '') => {
   const f = faculty.toLowerCase();
   if (/engineer|built/.test(f)) return 'Engineering & built environment';
   if (/health|medicine/.test(f)) return 'Health sciences';
