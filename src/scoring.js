@@ -541,10 +541,19 @@ const SYSTEMS = {
   UMP_APS: {
     label: 'UMP APS',
     unit: '',
-    computable: false,
+    max: 45.5,
+    nearMargin: 3,
     explanation:
-      'UMP appears to add seven subjects on a 7-point scale, with Life Orientation’s points halved rather than excluded - distinctive if accurate, but we have not independently confirmed this on an official UMP page, so we are not treating it as settled. Each programme shows its published minimum APS as reference only.',
-    reason: 'We could not fully confirm UMP’s APS formula from an official source yet - see the published minimum on each programme instead. Contact UMP’s admissions office directly (see Contacts on UMP’s page) to confirm where you stand.',
+      'UMP sums your best six subjects (four the programme requires plus your best three electives) on the standard NSC level scale (1-7), then adds Life Orientation at HALF its level rather than excluding it - confirmed word-for-word from UMP’s own Undergraduate Programmes PDF: "The prescribed seven subjects are the subjects to be used in calculating the APS. The APS achievement rating of Life Orientation is divided by two."',
+    compute(marks, { required = [] } = {}) {
+      const lo = marks.find(isLifeOrientation);
+      if (!lo) return cannot('UMP counts Life Orientation at half its level - add your mark.');
+      const chosen = choose(withoutLO(marks), 6, (m) => nscLevel(m.percent), required);
+      if (!chosen) return cannot('UMP counts six academic subjects plus Life Orientation at half value - add the rest of yours.');
+      const loHalf = nscLevel(lo.percent) / 2;
+      return ok(sum(chosen, (m) => nscLevel(m.percent)) + loHalf, 45.5,
+        say(chosen, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`) + `, Life Orientation ${lo.percent}% = level ${nscLevel(lo.percent)} / 2 = ${loHalf}` + countedNote(required));
+    },
   },
 
   UNISA_APS: {

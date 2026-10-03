@@ -55,6 +55,8 @@ check('UP APS/42', scores.UP_APS_exLO.value, 36);
 check('UJ APS/42', scores.UJ_APS_exLO.value, 36);
 // MUT: same best-6-excluding-LO level formula as UP/UJ (no Life Orientation bonus at all) = 36
 check('MUT APS/48', scores.MUT_APS.value, 36);
+// UMP: 6 best non-LO NSC levels (7+6+6+6+6+5=36) + Life Orientation 85% = level 7 / 2 = 3.5 -> 39.5
+check('UMP APS/45.5', scores.UMP_APS.value, 39.5);
 
 // SU: average of 6 non-LO subjects = (78+82+76+71+68+74)/6 = 74.833 -> 74.8
 check('SU aggregate %', scores.SU_aggregate_pct.value, 74.8);
@@ -96,11 +98,18 @@ assert('Wits Composite Index returns no number, with a reason',
 // SPU's own live APS calculators/scoring tables, resolving every remaining ambiguity
 // in each formula - UFH_APS, UNIVEN_APS and SPU_APS are all now computable. UFH's
 // implementation was verified exactly against a worked example shown in its screenshot
-// (41 points). Only WITS_COMPOSITE_INDEX, UMP_APS and SMU_APS remain non-computable.
+// (41 points).
+// Dropped to 2 later the same day: a third-party aggregator (navyblue.co.za) pointed at
+// a UMP formula claim, which pdftotext then confirmed word-for-word on UMP's own official
+// Undergraduate Programmes PDF (six academic subjects + Life Orientation at half value) -
+// UMP_APS is now computable too. Only WITS_COMPOSITE_INDEX and SMU_APS remain: Wits's is a
+// confirmed non-disclosure, and SMU's Table 2 conversion is now known but cannot be safely
+// implemented because MBChB's five named per-subject minimums (29 points) don't add up to
+// its stated 38-point APS total - more subjects are evidently counted than we can identify.
 // This count should only ever go DOWN as those gaps get closed in a future pass -
 // never up without a documented reason in scoring-audit.js.
 assert('every non-computable system beyond the known ones has a documented reason',
-  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 3);
+  Object.values(SCORING_SYSTEMS).filter((s) => !s.computable).length === 2);
 assert('every system carries an audit record with at least one official source',
   Object.entries(SCORING_SYSTEMS).every(([, s]) => s.audit && s.audit.sources.length > 0));
 assert('partly-verified systems name what is still unconfirmed',

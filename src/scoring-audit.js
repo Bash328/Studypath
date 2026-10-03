@@ -268,8 +268,8 @@ export const SCORING_AUDIT = {
       { label: 'SMU Medicine undergraduate admission requirements', url: 'https://www.smu.ac.za/schools/medicine/medicine-undergraduate-admission-requirements/' },
       { label: 'SMU Health Care Sciences undergraduate admission requirements', url: 'https://www.smu.ac.za/schools/health-care-sciences/health-care-sciences-undergraduate-admission-requirements/' },
     ],
-    confirmed: ['SMU Pharmacy and Health Care Sciences programmes (Dietetics, Nursing, OT, Physiotherapy, Speech-Language Pathology, Audiology) state subject minimums on the standard 1-7 NSC achievement-level scale.', 'SMU Medicine and Dentistry instead reference "Table 2: Admission Point Score (APS) Equivalency Conversion Table", converting marks to a different points scale (A = 12 points down to F = 3 points).'],
-    gaps: ['We could not obtain Table 2 itself (only an AI-summarized description, not the raw table), so Medicine/Dentistry subject minimums are described in SMU’s own words rather than converted to our usual level/percentage fields, and no score is computed for any SMU programme. Whether MBChB/BDS/Pharmacy require the NBT is unconfirmed and not stated.'],
+    confirmed: ['SMU Pharmacy and Health Care Sciences programmes (Dietetics, Nursing, OT, Physiotherapy, Speech-Language Pathology, Audiology) state subject minimums on the standard 1-7 NSC achievement-level scale.', 'SMU Medicine and Dentistry instead reference "Table 2: Admission Point Score (APS) Equivalency Conversion Table", converting marks to a different points scale.', 'RESOLVED 2026-10-03: Table 2 itself now obtained directly from SMU\'s own Medicine admission-requirements page: 80-100%=12, 70-79%=11, 60-69%=10, 50-59%=9, 40-49%=8, 30-39%=7, below 30%=6. For MBChB specifically, "Table 1" sets per-subject minimums of 6 points (English, Mathematics, Physical Science, Life Sciences - all ≥40%) and 5 points for Life Orientation (≥30%), which the page states sum to a 38-point APS minimum overall - but 6+6+6+6+5 only totals 29, not 38, so MBChB\'s APS must count more subjects than just these five named ones, in a combination we have not been able to work out from this page alone.'],
+    gaps: ['Table 2\'s own per-subject conversion is now confirmed and could be implemented as a standard-sounding "percentage -> points, best N subjects" formula EXCEPT that we cannot reconcile MBChB\'s published 5-subject minimums (summing to 29) with its stated 38-point APS total - there are evidently more counted subjects than the five named ones, and we do not know how many or which. Implementing SMU_APS now would risk a confidently wrong number for SMU\'s highest-profile programme, so it remains non-computable until that reconciliation is found. Whether MBChB/BDS/Pharmacy require the NBT is also unconfirmed and not stated.'],
   },
   SPU_APS: {
     status: 'partial',
@@ -281,10 +281,13 @@ export const SCORING_AUDIT = {
     gaps: ['RESOLVED 2026-10-03: now implemented and computing from the calculator table above. Still "partial" rather than "verified" because the screenshot did not show a calculated total to check our implementation against (unlike UFH\'s matching worked example) - the arithmetic is read directly from the table, not independently confirmed end-to-end.'],
   },
   UMP_APS: {
-    status: 'unverified',
-    sources: [{ label: 'UMP Bachelor of Commerce (programme page)', url: 'https://www.ump.ac.za/Study-with-us/Faculties-and-Schools/Faculty-of-Economics,-Development-and-Business-Sci/School-of-Development-Studies/Bachelor-of-Commerce.aspx' }],
-    confirmed: ['This and UMP’s BEd Foundation Phase page confirm a numeric APS minimum is published per programme.'],
-    gaps: ['A candidate formula ("seven subjects, Life Orientation points halved rather than excluded") was found only via search-result synthesis, not on one specific official page we fetched ourselves, so it is not treated as confirmed. UMP’s consolidated programmes PDF returned only unreadable binary/stream data on fetch. Only 2 of UMP’s programmes have independently fetched admission requirements so far.'],
+    status: 'partial',
+    sources: [
+      { label: 'UMP Bachelor of Commerce (programme page)', url: 'https://www.ump.ac.za/Study-with-us/Faculties-and-Schools/Faculty-of-Economics,-Development-and-Business-Sci/School-of-Development-Studies/Bachelor-of-Commerce.aspx' },
+      { label: 'UMP Undergraduate Programmes (official PDF, 2026-10-03 - a navyblue.co.za reference led us to search ump.ac.za directly for this)', url: 'https://www.ump.ac.za/getattachment/Study-with-us/Application-Process/Online-Applications/Undergraduate-Programmes.pdf.aspx?lang=en-US' },
+    ],
+    confirmed: ['This and UMP’s BEd Foundation Phase page confirm a numeric APS minimum is published per programme.', 'RESOLVED 2026-10-03: pdftotext on the official Undergraduate Programmes PDF (WebFetch saves binary PDFs locally even when it cannot summarise them) returned the formula word-for-word: "The prescribed seven subjects are the subjects to be used in calculating the APS. The APS achievement rating of Life Orientation is divided by two in the calculation of the APS. If an applicant included more than the minimum of three electives in the applicant\'s NSC, the four compulsories and the three best of the electives will be used." - i.e. six academic subjects (four required + best three electives) plus Life Orientation at half its standard NSC level.'],
+    gaps: ['RESOLVED 2026-10-03: now implemented and computing. The seven-subjects / LO-halved claim was first surfaced via a third-party aggregator (navyblue.co.za), then independently confirmed against UMP\'s own PDF directly - the aggregator was a lead, not the source used.'],
   },
 };
 
