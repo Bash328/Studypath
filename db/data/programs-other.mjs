@@ -502,6 +502,21 @@ const ufsBase = {
 };
 const UFS_ADDENDUM = 'https://www.ufs.ac.za/docs/librariesprovider44/undergraduate/ug-addendum.pdf?sfvrsn=fd15e720_1';
 
+// Cross-checked 2026-10-03 against the user-supplied UFS 2027 Undergraduate Prospectus
+// (a proper per-faculty admission-table document, unlike the web-search-synthesised pages
+// most of these rows were originally built from) - see ufs-pass-3 in research-log.mjs for
+// the full account. Real corrections found: LLB's Mathematics bar was wrong (level 6,
+// should be 4 - Mathematical Literacy stays at 6); Physiotherapy's Mathematics and Physical
+// Sciences were both wrong (level 5, should be 4); Dietetics' Mathematics was wrong (level
+// 5, should be 4) and its Life/Physical Sciences aren't an equal anyOf (Life Sciences 5,
+// Physical Sciences 4); Social Work actually does publish a numeric AP minimum (35) despite
+// an earlier pass concluding otherwise from UFS's admissions page; and BPharm has been
+// removed entirely - this 4,700-line document names Health Sciences' five schools (Clinical
+// Medicine, Pathology, Biomedical Sciences, Nursing, Health and Rehabilitation Sciences)
+// with no School of Pharmacy anywhere in it, so the prior "BPharm" row looks to have been
+// wrong from the start.
+const UFS_PROSPECTUS_2027 = 'https://www.ufs.ac.za/apply';
+
 const ufsPrograms = [
   { university_id: 'ufs', id: 'ufs-mbchb', career_id: 'doctor', name: 'MBChB (Medicine)', faculty: 'Health Sciences',
     duration_years: null, min_aps: 36, scoring_system: 'UFS_AP', score_type: 'minimum',
@@ -510,82 +525,132 @@ const ufsPrograms = [
     // From the 2027 UFS MBChB selection rules: English, Mathematics, Physical Sciences and
     // Life Sciences are compulsory, each at academic level 5 (60%) or better.
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), lvl('Physical Sciences', 5), lvl('Life Sciences', 5)],
-    notes: flag(['selection', 'partially-verified'], 'UFS requires an AP score of at least 36 to qualify for selection, plus level 5 (60%) in each of English, Mathematics, Physical Sciences and Life Sciences - both from the 2027 MBChB selection rules. Selection then goes well beyond marks (the document also awards points for other things). The AP scale is worked from the four compulsory subjects plus your best two, plus 1 point for Life Orientation at 60%+; the scale itself comes from UFS’s 2024 prospectus because the 2027 document refers to the prospectus for it. The duration is not stated in the 2027 document.') },
+    notes: flag(['selection'], 'UFS requires an AP score of at least 36 to qualify for selection, plus level 5 (60%) in each of English, Mathematics, Physical Sciences and Life Sciences - raw-confirmed exactly against both the 2027 MBChB selection rules and the 2027 Undergraduate Prospectus. Selection then goes well beyond marks (the document also awards points for other things). The duration is not stated in either document.') },
 
   { ...ufsBase, id: 'ufs-llb', career_id: 'lawyer', name: 'LLB', faculty: 'Law', duration_years: 4, min_aps: 33,
     source_url: 'https://www.ufs.ac.za/law/faculty-of-law-home/admissions/LLB',
-    subject_requirements: [engLvl(6, 6), anyOf(lvl('Mathematics', 6), lvl('Mathematical Literacy', 6)), manual('NBT', 'The Academic and Quantitative Literacy National Benchmark Test is compulsory.')],
-    notes: flag(['selection', 'partially-verified'], 'A 5-year Extended LLB is also published, at AP 28 with a lower language bar (level 4, 50%).') },
+    subject_requirements: [engLvl(6, 6), anyOf(lvl('Mathematics', 4), lvl('Mathematical Literacy', 6)), manual('NBT', 'The Academic and Quantitative Literacy National Benchmark Test is compulsory.')],
+    notes: flag(['selection'], 'CORRECTED from the 2027 Undergraduate Prospectus: Mathematics is level 4 (50%), not level 6 as previously shown - only Mathematical Literacy sits at level 6 (70%). A 5-year Extended LLB is also published, at AP 28 with a lower language bar (level 4, 50%).') },
 
   { ...ufsBase, id: 'ufs-bnursing', career_id: 'nurse', name: 'Bachelor of Nursing', faculty: 'Health Sciences', duration_years: null, min_aps: 30,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/faculty-booklet/health-sciences-2023.pdf?Status=Master&sfvrsn=db144d20_5',
-    subject_requirements: [manual('Required subjects', 'Mathematics or Mathematical Literacy, and Physical Sciences or Life Sciences, must be among your subjects - the exact per-subject minimum level was not stated in the source read.'), manual('NBT', 'A National Benchmark Test is required.')],
-    notes: flag(['selection', 'partially-verified', 'dated-document'], 'Sourced from a 2023 Faculty of Health Sciences booklet, not a confirmed-2027 document.') },
-
-  { ...ufsBase, id: 'ufs-bpharm', career_id: 'pharmacist', name: 'BPharm (Pharmacy)', faculty: 'Health Sciences', duration_years: null, min_aps: 36,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/faculty-booklet/health-sciences-2023.pdf?Status=Master&sfvrsn=db144d20_5',
-    subject_requirements: [manual('Language of instruction', 'Level 5 (60%).'), lvl('Mathematics', 5), lvl('Physical Sciences', 5)],
-    notes: flag(['partially-verified', 'dated-document'], 'Sourced from a 2023 Faculty of Health Sciences booklet, not a confirmed-2027 document.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), anyOf(pct('Mathematics', 40), pct('Mathematical Literacy', 70)), anyOf(lvl('Life Sciences', 5), lvl('Physical Sciences', 4))],
+    notes: flag(['selection'], 'RESOLVED from the 2027 Undergraduate Prospectus, replacing a 2023 booklet: either Mathematics (level 3, 40%) or Mathematical Literacy (level 6, 70%) is required, and either Life Sciences (level 5, 60%) or Physical Sciences (level 4, 50%). Closing date for applications is 31 July.') },
 
   { ...ufsBase, id: 'ufs-physiotherapy', career_id: 'physiotherapist', name: 'BSc Physiotherapy', faculty: 'Health Sciences', duration_years: null, min_aps: 33,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/default-document-library/shrs-selection-policy77e964e75b146fc79f4fff0600aa9400.pdf?sfvrsn=d3fd0b20_0',
-    subject_requirements: [manual('Language of instruction', 'Level 5 (60%).'), lvl('Mathematics', 5), lvl('Physical Sciences', 5), lvl('Life Sciences', 5)],
-    notes: flag(['selection', 'partially-verified'], 'Selection-form closing date is 31 May, earlier than UFS’s general closing date.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 4), lvl('Life Sciences', 5)],
+    notes: flag(['selection'], 'CORRECTED from the 2027 Undergraduate Prospectus: Mathematics and Physical Sciences are both level 4 (50%), not level 5 as previously shown - only English and Life Sciences sit at level 5 (60%). Selection-form closing date is 31 May, earlier than UFS’s general closing date.') },
 
   { ...ufsBase, id: 'ufs-occupational-therapy', career_id: 'occupational-therapist', name: 'Bachelor of Occupational Therapy', faculty: 'Health Sciences', duration_years: null, min_aps: 33,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/rulebooks/school-of-health-and-rehabilitation-sciences-rulebook-2025.pdf?Status=Master&sfvrsn=f3df1b20_3',
-    subject_requirements: [manual('Language of instruction', 'Level 5 (60%).'), lvl('Mathematics', 4), lvl('Physical Sciences', 4)],
-    notes: flag(['selection', 'partially-verified'], 'RESOLVED 2026-10-01 (partially): the School of Health and Rehabilitation Sciences’ own 2025 rule book gives Mathematics and Physical Sciences each at level 4 (50%) for Occupational Therapy - found via web search surfacing that rule book, not a raw fetch (ufs.ac.za is blocked in this environment), and the rule book is dated 2025 rather than confirmed-2027, so treat as the most recent figure rather than a confirmed-current one. Selection-form closing date is 31 May, earlier than UFS’s general closing date.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 4), lvl('Life Sciences', 5)],
+    notes: flag(['selection'], 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus, replacing a 2025 rule book found via web search - Mathematics and Physical Sciences at level 4 (50%) matched exactly; English and Life Sciences are both level 5 (60%), not previously shown. Selection-form closing date is 31 May, earlier than UFS’s general closing date.') },
 
   { ...ufsBase, id: 'ufs-dietetics', career_id: 'dietitian', name: 'BSc Dietetics', faculty: 'Health Sciences', duration_years: null, min_aps: 33,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider25/default-document-library/shrs-selection-policy77e964e75b146fc79f4fff0600aa9400.pdf?sfvrsn=d3fd0b20_0',
-    subject_requirements: [manual('Language of instruction', 'Level 5 (60%).'), lvl('Mathematics', 5), anyOf(lvl('Physical Sciences', 5), lvl('Life Sciences', 5))],
-    notes: flag(['selection', 'partially-verified'], 'Selection-form closing date is 31 July.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), anyOf(lvl('Life Sciences', 5), lvl('Physical Sciences', 4))],
+    notes: flag(['selection'], 'CORRECTED from the 2027 Undergraduate Prospectus: Mathematics is level 4 (50%), not level 5, and Life Sciences/Physical Sciences are not an equal either/or - Life Sciences sits at level 5 (60%), Physical Sciences at level 4 (50%). Selection-form closing date is 31 July.') },
+
+  { ...ufsBase, id: 'ufs-optometry', career_id: 'optometrist', name: 'Bachelor of Optometry', faculty: 'Health Sciences', duration_years: null, min_aps: 33,
+    source_url: 'https://www.ufs.ac.za/healthselection',
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 5), lvl('Life Sciences', 5)],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus. A selection programme in the School of Health and Rehabilitation Sciences; closing date 31 May.') },
+
+  { ...ufsBase, id: 'ufs-biokinetics', career_id: 'sport-scientist', name: 'Bachelor of Biokinetics', faculty: 'Health Sciences', duration_years: null, min_aps: 30,
+    source_url: 'https://www.ufs.ac.za/healthselection',
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 4), lvl('Physical Sciences', 4), lvl('Life Sciences', 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus. A selection programme in the School of Health and Rehabilitation Sciences; closing date 31 May.') },
+
+  { ...ufsBase, id: 'ufs-sport-coaching', career_id: 'sport-scientist', name: 'Bachelor of Sport Coaching', faculty: 'Health Sciences', duration_years: null, min_aps: 30,
+    source_url: 'https://www.ufs.ac.za/healthselection',
+    subject_requirements: [engLvl(4, 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus, alongside Biokinetics under the same career page. A selection programme; closing date 31 May.') },
 
   { ...ufsBase, id: 'ufs-bmus', career_id: 'performer', name: 'Bachelor of Music (BMus)', faculty: 'Humanities', duration_years: 4, min_aps: 30,
     source_url: 'https://www.ufs.ac.za/humanities/departments-and-divisions/odeion-school-of-music-home/admission-requirements/admission-requirements',
     subject_requirements: [lvl('English', 4), manual('Audition', 'A live audition is required, with musical competency equivalent to Unisa Grade 7 (principal instrument/voice) and Grade 5 (theory).')],
-    notes: flag(['selection', 'partially-verified'], 'All Odeion School of Music undergraduate programmes are selection programmes - meeting the AP score does not by itself secure a place.') },
+    notes: flag(['selection'], 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus. All Odeion School of Music undergraduate programmes are selection programmes - meeting the AP score does not by itself secure a place.') },
 
-  { ...ufsBase, id: 'ufs-bsw', career_id: 'social-worker', name: 'Bachelor of Social Work', faculty: 'Humanities', duration_years: null, min_aps: null,
+  { ...ufsBase, id: 'ufs-ba-finearts', career_id: 'artist', name: 'BA (Fine Arts)', faculty: 'Humanities', duration_years: null, min_aps: 30,
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), manual('Portfolio', 'A portfolio of creative work and a selection form are required; closing date 30 September.')],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus.') },
+
+  { ...ufsBase, id: 'ufs-ba-drama', career_id: 'performer', name: 'BA (Drama and Theatre Arts)', faculty: 'Humanities', duration_years: null, min_aps: 30,
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [lvl('English', 5), manual('Audition', 'A compulsory audition and interview are conducted for selection; closing date 30 September. Drama experience at school level is recommended.')],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus. English Home Language at level 5 (60%), or First/Second Additional Language at 65%.') },
+
+  { ...ufsBase, id: 'ufs-ba-journalism', career_id: 'journalist-communications', name: 'BA (Journalism)', faculty: 'Humanities', duration_years: null, min_aps: 30,
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [lvl('English', 6)],
+    notes: flag('partially-verified', 'New row, from the user-supplied 2027 Undergraduate Prospectus. English Home Language at level 6 (60%), or First/Second Additional Language at 65% - shown here as the Home Language figure.') },
+
+  { ...ufsBase, id: 'ufs-bsw', career_id: 'social-worker', name: 'Bachelor of Social Work', faculty: 'Humanities', duration_years: null, min_aps: 35,
     source_url: 'https://www.ufs.ac.za/humanities/departments-and-divisions/social-work-home/prospective-students/undergraduate',
-    subject_requirements: [lvl('English', 5), manual('Four other subjects', 'An achievement level of at least 4 (50%) in four other NSC subjects, plus a Bachelor’s-pass NSC.'), manual('Life Orientation', 'Level 5 (60%) or higher earns the AP formula’s usual +1 bonus point.')],
-    notes: flag(['selection', 'no-cutoff-published'], 'RECONFIRMED 2026-10-01 by a direct fetch of UFS’s own Social Work admissions page: UFS does not publish a fixed AP cut-off for Social Work - it is a closed, selected programme where higher AP scores (35+) are described as "more likely to be selected", not a guarantee either way, and the page states outright that "meeting the minimum requirements does not guarantee admission" because only the top 50 candidates are selected. This is a genuine published non-disclosure, not a research gap - no numeric cut-off exists to find. Selection-form closing date is 31 July.') },
+    subject_requirements: [lvl('English', 5)],
+    notes: flag(['selection'], 'CORRECTED 2026-10-03: the 2027 Undergraduate Prospectus publishes a numeric AP minimum of 35, which an earlier pass had concluded did not exist (UFS’s own Social Work admissions page describes AP 35+ as merely "more likely to be selected" among only the top 50 candidates, with no guarantee). Both are true at once - 35 is the published entry threshold; clearing it still does not guarantee a place, since selection among eligible applicants goes further. Closing date 31 July.') },
 
   { ...ufsBase, id: 'ufs-bed-foundation', career_id: 'teacher', name: 'BEd Foundation Phase Teaching (Grade R-3)', faculty: 'Education', duration_years: 4, min_aps: 30,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider24/office-of-the-dean-education-documents/t-and-l-unit-brochure.pdf?sfvrsn=c0bb8b21_2',
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%), English or Afrikaans. A Mathematics/Mathematical Literacy admission minimum was not stated in the pages read - deliberately not guessed.')],
-    notes: flag(['partially-verified', 'dated-document'], 'An Extended (5-year) programme is also published, at AP 26-29.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4)],
+    notes: flag('verified', 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus (AP 30, English level 4/50%), replacing a Teaching & Learning Unit brochure. Exact language-pair requirements vary by specialisation (Afrikaans/Sesotho/isiZulu/English Home Language streams); no separate Mathematics/Mathematical Literacy minimum is published for this phase. The previously-claimed 5-year Extended programme at AP 26-29 is not shown in this document and is not repeated here unconfirmed.') },
 
   { ...ufsBase, id: 'ufs-bcom-accounting', career_id: 'chartered-accountant', name: 'BCom in Accounting', faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 28,
-    source_url: UFS_ADDENDUM,
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%).'), lvl('Mathematics', 4)],
-    notes: flag('partially-verified', 'UFS also offers a separate, more selective Bachelor of Accounting (BAcc) professional stream requiring Mathematics at level 5 (60%), whose own AP minimum we could not confirm - not shown separately to avoid guessing that number.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4)],
+    notes: flag('verified', 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus. UFS also offers a separate, more selective Bachelor of Accounting (BAcc) professional stream at AP 34 requiring Mathematics at level 5 (60%) - its own row would be the SAICA-accredited CA(SA) track; not added here to keep this pass focused, but the figures are now in hand (BAcc, AP 34, English 4/50%, Mathematics 5/60%).') },
 
-  { ...ufsBase, id: 'ufs-bcom-general', career_id: 'business-manager', name: 'BCom (Business Management / Economics / Finance / HR / Marketing)', faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 28,
-    source_url: UFS_ADDENDUM,
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%).'), manual('Mathematics', 'A Mathematics or Mathematical Literacy requirement applies; the exact level was not itemised per stream in the source read.')],
-    notes: flag('partially-verified', 'Covers several BCom specialisation streams that share the same published AP minimum.') },
+  { ...ufsBase, id: 'ufs-bcom-general', career_id: 'business-manager', name: 'BCom (Economics / Finance / Marketing / Business Management / HR)', faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 28,
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), manual('Mathematics', 'Level 4 (50%) for Economics and Finance specialisations; level 3 (40%) for Marketing, Business Management and Human Resource Management.')],
+    notes: flag('verified', 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus - all five specialisations share AP 28 and English level 4, but Mathematics genuinely differs by stream (not previously itemised).') },
 
   { ...ufsBase, id: 'ufs-bcom-law', career_id: 'lawyer', name: 'BCom (Law)', faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 33,
-    source_url: UFS_ADDENDUM,
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%).'), manual('Mathematics', 'A Mathematics requirement applies; the exact level was not itemised separately from BCom Accounting’s in the source read.')],
-    notes: flag('partially-verified', 'Distinct from the LLB above - this is the Economic & Management Sciences Faculty’s Law-flavoured BCom, not the Faculty of Law’s professional degree.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4)],
+    notes: flag('verified', 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus. Distinct from the LLB above - this is the Economic & Management Sciences Faculty’s Law-flavoured BCom, not the Faculty of Law’s professional degree.') },
 
   { ...ufsBase, id: 'ufs-bcom-business-analytics', career_id: 'data-scientist', name: 'BCom (Business Analytics)', faculty: 'Economic & Management Sciences', duration_years: null, min_aps: 34,
-    source_url: UFS_ADDENDUM,
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%).'), manual('Mathematics', 'Mathematics is required; the exact level was not itemised in the source read.')],
-    notes: flag('partially-verified', 'The highest published AP among UFS’s BCom streams.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5)],
+    notes: flag('verified', 'RAW-CONFIRMED against the 2027 Undergraduate Prospectus. The highest published AP among UFS’s BCom streams.') },
 
-  { ...ufsBase, id: 'ufs-bsc-agriculture', career_id: 'agricultural-scientist', name: 'BSc Agriculture', faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 32,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider44/faculty-programmes/2022/natural-and-agricultural-sciences-2022.pdf?sfvrsn=fa236920_2',
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%).'), lvl('Mathematics', 5), manual('Two of Life Sciences / Agricultural Sciences / Physical Sciences', 'Two of these three, at level 5 (60%), alongside Mathematics - required for all BSc Agriculture streams except BSc Agricultural Economics.')],
-    notes: flag(['partially-verified', 'dated-document'], 'Sourced from a 2022 faculty programme PDF, not a confirmed-2027 document.') },
+  { ...ufsBase, id: 'ufs-bsc-agriculture', career_id: 'agricultural-scientist', name: 'BSc Agriculture (Animal Science, Plant Breeding, Plant Pathology)', faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 32,
+    source_url: 'https://www.ufs.ac.za/nas',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5), lvl('Life Sciences', 5), lvl('Physical Sciences', 5)],
+    notes: flag('verified', 'RAW-CONFIRMED and corrected against the 2027 Undergraduate Prospectus, replacing a 2022 faculty PDF: Life Sciences and Physical Sciences are both required at level 5 (60%), not "two of three" as previously shown. BSc Agricultural Economics is a genuinely separate, lower-bar stream (AP 30, English 4/50%, Mathematics 4/50%, no science requirement) - not shown as its own row, but the figures are now in hand.') },
+
+  { ...ufsBase, id: 'ufs-bsc-biological', career_id: 'biologist', name: 'BSc (Biological Sciences, e.g. Botany, Zoology, Genetics)', faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 32,
+    source_url: 'https://www.ufs.ac.za/nas',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5), lvl('Life Sciences', 5), lvl('Physical Sciences', 5)],
+    notes: flag('partially-verified', 'New row, from the user-supplied 2027 Undergraduate Prospectus. The BSc (degree code 43001) is a 3-year degree with dozens of Biological Sciences major-pair combinations (e.g. Biochemistry & Botany, Genetics & Zoology) that all share this AP and subject profile - shown here as one representative row.') },
+
+  { ...ufsBase, id: 'ufs-bsc-mathematical-sciences', career_id: 'mathematician', name: 'BSc (Mathematical Sciences, e.g. Mathematics and Applied Mathematics)', faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 32,
+    source_url: 'https://www.ufs.ac.za/mam',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 6), lvl('Physical Sciences', 5)],
+    notes: flag('partially-verified', 'New row, from the user-supplied 2027 Undergraduate Prospectus. Covers Mathematics/Applied Mathematics/Chemistry/Mathematical Statistics major pairs, all sharing this AP and subject profile.') },
+
+  { ...ufsBase, id: 'ufs-bsc-computer-science', career_id: 'software-engineer', name: 'BSc (Computer Science)', faculty: 'Natural & Agricultural Sciences', duration_years: 3, min_aps: 32,
+    source_url: 'https://www.ufs.ac.za/csi',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 6), lvl('Physical Sciences', 5)],
+    notes: flag('partially-verified', 'New row, from the user-supplied 2027 Undergraduate Prospectus. Covers Computer Science paired with Mathematics, Mathematical Statistics, Physics or Chemistry, all sharing this AP and subject profile; a lower-bar Computer Science & Business Management pairing also exists at Physical Sciences level 4 (50%), not shown separately.') },
+
+  { ...ufsBase, id: 'ufs-architecture', career_id: 'architect', name: 'Bachelor of Architecture (BArch)', faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 30,
+    source_url: 'https://www.ufs.ac.za/architecture',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus. Closing date for application and selection form is 31 July.') },
+
+  { ...ufsBase, id: 'ufs-quantity-surveying', career_id: 'quantity-surveyor', name: 'BSc (Quantity Surveying / Construction Management / Construction Economics)', faculty: 'Natural & Agricultural Sciences', duration_years: null, min_aps: 30,
+    source_url: 'https://www.ufs.ac.za/qscm',
+    subject_requirements: [engLvl(4, 4), lvl('Mathematics', 5), manual('Economics, Business Studies, Accounting or Physical Science', 'One of these four at level 4 (50%).')],
+    notes: flag(['selection'], 'New row, from the user-supplied 2027 Undergraduate Prospectus, covering three related streams (Quantity Surveying, Construction Management, Construction Economics and Management) that all share this AP and subject profile. SACQSP/SACPCMP/SACPVP accredited, with international RICS accreditation. Closing date 30 September.') },
 
   { ...ufsBase, id: 'ufs-ba-general', career_id: 'humanities-generalist', name: 'Bachelor of Arts', faculty: 'Humanities', duration_years: null, min_aps: 30,
-    source_url: 'https://www.ufs.ac.za/docs/librariesprovider44/faculty-programmes/2022/humanities-2022.pdf?sfvrsn=cea16820_2',
-    subject_requirements: [manual('Language of instruction', 'Level 4 (50%), English or Afrikaans.'), manual('Four designated-list subjects', 'Four subjects at level 4 (50%)+ from UFS’s designated subject list (e.g. Accounting, Agricultural Sciences, Business Studies, Economics, Geography, Information Technology, Life Sciences, Mathematics/Mathematical Literacy, Physical Sciences, Visual/Dramatic Arts, Music, Religion Studies, or an additional language).')],
-    notes: flag(['partially-verified', 'dated-document'], 'Sourced from a 2022 faculty programme PDF, not a confirmed-2027 document.') },
+    source_url: UFS_PROSPECTUS_2027,
+    subject_requirements: [engLvl(4, 4)],
+    notes: flag('verified', 'CONFIRMED against the 2027 Undergraduate Prospectus at AP 30, English level 4 (50%) - its own summary table does not repeat the "four designated-list subjects" detail a 2022 faculty PDF previously gave, so that extra detail is not carried forward unconfirmed. Qwaqwa Campus publishes the same AP/English figure for its own BA General.') },
 ];
 
 // Rhodes: "Life Orientation is not counted for points, but you're required to obtain at
