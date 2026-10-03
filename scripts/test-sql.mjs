@@ -52,7 +52,12 @@ r = await get('/api/coverage');
 // Dropped from 6 to 5 on 2026-10-02: the user supplied UWC's own 2027 General Admissions
 // Criteria brochure, a third independent UWC source confirming Nursing's lower APS/subject
 // figure over a second source's higher one - another genuine resolution.
-ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 5, JSON.stringify(r.b.flagCounts));
+// Dropped from 5 to 4 on 2026-10-03: the user supplied NWU's current 2026 Faculty of
+// Education Yearbook, which itself lists BEd Foundation Phase/Early Childhood Care and
+// Education as a live, active programme at the APS/duration already shown - resolving the
+// conflict against an older yearbook PDF that described a phase-out not reflected in this
+// current document. A genuine resolution, not a dropped disclosure.
+ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict === 4, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
 ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
 r = await get('/api/meta');
