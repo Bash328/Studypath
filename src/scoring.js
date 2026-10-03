@@ -573,10 +573,29 @@ const SYSTEMS = {
   SMU_APS: {
     label: 'SMU APS',
     unit: '',
-    computable: false,
+    max: 49,
+    nearMargin: 3,
     explanation:
-      'SMU converts marks to points on its own scale (A = 12 points down to F = 3 points) via a published conversion table, which is different from the standard 1-7 NSC achievement level scale used elsewhere on this site. We have the resulting APS minimums per programme but not the full conversion table itself, so each programme shows its published minimum APS as reference only, and subject minimums are described in SMU’s own points rather than converted to our usual level/percentage fields.',
-    reason: 'SMU uses its own points scale, which we have not fully confirmed from an official source yet - see the published minimum on each programme instead. Contact SMU’s admissions office directly (see Contacts on SMU’s page) to confirm where you stand.',
+      'SMU sums the standard NSC achievement level (1-7) of seven subjects: English, Mathematics, Physical Sciences, Life Sciences, Life Orientation, and your best two others - confirmed from SMU’s own published conversion table, whose higher points (8-12) are for other qualifications like A-Levels and IB, not NSC marks.',
+    compute(marks, { required = [] } = {}) {
+      const english = findBase(marks, 'English');
+      const maths = findBase(marks, 'Mathematics');
+      const ps = findBase(marks, 'Physical Sciences');
+      const ls = findBase(marks, 'Life Sciences');
+      const lo = marks.find(isLifeOrientation);
+      if (!english) return cannot('SMU always counts English - add your mark.');
+      if (!maths) return cannot('SMU requires Mathematics (not Mathematical Literacy) for this programme - add your mark.');
+      if (!ps) return cannot('SMU requires Physical Sciences for this programme - add your mark.');
+      if (!ls) return cannot('SMU requires Life Sciences for this programme - add your mark.');
+      if (!lo) return cannot('SMU counts Life Orientation as one of its seven subjects - add your mark.');
+      const used = [english, maths, ps, ls, lo];
+      const rest = marks.filter((m) => !used.includes(m));
+      const electives = choose(rest, 2, (m) => nscLevel(m.percent), required);
+      if (!electives) return cannot('SMU counts seven subjects in total - add the rest of yours.');
+      const all = [...used, ...electives];
+      return ok(sum(all, (m) => nscLevel(m.percent)), 49,
+        say(all, (m) => `${m.name} ${m.percent}% = level ${nscLevel(m.percent)}`) + countedNote(required));
+    },
   },
 
   UFS_AP: {

@@ -124,8 +124,10 @@ console.log('\nRoutes');
   // Dropped 7 to 6 on 2026-10-03 when MUT_APS became computable, then 6 to 3 when
   // UFH_APS, UNIVEN_APS and SPU_APS all became computable from user-supplied calculator
   // screenshots, then 3 to 2 when UMP_APS became computable (a navyblue.co.za lead,
-  // confirmed against UMP's own official PDF).
-  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 2);
+  // confirmed against UMP's own official PDF), then 2 to 1 when SMU_APS became computable
+  // (a raw HTML read showed its apparent 29-vs-38 mismatch was two different published
+  // totals, not a conflict). Only WITS_COMPOSITE_INDEX (a confirmed non-disclosure) remains.
+  ok('meta: only the documented-gap systems are left uncomputed', body.scoringSystems.filter((s) => !s.computable).length === 1);
   ok('meta carries an audit record for every system', body.scoringSystems.every((s) => s.audit && s.audit.status && s.audit.sources.length > 0));
 }
 {
