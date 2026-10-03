@@ -1053,6 +1053,48 @@ const tutPrograms = [
     duration_years: 3, min_aps: 19,
     subject_requirements: [lvl('English', 4), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 4))],
     notes: flag('partially-verified', 'APS 19 on the Mathematics route, 20 on the Mathematical Literacy route. Recommended: agricultural subjects, Life/Physical Sciences. Closes 31 July 2026. ' + TUT_CAVEAT) },
+  // New rows below, from 6 user-supplied per-faculty 2026/2027 prospectuses (Science,
+  // Humanities, Economics & Finance, Management Sciences) - see tut-pass-2 in
+  // research-log.mjs. Each document lists some qualifications twice, once current and
+  // once under a "Phasing out qualifications" section with an older code and a stated
+  // last-intake year - every row below was checked against the CURRENT code, not the
+  // phasing-out one (Bachelor of Environmental Health and Biokinetics both had this trap).
+  { ...tutBase, id: 'tut-bpharm', career_id: 'pharmacist', name: 'Bachelor of Pharmacy', faculty: 'Science',
+    duration_years: null, min_aps: 24,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4)), lvl('Life Sciences', 4), manual('Two other subjects', 'Two further subjects at level 4, excluding Life Orientation.')],
+    notes: flag(['selection'], 'New row, from the user-supplied Science Faculty Prospectus (qualification code BPPH26, the current one - an older BPPH01 code is being phased out, last intake 2025). Highly competitive selection beyond the minimum APS; applicants with APS 32+ are given preference. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-bsc-environmental-health', career_id: 'environmental-scientist', name: 'Bachelor of Environmental Health', faculty: 'Science',
+    duration_years: null, min_aps: 24,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4)), lvl('Life Sciences', 4), manual('Two other subjects', 'Two further subjects at level 4, excluding Life Orientation.')],
+    notes: flag('partially-verified', 'New row, from the user-supplied Science Faculty Prospectus (qualification code BPEH25, the current one - an older BPEH01 code is being phased out, last intake 2024). ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-bhsc-biokinetics', career_id: 'sport-scientist', name: 'Bachelor of Health Science in Biokinetics', faculty: 'Science',
+    duration_years: null, min_aps: 24,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4)), lvl('Life Sciences', 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied Science Faculty Prospectus (qualification code BPBK24, the current one - an older BPBK20 code is being phased out). Highly competitive, ranked selection. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-bhsc-medlab', career_id: 'biologist', name: 'Bachelor of Health Science in Medical Laboratory Science', faculty: 'Science',
+    duration_years: null, min_aps: 24,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4)), lvl('Life Sciences', 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied Science Faculty Prospectus (qualification code BPLS20). Highly competitive, ranked selection; a national diploma holder can also articulate in with 50% credit recognition. Medical laboratory (diagnostic) science specifically, not general biology research - filed under the closest existing career category. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-dip-geology', career_id: 'geologist', name: 'Diploma in Geology', faculty: 'Science',
+    duration_years: 3, min_aps: 21,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 4), lvl('Technical Mathematics', 4)), anyOf(lvl('Physical Sciences', 4), lvl('Technical Sciences', 4))],
+    notes: flag('partially-verified', 'New row, from the user-supplied Science Faculty Prospectus (qualification code DPGE26, the current one - an older DPGE19 code is being phased out). Applicants scoring 21-23 take an academic proficiency test (worth 20% of the final admission score); 24+ is admitted directly. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-dip-journalism', career_id: 'journalist-communications', name: 'Diploma in Journalism', faculty: 'Humanities',
+    duration_years: 3, min_aps: 24,
+    subject_requirements: [engLvl(4, 4)],
+    notes: flag(['selection'], 'New row, from the user-supplied Humanities Faculty Prospectus. Selection: APS 40%, a selection test 30%, and an interview 30%; a media portfolio is also requested. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-dip-economics', career_id: 'economist', name: 'Diploma in Economics', faculty: 'Economics & Finance',
+    duration_years: 3, min_aps: 22,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 3), lvl('Technical Mathematics', 3), lvl('Mathematical Literacy', 6))],
+    notes: flag('partially-verified', 'New row, from the user-supplied Economics & Finance Faculty Prospectus. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-dip-financial-management', career_id: 'financial-manager', name: 'Diploma in Financial Management', faculty: 'Economics & Finance',
+    duration_years: 3, min_aps: 22,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Accounting', 3), lvl('Mathematics', 3), lvl('Technical Mathematics', 3), lvl('Mathematical Literacy', 5))],
+    notes: flag('partially-verified', 'New row, from the user-supplied Economics & Finance Faculty Prospectus - APS 22 on the Accounting/Mathematics route, 24 on the Mathematical Literacy route. ' + TUT_CAVEAT) },
+  { ...tutBase, id: 'tut-dip-retail', career_id: 'retail-manager', name: 'Diploma in Retail Business Management', faculty: 'Management Sciences',
+    duration_years: 3, min_aps: 24,
+    subject_requirements: [engLvl(4, 4), anyOf(lvl('Mathematics', 3), lvl('Technical Mathematics', 3), lvl('Mathematical Literacy', 4))],
+    notes: flag('partially-verified', 'New row, from the user-supplied Management Sciences Faculty Prospectus. ' + TUT_CAVEAT) },
 ];
 
 // =====================================================================
