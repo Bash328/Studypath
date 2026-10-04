@@ -96,7 +96,7 @@ export function universityPages(data) {
     const myContacts = contactsByUni[u.id] || [];
     const myDates = (datesByUni[u.id] || []).slice().sort((a, b) => String(a.date || '9999').localeCompare(String(b.date || '9999')));
     const fee = fees.find((f) => f.university_id === u.id);
-    const gaps = researchLog.filter((r) => r.university_id === u.id);
+    const gaps = researchLog.filter((r) => r.university_id === u.id && (r.status === 'could_not_verify' || r.status === 'partially_verified') && !/^(SUPERSEDED|STALE)/.test(r.notes));
 
     const body = `
 <section class="hero hero--slim">

@@ -107,8 +107,12 @@ export function dataSourcesPage(data) {
   ${sectionHead('⚠️', 'What we could not verify', 'Most sites hide this. A learner deciding their future deserves to know exactly where the information runs out. Planned work is listed separately at the bottom.')}
   ${logGroup('could_not_verify', 'Could not verify', 'bad')}
   ${logGroup('partially_verified', 'Partly verified', 'warn')}
-  ${logGroup('verified', 'Verified findings', 'good')}
   ${logGroup('todo', 'Still to do (not a verification gap)', 'info')}
+</section>
+
+<section class="section wrap" id="checked">
+  ${sectionHead('✅', 'What we have checked', 'Findings confirmed against an official source. These are not gaps.')}
+  ${logGroup('verified', 'Verified findings', 'good')}
 </section>
 
 <section class="section wrap wrap--narrow">
