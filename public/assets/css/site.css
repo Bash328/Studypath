@@ -558,12 +558,12 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .jump .chip { flex: none; text-decoration: none; }
 .section[id] { scroll-margin-top: 76px; }
 
-/* Home: tool cards put the icon beside the text on phones */
+/* Home: tool cards put the icon beside the text on phones (desktop keeps it on top) */
 @media (max-width: 640px) {
-  .tool { display: grid; grid-template-columns: 50px 1fr; column-gap: 14px; align-items: center; }
-  .tool__i { grid-row: 1 / span 2; margin: 0; }
-  .tool h3, .tool p { margin: 0; }
-  .tool p { grid-column: 2; }
+  a.card--link.tool { display: grid; grid-template-columns: 50px 1fr; column-gap: 14px; align-items: center; }
+  a.card--link.tool .tool__i { grid-column: 1; grid-row: 1 / span 2; margin: 0; }
+  a.card--link.tool h3 { grid-column: 2; grid-row: 1; margin: 0 0 .15rem; }
+  a.card--link.tool p { grid-column: 2; grid-row: 2; margin: 0; }
 }
 
 /* Home: every "coming up" card has the same layout */
