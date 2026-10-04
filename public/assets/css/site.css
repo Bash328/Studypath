@@ -577,7 +577,7 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .chip-row > .chip--topic { text-align: center; }
 
 /* Back to top */
-.to-top { position: fixed; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 45; display: inline-flex; align-items: center; gap: .35em; padding: 10px 16px; min-height: 44px; border-radius: 99px; border: 2px solid var(--brand); background: var(--card); color: var(--brand); font: inherit; font-weight: 700; font-size: .92rem; box-shadow: var(--shadow); cursor: pointer; }
+.to-top { position: fixed; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom)); z-index: 45; display: inline-flex; align-items: center; gap: .35em; padding: 10px 16px; min-height: 44px; border-radius: 99px; border: 2px solid var(--brand); background: linear-gradient(to top, color-mix(in srgb, var(--brand) 30%, var(--card)) calc(var(--fill, 0) * 1%), var(--card) calc(var(--fill, 0) * 1%)); color: var(--brand); font: inherit; font-weight: 700; font-size: .92rem; box-shadow: var(--shadow); cursor: pointer; }
 .to-top[hidden] { display: none; }
 .to-top:hover { background: var(--brand); color: var(--on-brand); }
 @media (min-width: 901px) { .to-top { bottom: 24px; right: 24px; } }

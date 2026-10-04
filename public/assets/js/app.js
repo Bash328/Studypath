@@ -26,11 +26,20 @@ openTarget();
 // Open outbound source links without the page keeping a reference to us.
 $$('a[target="_blank"]').forEach((a) => { if (!a.rel.includes('noopener')) a.rel = (a.rel + ' noopener').trim(); });
 
-// "Back to the top" button: appears once you have scrolled a screen or so.
+// "Back to the top" button: appears once you have scrolled a screen or so, and fills up from the
+// bottom as you read down the page (one CSS number, no extra files or requests).
 const toTop = $('#to-top');
 if (toTop) {
-  const show = () => { toTop.hidden = window.scrollY < 700; };
-  window.addEventListener('scroll', show, { passive: true });
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const fill = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+    toTop.style.setProperty('--fill', fill.toFixed(1));
+    toTop.hidden = window.scrollY < 700;
+  };
+  window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
   toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  show();
+  update();
 }
