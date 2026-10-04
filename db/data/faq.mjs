@@ -66,6 +66,11 @@ const S = {
   saqaLevels: src('SAQA Level Descriptors for the National Qualifications Framework (2012)', 'https://saqa.org.za/wp-content/uploads/2023/02/level_descriptors.pdf'),
   heqsf: src('CHE Higher Education Qualifications Sub-Framework (2013)', 'https://che.ac.za/sites/default/files/inline-files/PUB_Higher%20Education%20Qualifications%20Sub-Framework%20(HEQSF)%202013.pdf'),
   ecsaReg: src('ECSA - Registration categories', 'https://www.ecsa.co.za/ecsa-registration/'),
+  ukznBrochure26: src('Study@UKZN 2026 brochure', 'https://studyatukzn.ukzn.ac.za/wp-content/uploads/2026/02/Study@UKZN-BROCHURE-2026.pdf'),
+  ujPros27: src('UJ 2027 Undergraduate Prospectus', 'https://www.uj.ac.za/wp-content/uploads/2026/07/uj_undergrad_prospectus2027_online_25jun2026.pdf'),
+  cputApply: src('CPUT undergraduate apply page', 'https://www.cput.ac.za/study-at-cput/undergraduate/apply'),
+  cputProspectus: src('CPUT prospectus (course pages)', 'https://prospectus.cput.ac.za/index.php/link-to-courses?f=20'),
+  unizuluHandbook: src('UniZulu Faculty of Science, Agriculture & Engineering 2026 handbook', 'https://www.unizulu.ac.za/wp-content/uploads/2026/01/FSAE-Undergraduate-Handbook-2026.cleaned.pdf'),
   ujBengTech: src('UJ - BEng Tech in Civil Engineering (example programme page)', 'https://www.uj.ac.za/university-courses/beng-tech-in-civil-engineering/'),
 };
 
@@ -376,5 +381,46 @@ export const faq = [
       v('No. The marks you type into the calculator are worked out in your browser and saved only on your own device so you do not have to retype them. There are no accounts. See our privacy page for exactly what is and is not collected.', [src('Studypath privacy', '/privacy')]),
     ],
     checks: [],
+  },
+
+  // ---- Added 2026-10-04 from documents read while filling programme gaps ----
+  {
+    id: 'extended-programmes', category: 'words',
+    question: 'What is an "extended" or "augmented" programme, and is it a lower-quality degree?',
+    answer: [
+      v('Many universities run a version of a programme with extra support for students who just miss the standard entry. UCT’s Commerce faculty describes **augmented** degrees (standard time with extra support) and **extended** degrees (the course load spread over an extra year, with extra support), and says the degrees and specialisations are **the same as the mainstream programmes and you receive the same degree at graduation**.', [S.uct27]),
+      v('The entry score is lower, which is the main reason to look at them. For example, UJ lists its extended science degrees at **APS 26** where the mainstream versions need 30-33, and CPUT’s Extended Curriculum Programme for Landscape Architecture asks for **APS 28 with Mathematics** where the mainstream diploma asks for 30. Extended routes usually take **one extra year**, so check the cost of that year.', [S.ujPros27, S.cputProspectus]),
+      v('Some universities decide for you: UCT’s Science faculty admits everyone to the three-year BSc and then counsels selected students onto the four-year Extended Degree Programme after mid-term tests in the first semester.', [S.uct27]),
+    ],
+    checks: [{ label: 'The university’s prospectus entry for the programme, which lists the extended version separately', url: null }],
+  },
+  {
+    id: 'maths-lit-routes', category: 'marks',
+    question: 'I took Maths Literacy (or Technical Maths). Can I still get into a programme?',
+    answer: [
+      v('Often yes, but usually with a **higher APS**. For example, UJ’s BA in Communication Design needs APS 25 with Mathematics or **26 with Mathematical Literacy**, and its Diploma in Accountancy needs 22 with Mathematics or Technical Mathematics and **24 with Mathematical Literacy**. CPUT’s Diploma in Environmental Management asks for APS 28 with Mathematics, 29 with Technical Mathematics or 30 with Mathematical Literacy.', [S.ujPros27, S.cputProspectus]),
+      v('Many science, engineering and health programmes **do not accept Mathematical Literacy at all**. UJ’s Faculty of Science states that Technical Mathematics and Technical Science are not accepted for its degrees, UniZulu says Mathematical Literacy is not accepted for direct BSc entry, and UCT’s engineering degrees do not count Mathematical Literacy or Technical Mathematics as Mathematics.', [S.ujPros27, S.unizuluHandbook, S.uct27]),
+      g('If you are still in Grade 9 or 10, choosing Mathematics rather than Mathematical Literacy keeps far more programmes open, even if your Mathematics mark is modest.'),
+    ],
+    checks: [{ label: 'Our "choose your subjects" page, then the programme’s own requirements', url: '/grade-10-subjects' }],
+  },
+  {
+    id: 'early-closing', category: 'applying',
+    question: 'Why do some programmes close months before the general deadline?',
+    answer: [
+      v('Programmes with limited places, interviews, tests or clinical requirements run their own, earlier deadlines. At CPUT, Nursing, Medical Laboratory Science, Radiography, Ultrasound, Nuclear Medicine and Radiation Therapy closed on **30 June 2026**, Emergency Medical Care and Somatology on **31 July**, Education on **31 August**, and everything else on **30 September**. SMU closed all undergraduate applications on **31 July 2026**.', [S.cputApply, S.smu]),
+      g('The safe habit is to look up the closing date for the specific programme you want, not just the university’s general date, and to apply well before it.'),
+    ],
+    checks: [{ label: 'Our deadlines page, then the programme’s own page', url: '/dates' }],
+  },
+
+  {
+    id: 'quintile-schools', category: 'applying',
+    question: 'What does "quintile 1-3 schools" mean on a programme page?',
+    answer: [
+      v('Some extended programmes are open only to applicants from certain schools. UKZN’s BCom Extended Curriculum (Accounting and General) is listed for **quintile 1-3 schools** and its BSocSc Extended Curriculum says students must come from quintile 1-3 schools and must not have attended a university or tertiary access programme for a semester. Rhodes’s Extended Studies route is described as being for students from disadvantaged backgrounds, at the Dean’s discretion.', [S.ukznBrochure26, S.ru]),
+      g('A quintile is the group a South African public school falls in when schools are ranked by the poverty of the community around them: quintile 1 is the poorest fifth and quintile 5 the least poor. The rule is about the school you attended, not your marks, and your school’s quintile is something your school office or the provincial education department can tell you.'),
+    ],
+    checks: [{ label: 'The programme’s own page, and your school office for your school’s quintile', url: null }],
   },
 ];

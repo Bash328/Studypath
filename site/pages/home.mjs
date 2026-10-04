@@ -21,7 +21,7 @@ export function home(data) {
 <section class="hero hero--home">
   <div class="wrap hero__grid">
     <div>
-      <h1>Find out which programmes your marks can <span class="hl">actually</span> get you into.</h1>
+      <h1>Find out which degrees your marks can <span class="hl">actually</span> get you into.</h1>
       <p class="lead">Put in your subjects and marks. Studypath works out your score <strong>the way each university does</strong> – because they all count it differently – and shows you what you qualify for.</p>
       <div class="btn-row">
         <a class="btn btn--sun btn--big" href="/calculator">What do I qualify for? →</a>
