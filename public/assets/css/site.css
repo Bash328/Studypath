@@ -597,3 +597,7 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .cat--sm { margin-top: 8px; box-shadow: none; }
 .cat--sm .cat__head { padding: 12px 14px; font-size: 1rem; }
 .cat--sm .cat__body { display: block; padding: 10px 14px 14px; }
+
+.subjects-ask { margin: 0 0 14px; border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 14px; background: var(--card); }
+.subjects-ask > summary { cursor: pointer; font-weight: 700; color: var(--brand-ink); }
+.subjects-ask ul { margin: 10px 0; padding-left: 1.1em; }
