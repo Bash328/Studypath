@@ -42,8 +42,8 @@ if (list) {
   const past = rows.filter((r) => r.classList.contains('is-past')).reverse();
   [...upcoming, ...past].forEach((r) => list.appendChild(r));
 }
-// Past dates stay visible by default so a student can see what has closed.
-if (showPast) showPast.checked = true;
+// Past dates are hidden by default; ticking the box shows what has closed.
+if (showPast) showPast.checked = false;
 
 function apply() {
   const uni = uniFilter.value;

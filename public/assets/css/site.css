@@ -550,3 +550,24 @@ details.uni[open] > summary::after { rotate: 180deg; }
 
 /* Career page: breathing room between the stacked cards in the subjects section */
 .section.wrap--narrow > .card + .card { margin-top: 1.5rem; }
+
+/* Study abroad: slim notice and jump links */
+.callout--slim { font-size: .92rem; padding: 10px 14px; margin: 0 0 .8rem; border-radius: var(--radius-sm); }
+.callout--slim .tag, .callout--slim .badge { font-size: .85em; }
+.jump .chip-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.jump .chip { flex: none; text-decoration: none; }
+.section[id] { scroll-margin-top: 76px; }
+
+/* Home: tool cards put the icon beside the text on phones */
+@media (max-width: 640px) {
+  .tool { display: grid; grid-template-columns: 50px 1fr; column-gap: 14px; align-items: center; }
+  .tool__i { grid-row: 1 / span 2; margin: 0; }
+  .tool h3, .tool p { margin: 0; }
+  .tool p { grid-column: 2; }
+}
+
+/* Home: every "coming up" card has the same layout */
+.up { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; }
+.up > .pill:first-child { grid-column: 1 / -1; justify-self: start; }
+.up__body p { margin: 0; }
+.up__body p:first-child { font-weight: 700; }

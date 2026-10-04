@@ -480,7 +480,7 @@ const COUNTRIES = [
 function countryHub() {
   const published = COUNTRIES.filter((c) => c.published);
   return `
-<section class="section wrap wrap--narrow" id="examples">
+<section class="section wrap wrap--narrow" id="pick-a-country">
   ${sectionHead('🎓', 'Costs, funding, visas, and deadlines – pick a country', 'A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
   <div class="grid grid--2">
     ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
@@ -500,14 +500,19 @@ export function abroadPage() {
 </section>
 
 <section class="wrap wrap--narrow">
-  <div class="callout callout--warn">
-    <h3>Why this page itself has no entry requirements</h3>
-    <p>Everywhere else on Studypath, every requirement links to the official page it came from. Entry requirements, money, visas and funding differ by country, so rather than repeat what agents and forums say in one general place, <strong>those numbers live on each country’s own guide below</strong>, each checked against the official source.</p>
-    <p>Everything on this page is ${tag('general', 'general guidance about the process')} unless it’s tagged ${tag('verified', 'checked against the official source')} – each paragraph is marked, and each section tells you where to check it.</p>
-  </div>
+  <p class="callout callout--warn callout--slim">Entry rules, costs and visas differ by country, so those numbers live on each country’s own guide below, linked to its official source. Everything else here is ${tag('general', 'general guidance')} unless tagged ${tag('verified', 'checked against the official source')}.</p>
+  <nav class="jump" aria-label="Jump to a section">
+    <div class="chip-row">
+      <a class="chip" href="#routes">How people go abroad</a>
+      <a class="chip" href="#pick-a-country">Pick a country</a>
+      <a class="chip" href="#get-ready">Getting ready, year by year</a>
+      <a class="chip" href="#questions">Questions worth asking</a>
+      <a class="chip" href="#scams">Spotting scams</a>
+    </div>
+  </nav>
 </section>
 
-<section class="section wrap wrap--narrow">
+<section class="section wrap wrap--narrow" id="routes">
   ${sectionHead('🛤️', 'Two ways to do it')}
   <div class="stack">
     ${ROUTES.map((r) => `<article class="card"><h3><span aria-hidden="true">${r.emoji}</span> ${r.title}</h3>${claims(r.paras)}${checksBox(r.checks)}</article>`).join('')}
@@ -516,7 +521,7 @@ export function abroadPage() {
 
 ${countryHub()}
 
-<section class="section wrap wrap--narrow">
+<section class="section wrap wrap--narrow" id="get-ready">
   ${sectionHead('🗓️', 'What to line up, and roughly when')}
   ${claim(g('This is a rough order, not a rule – every country and university has its own calendar.'))}
   <div class="table-scroll"><table class="data">
@@ -525,7 +530,7 @@ ${countryHub()}
   </table></div>
 </section>
 
-<section class="section wrap wrap--narrow">
+<section class="section wrap wrap--narrow" id="questions">
   ${sectionHead('🤔', 'Questions to ask before you commit')}
   <div class="grid grid--2">
     <div class="card"><h3>Will the degree be recognised back home?</h3>${claims([g('If you plan to work in South Africa in a regulated profession – medicine, engineering, law, teaching, accounting – check with that profession’s registration body **before** you enrol, not after you graduate.')])}</div>
@@ -544,7 +549,7 @@ ${countryHub()}
   ])}
 </section>
 
-<section class="section wrap wrap--narrow">
+<section class="section wrap wrap--narrow" id="scams">
   <div class="callout">
     <h3>${iconOrEmoji('🛡️')} A note on scams</h3>
     ${claims([g('Nobody legitimate guarantees admission, and nobody legitimate asks for a large payment to “secure your place” before the university has made you an offer in writing. If a claim can’t be found on the university’s own website, treat it as false.')])}

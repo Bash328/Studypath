@@ -78,7 +78,7 @@ export function home(data) {
 <section class="section wrap" aria-labelledby="tools">
   ${sectionHead('🧰', 'Everything in one place')}
   <div class="grid grid--4">
-    <a class="card card--link tool" href="/calculator"><span class="tool__i">🧮</span><h3>What do I qualify for?</h3><p>Your marks → every degree you can apply for.</p></a>
+    <a class="card card--link tool" href="/calculator"><span class="tool__i">🧮</span><h3>What do I qualify for?</h3><p>Your marks → every programme you can apply for.</p></a>
     <a class="card card--link tool" href="/careers"><span class="tool__i">🧭</span><h3>Careers</h3><p>${stats.careers} careers, and the programmes that lead to them.</p></a>
     <a class="card card--link tool" href="/grade-10-subjects"><span class="tool__i">🧠</span><h3>Choose your subjects</h3><p>Grade 9–10? Start here.</p></a>
     <a class="card card--link tool" href="/dates"><span class="tool__i">📅</span><h3>Dates</h3><p>Closing dates, open days and NBT sittings.</p></a>

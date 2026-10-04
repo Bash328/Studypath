@@ -40,11 +40,11 @@ async function loadUpcoming() {
     set(box, 
       upcoming.map((d) => {
         const days = daysUntil(d.date_end || d.date);
-        return el('div', { class: 'card', style: 'display:flex;gap:14px;align-items:center;flex-wrap:wrap' },
+        return el('div', { class: 'card up' },
           el('span', { class: `pill pill--${KIND_PILL[d.kind] || 'close'}` }, KIND_LABEL[d.kind] || d.kind),
-          el('div', { style: 'flex:1;min-width:180px' },
-            el('p', { style: 'margin:0;font-weight:700' }, d.university ? `${d.university} – ${d.title}` : d.title),
-            el('p', { class: 'small muted', style: 'margin:0' }, prettyDate(d.date))),
+          el('div', { class: 'up__body' },
+            el('p', {}, d.university ? `${d.university} – ${d.title}` : d.title),
+            el('p', { class: 'small muted' }, prettyDate(d.date))),
           el('span', { class: 'pill' }, days === 0 ? 'Today' : `${days} day${days === 1 ? '' : 's'}`));
       }),
       el('p', { class: 'small' }, el('a', { href: '/dates' }, 'See every date →')));
