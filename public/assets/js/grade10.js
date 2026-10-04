@@ -3,7 +3,7 @@
 
 import { $, el, set, getJson } from './core.js';
 
-// Same Lucide "graduation-cap" icon the server inlines for 🎓 elsewhere (site/lib/icons.mjs) -
+// Same Lucide "graduation-cap" icon the server inlines for the graduation cap elsewhere (site/lib/icons.mjs) -
 // hardcoded here since this file is a plain static asset, not something the build step touches.
 const GRADUATION_ICON = '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></svg>';
 
@@ -41,7 +41,7 @@ function careerBlock(career) {
       el('button', { class: 'chip', type: 'button', 'aria-label': `Remove ${career.name}`, onclick: () => { picked = picked.filter((p) => p.id !== career.id); render(); } }, 'Remove ×')),
     list.length
       ? el('div', { class: 'table-scroll' }, el('table', { class: 'data' },
-          el('thead', {}, el('tr', {}, el('th', { scope: 'col' }, 'University'), el('th', { scope: 'col' }, 'Degree'), el('th', { scope: 'col' }, 'Asks for'))),
+          el('thead', {}, el('tr', {}, el('th', { scope: 'col' }, 'University'), el('th', { scope: 'col' }, 'Programme'), el('th', { scope: 'col' }, 'Asks for'))),
           el('tbody', {}, list.map((p) => el('tr', {},
             el('th', { scope: 'row' }, p.university.name),
             el('td', {}, el('a', { href: `/careers/${career.id}#${p.id}` }, p.name)),

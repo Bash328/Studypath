@@ -230,4 +230,195 @@ export const uctPrograms = [
       manual('Portfolio', 'A supplementary application questionnaire and a portfolio of work are required - this is the leading factor in admission, with places awarded on merit. Applicants below the minimum FPS who excel in the portfolio may still be considered.'),
     ],
     notes: 'FPS 380 or above is the published minimum, but unlike the general BA/BSocSc there are no separate guaranteed/likely bands here - the portfolio evaluation decides it. A four-year structured degree at the Michaelis School of Fine Art, not a BA major.' },
+
+  // ---------------- Commerce specialisations (added 2026-10-04 from the 2027 prospectus, pages 24-30) ----------------
+  // Every Commerce specialisation uses the same two entry tables; an offer lets you register for ANY specialisation you meet the criteria for.
+
+  { ...base, id: 'uct-bcom-financial-accounting', career_id: 'chartered-accountant', name: 'BCom Financial Accounting (Chartered Accountant)',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' The three-year route to CA(SA): then a one-year Postgraduate Diploma in Accounting, a three-year training contract and the SAICA qualifying exams.' },
+
+  { ...base, id: 'uct-bbussc-financial-accounting', career_id: 'chartered-accountant', name: 'BBusSc Financial Accounting: Finance with Accounting',
+    faculty: 'Commerce', duration_years: 4, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' The four-year route to CA(SA); also followed by the Postgraduate Diploma in Accounting and a three-year training contract.' },
+
+  { ...base, id: 'uct-bcom-economics', career_id: 'economist', name: 'BCom Economics (Economics, Economics & Statistics, Economics & Finance, Economics with Law)',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' Economics with Law leads to the two-year postgraduate LLB.' },
+
+  { ...base, id: 'uct-bcom-finance', career_id: 'financial-manager', name: 'BCom / BBusSc Finance',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' Finance can be combined with Accounting, Economics or Information Systems as core courses. BBusSc takes four years.' },
+
+  { ...base, id: 'uct-bcom-information-systems', career_id: 'information-systems', name: 'BCom Information Systems',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' BBusSc takes four years. Information Systems combined with Computer Science needs Mathematics 70% (see the Computer Science row).' },
+
+  { ...base, id: 'uct-bcom-management-studies', career_id: 'business-manager', name: 'BCom Management Studies',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' UCT’s most flexible Commerce degree: a core of 11 Commerce courses plus a wide choice of electives from across the university.' },
+
+  { ...base, id: 'uct-bcom-marketing', career_id: 'retail-manager', name: 'BCom / BBusSc Marketing Studies',
+    faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' BBusSc takes four years.' },
+
+  { ...base, id: 'uct-bbussc-industrial-psychology', career_id: 'industrial-psychologist', name: 'BBusSc Industrial & Organisational Psychology',
+    faculty: 'Commerce', duration_years: 4, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' Only open to students who took pure Mathematics in matric. The same major can be taken inside a BA/BSocSc in Humanities.' },
+
+  { ...base, id: 'uct-bbussc-statistics-data-science', career_id: 'data-scientist', name: 'BBusSc Statistics & Data Science',
+    faculty: 'Commerce', duration_years: 4, min_aps: 435, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 70), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(435, 470, '430-434, Education Development Unit only') + ' Mathematics 70% and a four-year BBusSc; the three-year BCom version also exists.' },
+
+  { ...base, id: 'uct-bbussc-quantitative-finance', career_id: 'financial-manager', name: 'BBusSc Quantitative Finance',
+    faculty: 'Commerce', duration_years: 4, min_aps: 500, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 80), engPct(60, 80), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
+    notes: bands(500, 525, '475-479, Education Development Unit only') + ' Shares its foundations with Actuarial Science but is aimed at investment banking, derivatives trading and quantitative asset management. First Additional Language applicants need Proficient AL and QL NBTs.' },
+
+
+  // ---------------- Science majors (BSc; one faculty-wide entry table, majors are chosen once you are in) ----------------
+
+  { ...base, id: 'uct-bsc-applied-mathematics', career_id: 'mathematician', name: 'BSc Applied Mathematics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-applied-statistics', career_id: 'data-scientist', name: 'BSc Applied Statistics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-artificial-intelligence', career_id: 'data-scientist', name: 'BSc Artificial Intelligence',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + ' Designed to be completed as a co-major with Computer Science, Mathematical Statistics or Mathematics.' },
+
+  { ...base, id: 'uct-bsc-astrophysics', career_id: 'physicist', name: 'BSc Astrophysics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-biology', career_id: 'biologist', name: 'BSc Biology',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-biochemistry', career_id: 'biologist', name: 'BSc Biochemistry',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + ' Capacity-limited: selection into this major is on first-year academic performance.' },
+
+  { ...base, id: 'uct-bsc-chemistry', career_id: 'chemist', name: 'BSc Chemistry',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-environmental-geographical-science', career_id: 'environmental-scientist', name: 'BSc Environmental & Geographical Science',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + ' One of only two majors open to applicants without Physical Sciences or Information Technology.' },
+
+  { ...base, id: 'uct-bsc-genetics', career_id: 'biologist', name: 'BSc Genetics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + ' Capacity-limited: selection into this major is on first-year academic performance.' },
+
+  { ...base, id: 'uct-bsc-geology', career_id: 'geologist', name: 'BSc Geology',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-human-anatomy-physiology', career_id: 'sport-scientist', name: 'BSc Human Anatomy & Physiology',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + ' Capacity-limited, with courses starting at second-year level: selection is on first-year academic performance.' },
+
+  { ...base, id: 'uct-bsc-marine-biology', career_id: 'biologist', name: 'BSc Marine Biology',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-mathematics', career_id: 'mathematician', name: 'BSc Mathematics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-mathematical-statistics', career_id: 'data-scientist', name: 'BSc Mathematical Statistics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-ocean-atmosphere-science', career_id: 'environmental-scientist', name: 'BSc Ocean & Atmosphere Science',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-physics', career_id: 'physicist', name: 'BSc Physics',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-quantitative-biology', career_id: 'biologist', name: 'BSc Quantitative Biology',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+  { ...base, id: 'uct-bsc-statistics-data-science', career_id: 'data-scientist', name: 'BSc Statistics & Data Science',
+    faculty: 'Science', duration_years: 3, min_aps: 660, score_type: 'band_a', scoring_system: 'UCT_FPS800',
+    subject_requirements: [pct('Mathematics', 70), pct('Physical Sciences', 60)],
+    notes: bands(660, 640, 550) + ' All Science majors share these entry bands (Mathematics 70%+, Physical Sciences 60%+; NBTs in Mathematics, AL and QL must be written but do not affect admission). Admission is to the BSc and a major is chosen once you are in; selected students may be counselled onto the four-year Extended Degree Programme.' + '' },
+
+
+  // ---------------- Engineering streams that share an entry table ----------------
+
+  { ...base, id: 'uct-beng-electrical-computer', career_id: 'electrical-engineer', name: 'BSc (Eng) Electrical & Computer Engineering',
+    faculty: 'Engineering & the Built Environment', duration_years: 4, min_aps: 500, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 80), pct('Physical Sciences', 75)],
+    notes: bands(500, 480, 420) + ' Mathematical Literacy and Technical Mathematics do not count as Mathematics, and Technical Sciences does not count as Physical Sciences.' + ' Shares one entry table with Electrical Engineering and Mechatronics.' },
+
+  { ...base, id: 'uct-beng-mechatronics', career_id: 'mechanical-engineer', name: 'BSc (Eng) Mechatronics',
+    faculty: 'Engineering & the Built Environment', duration_years: 4, min_aps: 500, score_type: 'band_a',
+    subject_requirements: [pct('Mathematics', 80), pct('Physical Sciences', 75)],
+    notes: bands(500, 480, 420) + ' Mathematical Literacy and Technical Mathematics do not count as Mathematics, and Technical Sciences does not count as Physical Sciences.' + ' Shares one entry table with Electrical Engineering; Mechanical & Mechatronic Engineering is listed on the Mechanical row.' },
+
+
+  // ---------------- Humanities, performing and creative arts ----------------
+
+  { ...base, id: 'uct-bmus', career_id: 'performer', name: 'Bachelor of Music (BMus)',
+    faculty: 'Humanities', duration_years: 4, min_aps: 380, score_type: 'minimum',
+    subject_requirements: [engPct(50, 60), manual('NBT', 'NBT Academic Literacy at Intermediate level or above.'), pct('Music', 60), manual('Audition, interview and music theory test', 'The audition is the leading factor and places are awarded on merit. Unisa Music Theory Grade V and Practical Grade VII or above are expected.')],
+    notes: 'FPS 380 is the published minimum for an NSC degree pass, but admission is decided by the audition, interview and theory test, not by points. Applicants below the minimum who excel at audition may be considered for the Diploma in Music Performance.' },
+
+  { ...base, id: 'uct-ba-theatre-performance', career_id: 'performer', name: 'Bachelor of Arts in Theatre & Performance (BA(T&P))',
+    faculty: 'Humanities', duration_years: 3, min_aps: 380, score_type: 'minimum',
+    subject_requirements: [engPct(50, 60), manual('NBT', 'NBT Academic Literacy at Intermediate level or above.'), manual('Audition', 'A satisfactory audition is required; it is the leading indicator and places are awarded on merit.')],
+    notes: 'FPS 380 is the published minimum; the audition decides admission. Applicants below the minimum who excel at audition may be considered for the Diploma in Theatre & Performance.' },
+
+  { ...base, id: 'uct-dip-music-performance', career_id: 'performer', name: 'Diploma in Music Performance',
+    faculty: 'Humanities', duration_years: 3, min_aps: null, score_type: 'minimum',
+    subject_requirements: [engPct(50, 60), manual('NBT', 'NBT Academic Literacy at Intermediate level or above.'), manual('Audition, interview and music theory test', 'The audition is the leading indicator and places are awarded on merit.')],
+    notes: 'Needs an NSC endorsed for diploma study, English 50% (Home Language) or 60% (First Additional Language), NBT Academic Literacy at Intermediate or above, and a satisfactory audition, interview and music theory test. UCT publishes no points cut-off.' },
+
+  { ...base, id: 'uct-dip-theatre-performance', career_id: 'performer', name: 'Diploma in Theatre & Performance',
+    faculty: 'Humanities', duration_years: 3, min_aps: null, score_type: 'minimum',
+    subject_requirements: [engPct(50, 60), manual('NBT', 'NBT Academic Literacy at Intermediate level or above.'), manual('Audition', 'A satisfactory audition is required; it is the leading indicator and places are awarded on merit.')],
+    notes: 'Needs an NSC endorsed for diploma study, English 50% (Home Language) or 60% (First Additional Language), NBT Academic Literacy at Intermediate or above and a satisfactory audition. UCT publishes no points cut-off.' },
+
+  { ...base, id: 'uct-bsocsc-ppe', career_id: 'economist', name: 'BSocSc Philosophy, Politics & Economics (PPE)',
+    faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
+    subject_requirements: [engPct(50, 60), pct('Mathematics', 60), manual('NBT', 'NBT Academic Literacy: Proficient, and Quantitative Literacy: Upper Intermediate or above.')],
+    notes: bands(450, 450, 380) + ' Band B (WPS 450) needs an Upper Intermediate Academic Literacy NBT; Band A needs Proficient.' },
+  { ...base, id: 'uct-ba-film-media-production', career_id: 'journalist-communications', name: 'BA specialising in Film & Media Production',
+    faculty: 'Humanities', duration_years: 3, min_aps: 450, score_type: 'band_a',
+    subject_requirements: [engPct(50, 60), pct('Life Orientation', 50), manual('NBT', 'An NBT Academic Literacy result of Lower Intermediate or Basic normally rules an applicant out.')],
+    notes: bands(450, 450, 380) + ' You register for the general BA and are accepted into the Film & Media Production specialisation only in the second semester of second year, selected on first-year performance and work on campus media.' },
 ];

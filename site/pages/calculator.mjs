@@ -12,7 +12,7 @@ export function calculator(data) {
   <div class="wrap wrap--narrow">
     <p class="eyebrow">About 2 minutes · no account · your marks stay on your device</p>
     <h1>What do I qualify for?</h1>
-    <p class="lead">Pick your subjects, type your marks, and see which degrees are open to you – scored the way <strong>each university</strong> scores.</p>
+    <p class="lead">Pick your subjects, type your marks, and see which programmes are open to you – scored the way <strong>each university</strong> scores.</p>
     <p class="small muted">Already know your APS or points score from a university? <a href="/browse">Skip straight to browsing what's in range →</a></p>
   </div>
 </section>
@@ -37,9 +37,9 @@ export function calculator(data) {
   ${sectionHead('📖', 'How to read your results')}
   <div class="stack">
     <div class="card result-key"><h3><span class="pill pill--good">${matchBadge('good')} Good to go</span></h3><p>Your score and every subject rule we can check are met, and nothing else is needed. If it also says <span class="badge badge--info">Selection programme</span>, meeting the minimum still doesn’t guarantee a place.</p></div>
-    <div class="card result-key"><h3><span class="pill pill--more">${matchBadge('more')} More to it</span></h3><p>Your marks are enough, but the degree also needs something marks can’t show – an <a href="/nbt">NBT</a>, a portfolio, an audition, an interview. The card lists exactly what.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--more">${matchBadge('more')} More to it</span></h3><p>Your marks are enough, but the programme also needs something marks can’t show – an <a href="/nbt">NBT</a>, a portfolio, an audition, an interview. The card lists exactly what.</p></div>
     <div class="card result-key"><h3><span class="pill pill--nearly">${matchBadge('nearly')} Nearly</span></h3><p>You’re within a few points, or a few percent in one subject. We tell you what’s missing, like “2% to go in Maths”.</p></div>
-    <div class="card result-key"><h3><span class="pill pill--unknown">${matchBadge('unknown')} Can’t tell</span></h3><p>Either the university publishes no points cut-off for that degree, or we don’t calculate its score because we couldn’t confirm how. We’d rather say so than guess.</p></div>
+    <div class="card result-key"><h3><span class="pill pill--unknown">${matchBadge('unknown')} Can’t tell</span></h3><p>Either the university publishes no points cut-off for that programme, or we don’t calculate its score because we couldn’t confirm how. We’d rather say so than guess.</p></div>
   </div>
   <p class="small muted jargon-key">How sure are we of each formula? ${tag('verified')} means we read the rule on the official page – <a href="/data-sources#scoring">see every formula and its source</a>.</p>
 </section>
@@ -55,7 +55,7 @@ export function calculator(data) {
   return [{
     path: '/calculator',
     title: 'What do I qualify for? – APS calculator for South African universities',
-    description: 'Enter your subjects and marks once. Studypath works out your score the way each South African university does – UCT, Wits, UP, Stellenbosch, UKZN, Rhodes and more – and shows which degrees you qualify for.',
+    description: 'Enter your subjects and marks once. Studypath works out your score the way each South African university does – UCT, Wits, UP, Stellenbosch, UKZN, Rhodes and more – and shows which programmes you qualify for.',
     body,
     scripts: ['/assets/js/calculator.js'],
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'What do I qualify for?', path: '/calculator' }],

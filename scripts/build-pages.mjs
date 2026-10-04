@@ -69,7 +69,7 @@ json('data/dates.json', {
   dates: data.dates.map((d) => ({ ...d, university: d.university_id ? data.uniById[d.university_id].short_name : null })),
 });
 json('data/contacts.json', {
-  topics: ASK_TOPICS,
+  topics: ASK_TOPICS.map(({ emoji, ...t }) => t),
   universities: data.universities.map((u) => ({ id: u.id, name: u.name, short: u.short_name, website: u.website, type: u.type, cao: !!u.cao, hasRequirements: u.hasRequirements })),
   contacts: data.contacts,
   fees: data.fees,

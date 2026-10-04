@@ -21,7 +21,7 @@ export function home(data) {
 <section class="hero hero--home">
   <div class="wrap hero__grid">
     <div>
-      <h1>Find out which degrees your marks can <span class="hl">actually</span> get you into.</h1>
+      <h1>Find out which programmes your marks can <span class="hl">actually</span> get you into.</h1>
       <p class="lead">Put in your subjects and marks. Studypath works out your score <strong>the way each university does</strong> – because they all count it differently – and shows you what you qualify for.</p>
       <div class="btn-row">
         <a class="btn btn--sun btn--big" href="/calculator">What do I qualify for? →</a>
@@ -51,7 +51,7 @@ export function home(data) {
   <div class="grade-panels" id="grade-panels">
     <div class="card card--accent grade-panel" data-for="9 10">
       <h3>${iconOrEmoji('🧠')} Choosing your subjects is your big job</h3>
-      <p>The subjects you pick at the end of Grade 9 decide which degrees are open in Grade 12. <strong>Mathematics vs Maths Literacy</strong> is the one that matters most.</p>
+      <p>The subjects you pick at the end of Grade 9 decide which programmes are open in Grade 12. <strong>Mathematics vs Maths Literacy</strong> is the one that matters most.</p>
       <div class="btn-row"><a class="btn btn--primary" href="/grade-10-subjects">Help me choose</a><a class="btn btn--ghost" href="/careers">Explore careers first</a></div>
     </div>
     <div class="card card--accent grade-panel" data-for="11">
@@ -79,7 +79,7 @@ export function home(data) {
   ${sectionHead('🧰', 'Everything in one place')}
   <div class="grid grid--4">
     <a class="card card--link tool" href="/calculator"><span class="tool__i">🧮</span><h3>What do I qualify for?</h3><p>Your marks → every degree you can apply for.</p></a>
-    <a class="card card--link tool" href="/careers"><span class="tool__i">🧭</span><h3>Careers</h3><p>${stats.careers} careers, and the degrees that lead to them.</p></a>
+    <a class="card card--link tool" href="/careers"><span class="tool__i">🧭</span><h3>Careers</h3><p>${stats.careers} careers, and the programmes that lead to them.</p></a>
     <a class="card card--link tool" href="/grade-10-subjects"><span class="tool__i">🧠</span><h3>Choose your subjects</h3><p>Grade 9–10? Start here.</p></a>
     <a class="card card--link tool" href="/dates"><span class="tool__i">📅</span><h3>Dates</h3><p>Closing dates, open days and NBT sittings.</p></a>
     <a class="card card--link tool" href="/nbt"><span class="tool__i">✍️</span><h3>The NBT</h3><p>What it is, who needs it, when to write.</p></a>
@@ -104,7 +104,7 @@ export function home(data) {
     <div class="card"><h3>We publish what we don’t know</h3><p>Right now we’ve captured requirements for <strong>${stats.universitiesWithData} of ${stats.universities}</strong> universities, and ${openGaps} things are still open. <a href="/data-sources">See every gap</a>.</p></div>
   </div>
   <div class="stat-row">
-    <div class="stat"><strong>${stats.programs}</strong><span>degrees, each with a source link</span></div>
+    <div class="stat"><strong>${stats.programs}</strong><span>programmes, each with a source link</span></div>
     <div class="stat"><strong>${stats.universitiesWithData}/${stats.universities}</strong><span>universities with requirements</span></div>
     <div class="stat"><strong>${stats.careers}</strong><span>careers to explore</span></div>
   </div>
@@ -113,8 +113,8 @@ export function home(data) {
 
   return [{
     path: '/',
-    title: 'Studypath – which degrees can your marks actually get you into?',
-    description: 'Free South African career and university guide. Put in your marks and see which degrees you qualify for – scored the way each university scores, with a link to the official page for every number.',
+    title: 'Studypath – which programmes can your marks actually get you into?',
+    description: 'Free South African career and university guide. Put in your marks and see which programmes you qualify for – scored the way each university scores, with a link to the official page for every number.',
     body,
     scripts: ['/assets/js/home.js'],
     jsonLd: [{

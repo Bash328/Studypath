@@ -28,7 +28,7 @@ export const sectionHead = (emoji, title, sub) => `<div class="sec-head">
 </div>`;
 
 /**
- * One degree, with its numbers AND its source link in plain view. The source is a
+ * One programme, with its numbers AND its source link in plain view. The source is a
  * visible line of text, never a tooltip: it is the reason this product exists.
  */
 export function programCard(p, { showUniversity = true } = {}) {

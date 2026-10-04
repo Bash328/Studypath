@@ -6,7 +6,7 @@ import { sectionHead } from '../lib/components.mjs';
 function reqTable(programs) {
   if (!programs.length) return '<p class="empty">None captured yet.</p>';
   return `<div class="table-scroll"><table class="data">
-  <thead><tr><th scope="col">University</th><th scope="col">Degree</th><th scope="col">What it asks for</th><th scope="col">Source</th></tr></thead>
+  <thead><tr><th scope="col">University</th><th scope="col">Programme</th><th scope="col">What it asks for</th><th scope="col">Source</th></tr></thead>
   <tbody>${programs.map((p) => `<tr>
     <th scope="row">${esc(p.university.name)}</th>
     <td data-label="Degree">${esc(p.name)}</td>
@@ -34,7 +34,7 @@ export function grade10Page(data) {
   <div class="wrap wrap--narrow">
     <p class="eyebrow">Grade 9 → Grade 10</p>
     <h1>Choosing your subjects</h1>
-    <p class="lead">What you pick now decides which degrees are open to you in Grade 12. Ten minutes here can save you a lot of regret.</p>
+    <p class="lead">What you pick now decides which programmes are open to you in Grade 12. Ten minutes here can save you a lot of regret.</p>
   </div>
 </section>
 
@@ -44,7 +44,7 @@ export function grade10Page(data) {
 </section>
 
 <section class="section wrap wrap--narrow" id="planner-section">
-  ${sectionHead('🎯', 'Subject planner', 'Pick one to three careers you’re curious about. We’ll show which subjects the degrees we’ve captured actually ask for.')}
+  ${sectionHead('🎯', 'Subject planner', 'Pick one to three careers you’re curious about. We’ll show which subjects the programmes we’ve captured actually ask for.')}
   <div class="card" id="planner" data-src="/data/programs.json" data-careers="/data/careers.json">
     <label for="planner-career" class="sr-only">Add a career</label>
     <div class="planner__add">
@@ -78,19 +78,19 @@ export function grade10Page(data) {
       <li><span class="dot dot--none"></span><strong>${t['none-captured']}</strong> (${pct(t['none-captured'])}%) have no Maths rule in what we captured</li>
     </ul>
     <div class="table-scroll"><table class="data">
-      <thead><tr><th scope="col">Area</th><th scope="col">Degrees</th><th scope="col">Need Maths</th><th scope="col">Accept Maths Lit</th></tr></thead>
-      <tbody>${groups.map(([name, c]) => `<tr><th scope="row">${esc(name)}</th><td data-label="Degrees">${c.total}</td><td data-label="Need Maths">${c['needs-maths']}</td><td data-label="Accept Maths Lit">${c['accepts-lit']}</td></tr>`).join('')}</tbody>
+      <thead><tr><th scope="col">Area</th><th scope="col">Programmes</th><th scope="col">Need Maths</th><th scope="col">Accept Maths Lit</th></tr></thead>
+      <tbody>${groups.map(([name, c]) => `<tr><th scope="row">${esc(name)}</th><td data-label="Programmes">${c.total}</td><td data-label="Need Maths">${c['needs-maths']}</td><td data-label="Accept Maths Lit">${c['accepts-lit']}</td></tr>`).join('')}</tbody>
     </table></div>
-    <p class="small muted jargon-key">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each degree below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
+    <p class="small muted jargon-key">${tag('reported', 'Counted by Studypath')} These numbers are counted from the requirements we captured – each programme below links to its source. They cover only the ${data.stats.universitiesWithData} universities we have so far, so they show a pattern, not the whole country.</p>
   </div>
 
   <div class="grid grid--2 field-cards">${fieldCards}</div>
   <div class="callout callout--good">${claim(GRADE10.maths.rule)}</div>
 
-  <h3 class="uni-head">Degrees that accept Mathematical Literacy (from our data)</h3>
+  <h3 class="uni-head">Programmes that accept Mathematical Literacy (from our data)</h3>
   <p class="small">Each of these lists Maths Literacy as an allowed alternative. Note the level or mark it asks for – it is often higher than for Mathematics.</p>
   <details class="more-table">
-    <summary>Show all ${g10.acceptsLit.length} degrees that accept Mathematical Literacy</summary>
+    <summary>Show all ${g10.acceptsLit.length} programmes that accept Mathematical Literacy</summary>
     ${reqTable(g10.acceptsLit)}
   </details>
 </section>
@@ -125,7 +125,7 @@ export function grade10Page(data) {
   return [{
     path: '/grade-10-subjects',
     title: 'Choosing your Grade 10 subjects – Mathematics or Maths Literacy, and what each degree needs',
-    description: 'Picking subjects for Grade 10? See which degrees need Mathematics, which accept Maths Literacy, and what Physical Sciences and Life Sciences open up – counted from real university requirements, each with its source.',
+    description: 'Picking subjects for Grade 10? See which programmes need Mathematics, which accept Maths Literacy, and what Physical Sciences and Life Sciences open up – counted from real university requirements, each with its source.',
     body,
     scripts: ['/assets/js/grade10.js'],
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Choosing your subjects', path: '/grade-10-subjects' }],

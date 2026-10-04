@@ -36,7 +36,7 @@ export function dataSourcesPage(data) {
     const nd = dates.filter((d) => d.university_id === u.id).length;
     return `<tr>
       <th scope="row"><a href="/universities/${esc(u.id)}">${esc(u.name)}</a></th>
-      <td data-label="Degrees captured">${u.hasRequirements ? plural(u.programCount, 'degree', 'degrees') : '<span class="muted">not yet</span>'}</td>
+      <td data-label="Programmes captured">${u.hasRequirements ? plural(u.programCount, 'programme', 'programmes') : '<span class="muted">not yet</span>'}</td>
       <td data-label="Contact">${tag(best === 'verified' ? 'verified' : best === 'reported' ? 'reported' : 'unverified', best === 'verified' ? 'Contact checked' : best === 'reported' ? 'Contact from research' : 'No contact')}</td>
       <td data-label="Dates">${nd || '<span class="muted">–</span>'}</td>
     </tr>`;
@@ -92,14 +92,14 @@ export function dataSourcesPage(data) {
 </section>
 
 <section class="section wrap" id="coverage">
-  ${sectionHead('🗺️', 'Coverage right now', `${stats.universitiesWithData} of ${stats.universities} universities have their requirements captured (${stats.programs} degrees). New ones are added as we verify them.`)}
+  ${sectionHead('🗺️', 'Coverage right now', `${stats.universitiesWithData} of ${stats.universities} universities have their requirements captured (${stats.programs} programmes). New ones are added as we verify them.`)}
   <div class="table-scroll"><table class="data">
-    <thead><tr><th scope="col">University</th><th scope="col">Degrees captured</th><th scope="col">Contact</th><th scope="col">Dates</th></tr></thead>
+    <thead><tr><th scope="col">University</th><th scope="col">Programmes captured</th><th scope="col">Contact</th><th scope="col">Dates</th></tr></thead>
     <tbody>${coverageRows}</tbody>
   </table></div>
   <p class="small muted jargon-key">Contacts: ${counts.verified} checked on an official page · ${counts.reported} from our research · ${counts.unverified} unconfirmed.</p>
 
-  <h3 class="uni-head">Caveats carried on individual degrees</h3>
+  <h3 class="uni-head">Caveats carried on individual programmes</h3>
   <ul class="tidy">${Object.entries(flagCounts).sort((a, b) => b[1] - a[1]).map(([id, n]) => `<li><strong>${n}</strong> – ${esc(FLAG_EXPLAIN[id] || id)}</li>`).join('')}</ul>
 </section>
 

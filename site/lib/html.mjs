@@ -36,7 +36,7 @@ export const LEVELS = {
   reported: { icon: '◔', label: 'From our research – source cited, not re-checked yet', short: 'From our research', cls: 'reported' },
   general:  { icon: '!',      label: 'General knowledge – not from an official source', short: 'Not from an official source', cls: 'general' },
   unverified: { icon: '?',    label: 'Could not be confirmed', short: 'Could not be confirmed', cls: 'unverified' },
-  conflict: { icon: '⚡', label: 'Sources disagree', short: 'Sources disagree', cls: 'conflict' },
+  conflict: { icon: '≠', label: 'Sources disagree', short: 'Sources disagree', cls: 'conflict' },
 };
 
 export const tag = (level, text) => {

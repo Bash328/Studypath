@@ -143,7 +143,7 @@ export const TAGS = {
   reported: ['◔', 'From our research'],
   general: ['!', 'Not from an official source'],
   unverified: ['?', 'Could not be confirmed'],
-  conflict: ['⚡', 'Sources disagree'],
+  conflict: ['≠', 'Sources disagree'],
 };
 
 export function tagEl(level, text) {

@@ -25,7 +25,7 @@ export function universitiesIndex(data) {
   <a class="card card--link uni-card" href="/universities/${esc(u.id)}" data-type="${esc(u.type || '')}">
     <h3>${esc(u.name)}</h3>
     <p class="card__meta">${esc(u.type || '')}${u.cao ? ' · applies via the CAO' : ''}</p>
-    <p>${u.hasRequirements ? `<strong>${plural(u.programCount, 'degree', 'degrees')}</strong> with requirements and sources` : 'Contacts and closing dates – requirements coming'}</p>
+    <p>${u.hasRequirements ? `<strong>${plural(u.programCount, 'programme', 'programmes')}</strong> with requirements and sources` : 'Contacts and closing dates – requirements coming'}</p>
   </a>`;
 
   const body = `
@@ -33,7 +33,7 @@ export function universitiesIndex(data) {
   <div class="wrap">
     <p class="eyebrow">All ${stats.universities} public universities have their requirements captured – updated as we re-check them, or as universities change their own</p>
     <h1>Universities</h1>
-    <p class="lead">Pick one to see how it scores you, what its degrees need, when applications close and exactly who to contact – with the official source next to every number.</p>
+    <p class="lead">Pick one to see how it scores you, what its programmes need, when applications close and exactly who to contact – with the official source next to every number.</p>
   </div>
 </section>
 
@@ -103,7 +103,7 @@ export function universityPages(data) {
     <p class="eyebrow"><a href="/universities">Universities</a></p>
     <h1>${esc(u.name)}</h1>
     <p class="lead">${list.length
-      ? `${plural(list.length, 'degree', 'degrees')} captured from ${esc(u.short_name)}’s own official sources, across ${plural(faculties.length, 'faculty', 'faculties')}.`
+      ? `${plural(list.length, 'programme', 'programmes')} captured from ${esc(u.short_name)}’s own official sources, across ${plural(faculties.length, 'faculty', 'faculties')}.`
       : `We haven’t captured ${esc(u.short_name)}’s admission requirements yet – but here are its contacts and dates.`}</p>
     <p class="chip-row">
       <span class="pill">${esc(u.type || '')}</span>
@@ -114,7 +114,7 @@ export function universityPages(data) {
       list.length && { href: 'scoring', label: `${iconOrEmoji('🧮')} How it scores you` },
       { href: 'dates', label: `${iconOrEmoji('📅')} Dates` },
       { href: 'contact', label: `${iconOrEmoji('📞')} Contact` },
-      list.length && { href: 'degrees', label: `${iconOrEmoji('🎓')} Degrees` },
+      list.length && { href: 'degrees', label: `${iconOrEmoji('🎓')} Programmes` },
       gaps.length && { href: 'gaps', label: `${iconOrEmoji('⚠️')} What we couldn’t verify` },
     ])}
   </div>
@@ -141,7 +141,7 @@ ${list.length ? `
 
 ${list.length ? `
 <section class="section wrap" id="degrees">
-  ${sectionHead('🎓', 'Degrees')}
+  ${sectionHead('🎓', 'Programmes')}
   ${groups.length > 1 ? `<div class="chip-row" id="degree-filters" role="group" aria-label="Filter by field">
     <button class="chip" type="button" data-group="" aria-pressed="true">All (${list.length})</button>
     ${groups.map((g) => `<button class="chip" type="button" data-group="${esc(g)}" aria-pressed="false">${iconOrEmoji(GROUP_EMOJI[g] || '')} ${esc(g)} (${byGroup[g].length})</button>`).join('')}
@@ -155,7 +155,7 @@ ${list.length ? `
 <section class="section wrap">
   <div class="callout">
     <h3>Requirements coming</h3>
-    <p>We add a university’s degrees only once we’ve captured them from its official pages or documents – we don’t guess. In the meantime, ${link(u.website, `${hostOf(u.website)}`)} is the place for ${esc(u.short_name)}’s requirements.</p>
+    <p>We add a university’s programmes only once we’ve captured them from its official pages or documents – we don’t guess. In the meantime, ${link(u.website, `${hostOf(u.website)}`)} is the place for ${esc(u.short_name)}’s requirements.</p>
   </div>
 </section>`}
 
@@ -182,7 +182,7 @@ ${list.length ? `
         ? `${u.name} (${u.short_name}) admission requirements, APS, dates and contacts`
         : `${u.name} (${u.short_name}) – admissions contacts and closing dates`,
       description: list.length
-        ? `${u.name} admission requirements for ${list.length} degrees: the score you need, subject minimums, closing dates and who to contact – with the official ${u.short_name} source for every number.`
+        ? `${u.name} admission requirements for ${list.length} programmes: the score you need, subject minimums, closing dates and who to contact – with the official ${u.short_name} source for every number.`
         : `How to contact ${u.name} about applying, when applications close, and where to find its entry requirements.`,
       body,
       scripts: groups.length > 1 ? ['/assets/js/universities.js'] : [],

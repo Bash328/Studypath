@@ -45,9 +45,9 @@ function contactBlock(c) {
   return el('div', { class: 'card contact' },
     el('div', { class: 'contact__top' }, el('h3', {}, c.label)),
     el('ul', { class: 'contact__list' },
-      c.email ? el('li', {}, '✉️ ', el('a', { href: `mailto:${c.email}` }, c.email)) : null,
-      c.phone ? el('li', {}, '📞 ', t ? el('a', { href: t }, c.phone) : c.phone) : null,
-      c.url ? el('li', {}, '🔗 ', el('a', { href: c.url, target: '_blank', rel: 'noopener' }, 'The page')) : null),
+      c.email ? el('li', {}, 'Email: ', el('a', { href: `mailto:${c.email}` }, c.email)) : null,
+      c.phone ? el('li', {}, 'Phone: ', t ? el('a', { href: t }, c.phone) : c.phone) : null,
+      c.url ? el('li', {}, 'Web: ', el('a', { href: c.url, target: '_blank', rel: 'noopener' }, 'The page')) : null),
     c.note ? el('p', { class: 'small muted' }, c.note) : null);
 }
 
@@ -81,7 +81,7 @@ function render() {
       el('p', { class: 'small muted' }, 'Fill in the [bracketed] part, then copy it into an email or WhatsApp.'),
       el('textarea', { id: 'msg-box', class: 'msg-box', rows: '4', readonly: true }, message),
       el('div', { class: 'btn-row' },
-        el('button', { class: 'btn btn--ghost', type: 'button', onclick: copyMessage }, '📋 Copy message'),
+        el('button', { class: 'btn btn--ghost', type: 'button', onclick: copyMessage }, 'Copy message'),
         best.email ? el('a', { class: 'btn btn--primary', href: `mailto:${best.email}?subject=${encodeURIComponent('Question about applying to ' + uni.name)}&body=${encodeURIComponent(message)}` }, 'Open in email') : null)));
 }
 

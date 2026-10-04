@@ -38,8 +38,8 @@ export function careersIndex(data) {
   <div class="wrap">
     <p class="eyebrow">Start here if you’re not sure yet</p>
     <h1>What could you do?</h1>
-    <p class="lead">Browse ${careers.length} careers by the kind of work they are. Each one shows the real degrees that lead there – with the requirements from the university’s own page.</p>
-    <p class="small muted">${iconOrEmoji('🔜')} More degrees and careers are added every week – we only publish one once we’ve verified it against its official source, so this list keeps growing.</p>
+    <p class="lead">Browse ${careers.length} careers by the kind of work they are. Each one shows the real programmes that lead there – with the requirements from the university’s own page.</p>
+    <p class="small muted">${iconOrEmoji('🔜')} More programmes and careers are added every week – we only publish one once we’ve verified it against its official source, so this list keeps growing.</p>
     <div class="searchbar">
       <label class="sr-only" for="career-search">Search careers</label>
       <input type="search" id="career-search" placeholder="Try “nurse”, “engineer”, “law”…" autocomplete="off">
@@ -61,7 +61,7 @@ export function careersIndex(data) {
         <h3>${esc(c.name)}</h3>
         <p>${esc(c.description)}</p>
         ${(c.specializations || []).length ? `<div class="badge-row"><span class="badge badge--info">${plural(c.specializations.length, 'specialty', 'specialties')} inside</span></div>` : ''}
-        <p class="card__meta">${counts[c.id].programs ? `${plural(counts[c.id].programs, 'degree', 'degrees')} at ${plural(counts[c.id].unis, 'university', 'universities')}` : 'Degrees being added'}</p>
+        <p class="card__meta">${counts[c.id].programs ? `${plural(counts[c.id].programs, 'programme', 'programmes')} at ${plural(counts[c.id].unis, 'university', 'universities')}` : 'Degrees being added'}</p>
       </a>`).join('')}
     </div>
   </div>`).join('')}
@@ -70,8 +70,8 @@ export function careersIndex(data) {
 
   return [{
     path: '/careers',
-    title: 'Career explorer – which degree leads to which job in South Africa',
-    description: `Browse ${careers.length} careers, see the degrees that lead to each one at South African universities, and the real admission requirements – with the official source for every number.`,
+    title: 'Career explorer – which programme leads to which job in South Africa',
+    description: `Browse ${careers.length} careers, see the programmes that lead to each one at South African universities, and the real admission requirements – with the official source for every number.`,
     body,
     scripts: ['/assets/js/careers.js'],
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Careers', path: '/careers' }],
@@ -142,19 +142,19 @@ ${(career.specializations || []).length ? `<section class="section wrap wrap--na
     <h2 class="h3">Subjects that usually help</h2>
     <ul class="pill-list">${career.typical_subjects.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     ${claim({ level: 'general', text: 'This is our general guidance about which school subjects suit this career. It is **not** an admission requirement and not from an official source – the real requirements are on the degrees below.' })}
-    ${checksBox([{ label: 'The subject requirements on the degree pages below', url: '#degrees' }, { label: 'Your school’s guidance teacher', url: null }])}
+    ${checksBox([{ label: 'The subject requirements on the programme pages below', url: '#degrees' }, { label: 'Your school’s guidance teacher', url: null }])}
   </div>
   ${demand.length ? `<div class="card">
-    <h2 class="h3">What the degrees we’ve captured actually ask for</h2>
-    <ul class="demand">${demand.slice(0, 6).map(([subject, n]) => `<li><strong>${esc(subject)}</strong> <span class="muted">– asked for by ${n} of ${list.length} degrees</span><span class="demand__bar"><span style="width:${Math.round((n / list.length) * 100)}%"></span></span></li>`).join('')}</ul>
-    <p class="small muted">Counted from the requirements below (an “or” alternative counts for each subject named). Each degree links to the page it came from.</p>
+    <h2 class="h3">What the programmes we’ve captured actually ask for</h2>
+    <ul class="demand">${demand.slice(0, 6).map(([subject, n]) => `<li><strong>${esc(subject)}</strong> <span class="muted">– asked for by ${n} of ${list.length} programmes</span><span class="demand__bar"><span style="width:${Math.round((n / list.length) * 100)}%"></span></span></li>`).join('')}</ul>
+    <p class="small muted">Counted from the requirements below (an “or” alternative counts for each subject named). Each programme links to the page it came from.</p>
   </div>` : ''}
 </section>
 
 <section class="section wrap" id="degrees">
-  ${sectionHead('🎓', 'Degrees that lead here', list.length ? `${plural(list.length, 'degree', 'degrees')} at ${plural(uniIds.length, 'university', 'universities')}. More are added as we verify them.` : '')}
+  ${sectionHead('🎓', 'Programmes that lead here', list.length ? `${plural(list.length, 'programme', 'programmes')} at ${plural(uniIds.length, 'university', 'universities')}. More are added as we verify them.` : '')}
   ${list.length === 0
-    ? `<p class="empty">We haven’t captured a verified degree for this career yet. It’s queued for the next data pass – we only publish a programme once we have it from an official source.</p>`
+    ? `<p class="empty">We haven’t captured a verified programme for this career yet. It’s queued for the next data pass – we only publish a programme once we have it from an official source.</p>`
     : uniIds.map((id) => `
   <h3 class="uni-head"><a href="/universities/${esc(id)}">${esc(uniById[id].name)}</a></h3>
   <div class="grid grid--2">${byUni[id].map((p) => programCard(p, { showUniversity: false })).join('')}</div>`).join('')}
@@ -163,19 +163,19 @@ ${(career.specializations || []).length ? `<section class="section wrap wrap--na
 <section class="section wrap wrap--narrow">
   <div class="callout callout--good">
     <h3>Are your marks enough?</h3>
-    <p>Put your subjects in once and we’ll check them against every degree above – scored each university’s own way.</p>
+    <p>Put your subjects in once and we’ll check them against every programme above – scored each university’s own way.</p>
     <p><a class="btn btn--primary" href="/calculator">What do I qualify for?</a></p>
   </div>
 </section>`;
 
     return {
       path: `/careers/${career.id}`,
-      title: `How to become a ${career.name} in South Africa – subjects, APS and degrees`,
-      description: `What to study to become a ${career.name} in South Africa: ${list.length} verified degree${list.length === 1 ? '' : 's'} with their real admission requirements and the official source for each.`,
+      title: `How to become a ${career.name} in South Africa – subjects, APS and programmes`,
+      description: `What to study to become a ${career.name} in South Africa: ${list.length} verified programme${list.length === 1 ? '' : 's'} with their real admission requirements and the official source for each.`,
       body,
       breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Careers', path: '/careers' }, { name: career.name, path: `/careers/${career.id}` }],
       jsonLd: [{
-        '@context': 'https://schema.org', '@type': 'ItemList', name: `Degrees that lead to ${career.name} in South Africa`, numberOfItems: list.length,
+        '@context': 'https://schema.org', '@type': 'ItemList', name: `Programmes that lead to ${career.name} in South Africa`, numberOfItems: list.length,
         itemListElement: list.slice(0, 50).map((p, i) => ({
           '@type': 'ListItem', position: i + 1,
           item: { '@type': 'Course', name: p.name, description: `${p.name} at ${p.university.name}`, provider: { '@type': 'CollegeOrUniversity', name: p.university.name, url: p.university.website }, url: p.sourceUrl },

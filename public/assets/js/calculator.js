@@ -224,8 +224,8 @@ function renderResults() {
 
   const headline = totalGood || totalMore
     ? el('p', { style: 'font-size:1.1rem' },
-        totalGood ? el('strong', {}, `You meet the published requirements for ${plural(totalGood, 'degree', 'degrees')}.`) : null,
-        totalMore ? el('span', {}, `${totalGood ? ' ' : ''}Your marks are enough for ${plural(totalMore, 'more degree', 'more degrees')}, but ${totalMore === 1 ? 'it' : 'each'} also needs something marks can’t show – an NBT, portfolio or interview.`) : null)
+        totalGood ? el('strong', {}, `You meet the published requirements for ${plural(totalGood, 'programme', 'programmes')}.`) : null,
+        totalMore ? el('span', {}, `${totalGood ? ' ' : ''}Your marks are enough for ${plural(totalMore, 'more programme', 'more programmes')}, but ${totalMore === 1 ? 'it' : 'each'} also needs something marks can’t show – an NBT, portfolio or interview.`) : null)
     : el('p', { style: 'font-size:1.1rem' }, el('strong', {}, 'You don’t meet the published minimum for anything we’ve captured yet – check “Nearly” below, and remember we’ve only covered some universities so far.'));
 
   const filtered = state.resultFilter

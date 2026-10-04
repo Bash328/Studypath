@@ -1,6 +1,6 @@
 // "What can I get into with my APS?" - a lighter, faster alternative to the full marks
 // calculator. You pick a university and type the single score IT gave you (its own APS,
-// FPS, AS ...), and we show which of its degrees you're in range for, grouped by field.
+// FPS, AS ...), and we show which of its programmes you're in range for, grouped by field.
 // This checks points only, not subject requirements - the page says so up front.
 
 import { $, el, set, store, track, sourceLine } from './core.js';
@@ -96,7 +96,7 @@ function renderScoreEntry() {
     el('h3', {}, uni.name),
     inputs.length ? el('div', { class: 'stack' }, inputs) : el('p', { class: 'muted' }, 'We don’t calculate a score for this university yet.'),
     notComputable.length ? el('p', { class: 'small muted' },
-      `We also don’t calculate ${notComputable.map((s) => s.label).join(' or ')} here - its degrees will show with their published minimum only, for you to compare by hand.`) : null,
+      `We also don’t calculate ${notComputable.map((s) => s.label).join(' or ')} here - its programmes will show with their published minimum only, for you to compare by hand.`) : null,
     el('div', { class: 'btn-row' }, runBtn));
 
   set(root, body);
