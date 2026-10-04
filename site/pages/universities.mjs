@@ -167,7 +167,7 @@ ${gaps.length ? `
 <section class="section wrap" id="gaps">
   ${sectionHead('⚠️', `What we couldn’t verify at ${u.short_name}`, 'We publish our gaps instead of hiding them.')}
   <div class="grid grid--2">
-    ${gaps.map((g) => `<div class="card"><div class="badge-row"><span class="badge badge--${g.status === 'could_not_verify' ? 'bad' : g.status === 'partially_verified' ? 'warn' : 'good'}">${esc(g.status.replace(/_/g, ' '))}</span></div><h4>${esc(g.faculty_or_program)}</h4><p class="small muted">${esc(g.notes)}</p></div>`).join('')}
+    ${gaps.map((g) => `<div class="card"><div class="badge-row"><span class="badge badge--${g.status === 'could_not_verify' ? 'bad' : g.status === 'partially_verified' ? 'warn' : g.status === 'todo' ? 'info' : 'good'}">${esc(g.status.replace(/_/g, ' '))}</span></div><h4>${esc(g.faculty_or_program)}</h4><p class="small muted">${esc(g.notes)}</p></div>`).join('')}
   </div>
 </section>` : ''}
 

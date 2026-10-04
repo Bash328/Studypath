@@ -64,7 +64,7 @@ r = await get('/api/coverage');
 // and BSc Environmental Health's duration (4 vs 3 years) - net +2-1 = +1 overall.
 ok('coverage has flag counts', r.b.flagCounts.selection > 20 && r.b.flagCounts.conflict >= 5, JSON.stringify(r.b.flagCounts));
 r = await get('/api/research-log');
-ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'verified');
+ok('research-log: open gaps sorted first', r.b.entries[0].status === 'could_not_verify' && r.b.entries.at(-1).status === 'todo');
 r = await get('/api/meta');
 ok('meta stats', r.b.stats.programs === ALL.length && r.b.stats.careers === careers.length && r.b.universities.length === universities.length, JSON.stringify(r.b.stats));
 

@@ -101,7 +101,7 @@ export function home(data) {
     <div class="card"><h3>We never guess a number</h3><p>If we can’t find a requirement on an official university page or PDF, we don’t show it. We say we don’t know.</p></div>
     <div class="card"><h3>Every university gets its own score</h3><p>A Wits score of 42 is not a UP score of 35 or a UCT score of 500. We work each one out <em>their</em> way, and <a href="/data-sources#scoring">show you which official page we checked</a>.</p></div>
     <div class="card"><h3>When sources disagree, you see both</h3><p>Sometimes two official pages give different numbers. We show a “Sources disagree” badge instead of quietly picking one.</p></div>
-    <div class="card"><h3>We publish what we know</h3><p>Right now we’ve captured requirements for <strong>${stats.universitiesWithData} of ${stats.universities}</strong> universities, and ${openGaps} things are still open. <a href="/data-sources">See every gap</a>.</p></div>
+    <div class="card"><h3>We publish what we know</h3><p>Right now we’ve captured requirements for <strong>${stats.universitiesWithData} of ${stats.universities}</strong> universities, and ${openGaps === 1 ? 'one thing is' : `${openGaps} things are`} still open. <a href="/data-sources">See every gap</a>.</p></div>
   </div>
   <div class="stat-row">
     <div class="stat"><strong>${stats.programs}</strong><span>programmes, each with a source link</span></div>

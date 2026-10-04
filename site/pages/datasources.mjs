@@ -104,10 +104,11 @@ export function dataSourcesPage(data) {
 </section>
 
 <section class="section wrap" id="gaps">
-  ${sectionHead('⚠️', 'What we could not verify', 'Most sites hide this. A learner deciding their future deserves to know exactly where the information runs out.')}
+  ${sectionHead('⚠️', 'What we could not verify', 'Most sites hide this. A learner deciding their future deserves to know exactly where the information runs out. Planned work is listed separately at the bottom.')}
   ${logGroup('could_not_verify', 'Could not verify', 'bad')}
   ${logGroup('partially_verified', 'Partly verified', 'warn')}
   ${logGroup('verified', 'Verified findings', 'good')}
+  ${logGroup('todo', 'Still to do (not a verification gap)', 'info')}
 </section>
 
 <section class="section wrap wrap--narrow">

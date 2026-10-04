@@ -324,7 +324,7 @@ async function researchLog({ env }) {
   const { results } = await env.DB.prepare(
     `SELECT r.*, u.name AS university_name FROM research_log r
      LEFT JOIN universities u ON u.id = r.university_id
-     ORDER BY CASE r.status WHEN 'could_not_verify' THEN 0 WHEN 'partially_verified' THEN 1 ELSE 2 END, r.id`
+     ORDER BY CASE r.status WHEN 'could_not_verify' THEN 0 WHEN 'partially_verified' THEN 1 WHEN 'todo' THEN 3 ELSE 2 END, r.id`
   ).all();
   return json({ entries: results });
 }
