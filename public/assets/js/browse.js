@@ -140,16 +140,16 @@ function renderResults() {
 
   const grouped = (items) => {
     const byGroup = {};
-    for (const { p } of items) (byGroup[facultyGroup(p.faculty)] ||= []).push(p);
+    for (const { p } of items) (byGroup[p.faculty || 'Other'] ||= []).push(p);
     return Object.entries(byGroup).sort((a, b) => b[1].length - a[1].length);
   };
 
   const section = (title, items, open) => {
     if (!items.length) return null;
     const groups = grouped(items);
-    const inner = groups.map(([group, progs]) => el('div', { class: 'group' },
-      el('h4', {}, `${group} (${progs.length})`),
-      progs.map(resultRow)));
+    const inner = groups.map(([group, progs]) => el('details', { class: 'cat cat--sm' },
+      el('summary', { class: 'cat__head' }, el('span', { class: 'cat__name' }, group), el('span', { class: 'cat__count' }, String(progs.length))),
+      el('div', { class: 'cat__body' }, progs.map(resultRow))));
     const heading = el('h3', {}, `${title} (${items.length})`);
     return open
       ? el('div', { class: 'group' }, heading, inner)
@@ -158,6 +158,10 @@ function renderResults() {
 
   const body = el('div', {},
     el('p', {}, el('button', { type: 'button', class: 'btn btn--ghost', onclick: () => { state.showResults = false; render(); } }, '← Change your score')),
+    el('div', {}, Object.entries(state.scores).filter(([, v]) => v != null && v !== '').map(([id, v]) => {
+      const sys = SCORING_SYSTEMS[id] || {};
+      return el('div', { class: 'scorebox' }, el('span', {}, sys.label || id), el('span', { class: 'scorebox__n' }, String(v)), el('span', { class: 'muted' }, sys.unit || ''));
+    })),
     section('In range', inRange, true),
     section('Nearly', nearly, true),
     section('Everything else', rest, false),
