@@ -503,11 +503,11 @@ export function abroadPage() {
   <p class="callout callout--warn callout--slim">Entry rules, costs and visas differ by country, so those numbers live on each country’s own guide below, linked to its official source. Everything else here is ${tag('general', 'general guidance')} unless tagged ${tag('verified', 'checked against the official source')}.</p>
   <nav class="jump" aria-label="Jump to a section">
     <div class="chip-row">
-      <a class="chip" href="#routes">How people go abroad</a>
-      <a class="chip" href="#pick-a-country">Pick a country</a>
-      <a class="chip" href="#get-ready">Getting ready</a>
-      <a class="chip" href="#questions">Questions to ask</a>
-      <a class="chip" href="#scams">Spotting scams</a>
+      <a class="chip" href="#routes">${iconOrEmoji('🛤️')} How people go abroad</a>
+      <a class="chip" href="#pick-a-country">${iconOrEmoji('🎓')} Pick a country</a>
+      <a class="chip" href="#get-ready">${iconOrEmoji('🗓️')} Getting ready</a>
+      <a class="chip" href="#questions">${iconOrEmoji('🤔')} Questions to ask</a>
+      <a class="chip" href="#scams">${iconOrEmoji('🛡️')} Spotting scams</a>
     </div>
   </nav>
 </section>

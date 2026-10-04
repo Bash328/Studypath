@@ -554,7 +554,7 @@ details.uni[open] > summary::after { rotate: 180deg; }
 /* Study abroad: slim notice and jump links */
 .callout--slim { font-size: .92rem; padding: 10px 14px; margin: 0 0 .8rem; border-radius: var(--radius-sm); }
 .callout--slim .tag, .callout--slim .badge { font-size: .85em; }
-.jump .chip-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+.jump .chip-row { flex-wrap: wrap; gap: 8px; }
 .jump .chip { flex: none; text-decoration: none; }
 .section[id] { scroll-margin-top: 110px; }
 

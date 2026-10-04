@@ -56,6 +56,9 @@ export function breadcrumbLd(crumbs) {
   };
 }
 
+// Changes on every build so a phone that cached an older stylesheet or script fetches the new one.
+const BUILD_V = Date.now().toString(36);
+
 /**
  * @param {object} p
  * @param {string} p.path         e.g. "/faq" (the on-disk file gets a .html extension; see build-pages.mjs)
@@ -93,7 +96,7 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css?v=${BUILD_V}">
 ${jsonLdScripts(ld)}
 </head>
 <body${pageClass ? ` class="${pageClass}"` : ''}>
@@ -140,8 +143,8 @@ ${body}
   </details>
 </nav>
 
-<script type="module" src="/assets/js/app.js"></script>
-${scripts.map((s) => `<script type="module" src="${s}"></script>`).join('\n')}
+<script type="module" src="/assets/js/app.js?v=${BUILD_V}"></script>
+${scripts.map((s) => `<script type="module" src="${s}?v=${BUILD_V}"></script>`).join('\n')}
 </body>
 </html>
 `;
