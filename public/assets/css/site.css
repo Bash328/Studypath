@@ -606,5 +606,10 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .site-footer__share { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; cursor: pointer; text-align: left; }
 dialog.share { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); color: inherit; max-width: min(92vw, 440px); padding: 22px; box-shadow: var(--shadow); }
 dialog.share::backdrop { background: rgba(0, 0, 0, .45); }
-dialog.share h2 { margin: 0 0 .5rem; }
-.share__close { margin-top: 10px; }
+dialog.share { text-align: center; }
+dialog.share h2 { margin: 0 0 .5rem; font-size: 1.35rem; outline: none; }
+dialog.share p { margin: 0 0 1rem; }
+.share__actions { display: grid; gap: 10px; margin-bottom: 10px; }
+.share__actions .btn { width: 100%; justify-content: center; text-align: center; }
+.share__status { min-height: 1.4em; margin: 0 0 6px; font-weight: 600; color: var(--brand-ink); }
+.share__close { width: 100%; justify-content: center; border-color: transparent; }
