@@ -49,7 +49,7 @@ function corsHeaders(request, env) {
   if (origin && allowedOrigins(env).has(origin)) {
     headers['access-control-allow-origin'] = origin;
     headers['access-control-allow-methods'] = 'GET, POST, OPTIONS';
-    headers['access-control-allow-headers'] = 'content-type';
+    headers['access-control-allow-headers'] = 'content-type, authorization';
     headers['access-control-max-age'] = '86400';
   }
   return headers;
@@ -76,6 +76,8 @@ const routes = [
   ['GET', /^\/api\/bursaries$/, listBursaries],
   ['POST', /^\/api\/reminders$/, createReminder],
   ['POST', /^\/api\/questions$/, createQuestion],
+  ['GET', /^\/api\/admin\/questions$/, adminListQuestions],
+  ['POST', /^\/api\/admin\/questions\/([\w-]+)$/, adminUpdateQuestion],
   ['GET', /^\/api\/research-log$/, researchLog],
   ['GET', /^\/api\/coverage$/, coverage],
 ];
@@ -318,6 +320,51 @@ async function createQuestion({ request, env }) {
   ).bind(crypto.randomUUID(), question, contact, contact ? 1 : 0, String(body.page || '').slice(0, 200) || null).run();
 
   return json({ ok: true, message: 'Thanks - your question is in. We will add an answer to the FAQ once we have checked it against the official sources.' }, { maxAge: 0 });
+}
+
+// ---------------------------------------------------------------------------
+// Admin: read and close off the questions people send. Protected by the ADMIN_KEY secret
+// (`wrangler secret put ADMIN_KEY`); with no secret set these endpoints do not exist.
+// ---------------------------------------------------------------------------
+
+async function sameKey(a, b) {
+  const enc = new TextEncoder();
+  const [x, y] = await Promise.all([crypto.subtle.digest('SHA-256', enc.encode(a)), crypto.subtle.digest('SHA-256', enc.encode(b))]);
+  const [p, q] = [new Uint8Array(x), new Uint8Array(y)];
+  let diff = 0;
+  for (let i = 0; i < p.length; i++) diff |= p[i] ^ q[i];
+  return diff === 0;
+}
+
+async function isAdmin(request, env) {
+  if (!env.ADMIN_KEY) return false;
+  const given = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  return given.length > 0 && sameKey(given, env.ADMIN_KEY);
+}
+
+async function adminListQuestions({ request, env }) {
+  if (!env.ADMIN_KEY) return fail(404, 'No such endpoint');
+  if (!(await isAdmin(request, env))) return fail(401, 'That key is not right.');
+  const { results } = await env.DB.prepare(
+    `SELECT id, question, contact, page, status, answer, created_at AS createdAt, answered_at AS answeredAt
+     FROM questions ORDER BY CASE status WHEN 'new' THEN 0 ELSE 1 END, created_at DESC LIMIT 500`
+  ).all();
+  return json({ questions: results }, { maxAge: 0 });
+}
+
+async function adminUpdateQuestion({ request, env, params }) {
+  if (!env.ADMIN_KEY) return fail(404, 'No such endpoint');
+  if (!(await isAdmin(request, env))) return fail(401, 'That key is not right.');
+  const body = await request.json().catch(() => null);
+  const status = body && body.status;
+  if (status !== 'new' && status !== 'answered' && status !== 'ignored') return fail(400, 'status must be new, answered or ignored.');
+  const answer = body.answer ? String(body.answer).slice(0, 2000) : null;
+  const done = await env.DB.prepare(
+    `UPDATE questions SET status = ?, answer = COALESCE(?, answer),
+       answered_at = CASE WHEN ? = 'new' THEN NULL ELSE datetime('now') END WHERE id = ?`
+  ).bind(status, answer, status, params[0]).run();
+  if (!done.meta.changes) return fail(404, 'No such question.');
+  return json({ ok: true }, { maxAge: 0 });
 }
 
 async function researchLog({ env }) {

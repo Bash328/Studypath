@@ -66,3 +66,20 @@ export function notFoundPage() {
 </section>`;
   return [{ path: '/404', title: 'Page not found', description: 'That page could not be found.', body, noindex: true }];
 }
+
+/** Private page for reading the questions people send. Not linked anywhere, not in the sitemap; the data needs the ADMIN_KEY. */
+export function adminQuestionsPage() {
+  const body = `
+<section class="hero hero--slim">
+  <div class="wrap wrap--narrow">
+    <h1>Questions</h1>
+    <p class="lead">Questions people have sent through the Ask page.</p>
+  </div>
+</section>
+<section class="section wrap wrap--narrow">
+  <div id="admin" aria-live="polite">
+    <p class="muted">This page needs JavaScript switched on.</p>
+  </div>
+</section>`;
+  return [{ path: '/admin', title: 'Questions inbox', description: 'Private page.', body, noindex: true, scripts: ['/assets/js/admin.js'] }];
+}

@@ -26,7 +26,7 @@ import { nbtPage } from '../site/pages/nbt.mjs';
 import { moneyPage } from '../site/pages/money.mjs';
 import { abroadPage, abroadCountryPages } from '../site/pages/abroad.mjs';
 import { dataSourcesPage } from '../site/pages/datasources.mjs';
-import { privacyPage, notFoundPage } from '../site/pages/misc.mjs';
+import { privacyPage, notFoundPage, adminQuestionsPage } from '../site/pages/misc.mjs';
 import { weakestLevel } from '../site/lib/html.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -50,7 +50,7 @@ const pages = [
   ...universitiesIndex(data), ...universityPages(data),
   ...grade10Page(data), ...faqPage(data), ...askPage(), ...askUniversityPage(data),
   ...datesPage(data), ...nbtPage(data), ...moneyPage(data), ...abroadPage(), ...abroadCountryPages(),
-  ...dataSourcesPage(data), ...privacyPage(), ...notFoundPage(),
+  ...dataSourcesPage(data), ...privacyPage(), ...notFoundPage(), ...adminQuestionsPage(),
 ];
 
 for (const page of pages) {

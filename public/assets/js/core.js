@@ -69,7 +69,7 @@ export async function api(path, options = {}) {
   try {
     res = await fetch(`${API_BASE}/api${path}`, {
       method: options.method || 'GET',
-      headers: { 'content-type': 'application/json' },
+      headers: { 'content-type': 'application/json', ...options.headers },
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
   } catch {

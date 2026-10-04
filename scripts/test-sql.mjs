@@ -98,5 +98,26 @@ ok('same address again is an upsert, not an error', r.s === 200);
 const rows = DB.raw.prepare('SELECT email, field_of_study FROM reminder_optins').all();
 ok('one row, latest field wins', rows.length === 1 && rows[0].field_of_study === 'Law', JSON.stringify(rows));
 
+// questions: stored, and the admin endpoints stay shut without the key
+const ask = (body) => get('/api/questions', { method: 'POST', body: JSON.stringify(body) });
+r = await ask({ question: 'Can I study law with maths literacy?', contact: 'a@b.co', consent: true, page: '/ask' });
+ok('question stored', r.s === 200);
+r = await get('/api/admin/questions');
+ok('admin list is 404 when no ADMIN_KEY is set', r.s === 404);
+env.ADMIN_KEY = 'secret-key';
+r = await get('/api/admin/questions');
+ok('admin list without a key is 401', r.s === 401);
+r = await get('/api/admin/questions', { headers: { authorization: 'Bearer wrong' } });
+ok('admin list with a wrong key is 401', r.s === 401);
+r = await get('/api/admin/questions', { headers: { authorization: 'Bearer secret-key' } });
+ok('admin list with the key returns the question', r.s === 200 && r.b.questions.length === 1 && r.b.questions[0].status === 'new' && r.b.questions[0].contact === 'a@b.co', JSON.stringify(r.b));
+const qid = r.b.questions[0].id;
+r = await get('/api/admin/questions/' + qid, { method: 'POST', headers: { authorization: 'Bearer secret-key' }, body: JSON.stringify({ status: 'answered', answer: 'Added to the FAQ' }) });
+ok('marking a question answered works', r.s === 200);
+r = await get('/api/admin/questions/' + qid, { method: 'POST', headers: { authorization: 'Bearer secret-key' }, body: JSON.stringify({ status: 'bogus' }) });
+ok('a bad status is refused', r.s === 400);
+r = await get('/api/admin/questions', { headers: { authorization: 'Bearer secret-key' } });
+ok('question now answered, with its note and time', r.b.questions[0].status === 'answered' && r.b.questions[0].answer === 'Added to the FAQ' && r.b.questions[0].answeredAt, JSON.stringify(r.b));
+
 console.log(bad ? `\n${bad} FAILURE(S)\n` : '\nAll SQL endpoint checks passed.\n');
 process.exit(bad ? 1 : 0);

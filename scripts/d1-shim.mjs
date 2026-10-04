@@ -51,7 +51,7 @@ export function createRealDb() {
         bind(...args) { binds = args; return self; },
         async all() { return { results: stmt.all(...binds).map((r) => ({ ...r })) }; },
         async first() { const r = stmt.get(...binds); return r ? { ...r } : null; },
-        async run() { stmt.run(...binds); return { success: true }; },
+        async run() { const info = stmt.run(...binds); return { success: true, meta: { changes: info.changes } }; },
       };
       return self;
     },
