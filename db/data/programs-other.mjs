@@ -319,7 +319,7 @@ const ruBase = {
   document_date: '2026-03-18',
 };
 const ruNote = (lo, hi, offer) =>
-  `Rhodes points of ${lo}-${hi} are considered at the Dean’s discretion; ${offer} or more receives a provisional offer. We show ${offer} as the qualifying number so that "you qualify" means exactly that - but you are still worth an application from ${lo}. Rhodes has no Engineering and no MBChB. The NBT is recommended, not required.`;
+  `[conflict] Rhodes’s live admission-gateway requirements page (read 2026-10-04) shows different points bands from the document these figures come from - for example Commerce extended 34-37 and automatic 38-44, Science extended 38-44 and automatic 45+, Education extended 32-39 and automatic 40+ - and labels them differently, so confirm with Rhodes before relying on a cut-off. Rhodes points of ${lo}-${hi} are considered at the Dean’s discretion; ${offer} or more receives a provisional offer. We show ${offer} as the qualifying number so that "you qualify" means exactly that - but you are still worth an application from ${lo}. Rhodes has no Engineering and no MBChB. The NBT is recommended, not required.`;
 
 const ruPrograms = [
   { ...ruBase, id: 'ru-bpharm', career_id: 'pharmacist', name: 'BPharm', faculty: 'Pharmacy', duration_years: 4, min_aps: 45,
