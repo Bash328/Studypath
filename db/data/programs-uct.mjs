@@ -264,7 +264,7 @@ export const uctPrograms = [
     subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
     notes: bands(435, 470, '430-434, Education Development Unit only') + ' UCT’s most flexible Commerce degree: a core of 11 Commerce courses plus a wide choice of electives from across the university.' },
 
-  { ...base, id: 'uct-bcom-marketing', career_id: 'retail-manager', name: 'BCom / BBusSc Marketing Studies',
+  { ...base, id: 'uct-bcom-marketing', career_id: 'marketing-professional', name: 'BCom / BBusSc Marketing Studies',
     faculty: 'Commerce', duration_years: 3, min_aps: 435, score_type: 'band_a',
     subject_requirements: [pct('Mathematics', 60), engPct(50, 60), manual('NBT', 'NBT Academic Literacy and Quantitative Literacy must be Upper Intermediate or above. The NBT Maths test is not required for Commerce.')],
     notes: bands(435, 470, '430-434, Education Development Unit only') + ' BBusSc takes four years.' },
