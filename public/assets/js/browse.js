@@ -1,6 +1,6 @@
 // "What can I get into with my APS?" - a lighter, faster alternative to the full marks
 // calculator. You pick a university and type the single score IT gave you (its own APS,
-// FPS, AS ...), and we show which of its programmes you're in range for, grouped by field.
+// FPS, AS ...), and we show which of its programmes you're in range for, grouped by faculty.
 // This checks points only, not subject requirements - the page says so up front.
 
 import { $, el, set, store, track, sourceLine } from './core.js';

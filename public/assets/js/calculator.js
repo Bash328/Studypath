@@ -128,7 +128,7 @@ function requirementList(requirements) {
         r.status === 'not_met' && r.gap != null ? el('strong', {}, ` (${r.gap}% to go)`) : null))));
 }
 
-function programRow(entry, score) {
+function programRow(entry, score, tag) {
   const { program } = entry;
   const bits = [program.faculty, program.durationYears ? `${program.durationYears} years` : null].filter(Boolean).join(' · ');
 
@@ -147,19 +147,19 @@ function programRow(entry, score) {
 
   return el('div', { class: 'prow' },
     program.flags.length ? el('div', { class: 'badge-row' }, program.flags.map((f) => el('span', { class: `badge badge--${f.tone === 'warn' ? 'warn' : 'info'}` }, f.label))) : null,
-    el('div', { class: 'prow__head' }, el('h4', { class: 'prow__name' }, program.name), el('p', { class: 'prow__meta' }, bits)),
+    el('div', { class: 'prow__head' }, el('h4', { class: 'prow__name' }, program.name, tag ? ' ' : null, tag ? el('span', { class: `pill pill--${tag[1]}` }, tag[0]) : null), el('p', { class: 'prow__meta' }, bits)),
     line,
     el('details', {}, el('summary', {}, 'Full requirements'), requirementList(entry.requirements), program.notes ? el('p', { class: 'small muted' }, program.notes) : null, sourceLine(program.sourceUrl, program.intakeYear ? `${program.intakeYear} intake` : null)));
 }
 
 // Programmes grouped by faculty, each a collapsed category that opens to show its programmes.
-function byFaculty(list, byId) {
+function byFaculty(list, byId, tagOf) {
   const fac = {};
   for (const e of list) (fac[e.program.faculty || 'Other'] ||= []).push(e);
   return Object.entries(fac).sort((a, b) => b[1].length - a[1].length).map(([name, items]) =>
     el('details', { class: 'cat cat--sm' },
       el('summary', { class: 'cat__head' }, el('span', { class: 'cat__name' }, name), el('span', { class: 'cat__count' }, String(items.length))),
-      el('div', { class: 'cat__body' }, items.map((e) => programRow(e, byId[e.scoreId])))));
+      el('div', { class: 'cat__body' }, items.map((e) => programRow(e, byId[e.scoreId], tagOf && tagOf(e))))));
 }
 
 function universityCard(block) {
@@ -190,7 +190,7 @@ function universityCard(block) {
         el('h4', {}, 'Extra selection scores this university publishes'),
         block.selectionScores.map((s) => el('p', { class: 'small' }, el('strong', {}, `${s.label}: ${s.value} ${s.unit}`), el('br'), el('span', { class: 'muted' }, s.note)))) : null,
       block.qualifies.length + block.marksOk.length
-        ? el('div', { class: 'group' }, el('h4', {}, `Programmes you can apply for (${total})`), byFaculty([...block.qualifies, ...block.marksOk], byId))
+        ? el('div', { class: 'group' }, el('h4', {}, `Programmes you can apply for (${total})`), byFaculty([...block.qualifies, ...block.marksOk], byId, (e) => (block.qualifies.includes(e) ? ['Good to go', 'good'] : ['More to it', 'more'])))
         : el('p', { class: 'muted' }, 'Nothing here is open to you with these marks yet.'),
       ...groups.filter(([t]) => !/Good to go|More to it/.test(t)).map(([title, list]) =>
         el('details', { class: 'group group--collapsible' }, el('summary', {}, el('h4', {}, `${title} (${list.length})`)), byFaculty(list, byId)))));

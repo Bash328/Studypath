@@ -7,7 +7,7 @@ export function browsePage() {
   <div class="wrap wrap--narrow">
     <p class="eyebrow">30 seconds · just one number</p>
     <h1>Already know your APS or points score?</h1>
-    <p class="lead">Pick your university, type the score it gave you, and see which programmes are open to you – grouped by field, the way you'd browse a prospectus.</p>
+    <p class="lead">Pick your university, type the score it gave you, and see which programmes are open to you – grouped by faculty, the way you'd browse a prospectus.</p>
   </div>
 </section>
 
@@ -32,7 +32,7 @@ export function browsePage() {
   return [{
     path: '/browse',
     title: 'What can I get into with my APS? – Studypath',
-    description: "Already have an APS or points score from a university? Pick the university, type your score, and browse which programmes you're in range for, grouped by field.",
+    description: "Already have an APS or points score from a university? Pick the university, type your score, and browse which programmes you're in range for, grouped by faculty.",
     body,
     scripts: ['/assets/js/browse.js'],
     breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'What can I get into?', path: '/browse' }],
