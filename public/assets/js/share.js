@@ -13,7 +13,7 @@ function build() {
   const status = el('p', { class: 'small', role: 'status' }, '');
   const close = () => dialog.close();
   const copy = async () => {
-    try { await navigator.clipboard.writeText(url); status.textContent = 'Link copied. Paste it into a message.'; } catch { status.textContent = `Copy this link: ${url}`; }
+    try { await navigator.clipboard.writeText(url); status.textContent = 'Link copied'; } catch { status.textContent = `Copy this link: ${url}`; }
   };
   dialog = el('dialog', { class: 'share', 'aria-labelledby': 'share-title' },
     el('h2', { id: 'share-title' }, 'Know someone who needs this?'),
@@ -24,6 +24,7 @@ function build() {
       el('button', { class: 'btn btn--ghost', type: 'button', onclick: () => { track('share_click', { how: 'copy' }); copy(); } }, 'Copy link')),
     status,
     el('button', { class: 'btn btn--ghost share__close', type: 'button', onclick: close }, 'Not now'));
+  dialog.addEventListener('close', () => { status.textContent = ''; });
   dialog.addEventListener('click', (e) => { if (e.target === dialog) close(); });
   document.body.append(dialog);
 }
