@@ -481,7 +481,7 @@ function countryHub() {
   const published = COUNTRIES.filter((c) => c.published);
   return `
 <section class="section wrap wrap--narrow" id="pick-a-country">
-  ${sectionHead('🎓', 'Costs, funding, visas, and deadlines – pick a country', 'A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
+  ${sectionHead('🎓', 'Pick a country', 'Costs, funding, visas and deadlines, country by country. A few foreign universities publish exactly what NSC/matric grades they want, and each country has its own visa fees and money rules that change most years. Each guide below is checked against official sources, with every figure linked to where it came from.')}
   <div class="grid grid--2">
     ${published.map((c) => `<a class="card card--link" href="/study-abroad/${esc(c.id)}"><h3>${esc(c.name)}</h3><p class="small muted">${esc(c.teaser)}</p></a>`).join('')}
   </div>
@@ -505,8 +505,8 @@ export function abroadPage() {
     <div class="chip-row">
       <a class="chip" href="#routes">How people go abroad</a>
       <a class="chip" href="#pick-a-country">Pick a country</a>
-      <a class="chip" href="#get-ready">Getting ready, year by year</a>
-      <a class="chip" href="#questions">Questions worth asking</a>
+      <a class="chip" href="#get-ready">Getting ready</a>
+      <a class="chip" href="#questions">Questions to ask</a>
       <a class="chip" href="#scams">Spotting scams</a>
     </div>
   </nav>
@@ -522,7 +522,7 @@ export function abroadPage() {
 ${countryHub()}
 
 <section class="section wrap wrap--narrow" id="get-ready">
-  ${sectionHead('🗓️', 'What to line up, and roughly when')}
+  ${sectionHead('🗓️', 'Getting ready')}
   ${claim(g('This is a rough order, not a rule – every country and university has its own calendar.'))}
   <div class="table-scroll"><table class="data">
     <thead><tr><th scope="col">When</th><th scope="col">What to sort out</th></tr></thead>
@@ -531,7 +531,7 @@ ${countryHub()}
 </section>
 
 <section class="section wrap wrap--narrow" id="questions">
-  ${sectionHead('🤔', 'Questions to ask before you commit')}
+  ${sectionHead('🤔', 'Questions to ask')}
   <div class="grid grid--2">
     <div class="card"><h3>Will the degree be recognised back home?</h3>${claims([g('If you plan to work in South Africa in a regulated profession – medicine, engineering, law, teaching, accounting – check with that profession’s registration body **before** you enrol, not after you graduate.')])}</div>
     <div class="card"><h3>What does it really cost?</h3>${claims([g('Compare the full multi-year total against the same degree here, including the rand weakening. International student fees are usually much higher than local ones.')])}</div>

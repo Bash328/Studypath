@@ -556,7 +556,7 @@ details.uni[open] > summary::after { rotate: 180deg; }
 .callout--slim .tag, .callout--slim .badge { font-size: .85em; }
 .jump .chip-row { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
 .jump .chip { flex: none; text-decoration: none; }
-.section[id] { scroll-margin-top: 76px; }
+.section[id] { scroll-margin-top: 110px; }
 
 /* Home: tool cards put the icon beside the text on phones (desktop keeps it on top) */
 @media (max-width: 640px) {
