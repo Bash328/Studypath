@@ -55,6 +55,9 @@ function apply() {
     if (ok) shown++;
   });
   empty.hidden = shown !== 0;
+  // The "couldn't pin down" heading goes when the filters hide every row under it.
+  const undated = $('#undated');
+  if (undated) undated.hidden = $$('.date', undated).every((r) => r.hidden);
 }
 
 kindChips.forEach((chip) => chip.addEventListener('click', () => {

@@ -59,8 +59,10 @@ export function datesPage(data) {
   <p class="empty" id="dates-empty" hidden>Nothing to show with those filters. Try “Show dates that have passed”.</p>
 
   ${undated.length ? `
+  <div id="undated">
   <h2 class="h3">Dates we couldn’t pin down</h2>
-  <ul class="dates dates--plain">${undated.map((d) => dateRow(d, d.university_id ? uniById[d.university_id].short_name : null)).join('\n')}</ul>` : ''}
+  <ul class="dates dates--plain">${undated.map((d) => dateRow(d, d.university_id ? uniById[d.university_id].short_name : null)).join('\n')}</ul>
+  </div>` : ''}
 </section>
 
 <section class="section wrap wrap--narrow" id="open-days">
