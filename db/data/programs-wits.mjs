@@ -380,4 +380,8 @@ export const witsPrograms = [
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/health/health-systems-science/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), manual('Life or Physical Sciences', 'Life Sciences and/or Physical Sciences at level 5.'), manual('NBT', 'The NBT must be written in person by 17 August.')],
     notes: flag('no-cutoff-published', 'Read from the live course-finder page on 2026-10-04 (programme code MBA05): Composite Index (75% school average, 25% NBT), not APS, and no published cut-off. Applications close 30 June 2026. Filed under the closest existing career page - there is no health-systems career yet.') },
+  { ...base, id: 'wits-ba-law-part-time', career_id: 'lawyer', name: 'BA with Law (part-time)', faculty: 'Humanities', duration_years: null, min_aps: 43,
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/humanities/ba-part-time-with-law/',
+    subject_requirements: [engLvl(5, 5), anyOf(lvl('Mathematics', 3), lvl('Mathematical Literacy', 4))],
+    notes: 'Read from the live course-finder page on 2026-10-04: 4 to 6 years part-time, evening lectures (17:30-21:00, some Saturday mornings) at Braamfontein West Campus, at most three full-year or six modular courses a year. APS 40-42 may be wait-listed. Part-time students cannot get NSFAS, University Entrance Scholarships or residence. Closes 30 September 2026. Leads into the LLB two-year stream.' },
 ];
