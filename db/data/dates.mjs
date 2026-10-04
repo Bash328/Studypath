@@ -145,6 +145,8 @@ export const dates = [
       verification: 'verified', note: 'Read on the live 2027 course-finder pages (2026-10-04); residence applications also close 30 September.', source_url: 'https://www.wits.ac.za/undergraduate/academic-programmes/' }),
   d({ id: 'wits-close-baft', university_id: 'wits', kind: 'close', title: 'Film and Television (BAFT) applications close', date: '2026-06-30', applies_to: 'BA Film and Television',
       verification: 'verified', note: 'Portfolio required. Read on the live 2027 course-finder page (2026-10-04).', source_url: 'https://www.wits.ac.za/course-finder/undergraduate/humanities/film-and-television/' }),
+  d({ id: 'wits-close-slp-audiology', university_id: 'wits', kind: 'close', title: 'Speech-Language Pathology and Audiology close', date: '2026-06-30', applies_to: 'BA Speech-Language Pathology and BA Audiology (30 places each year)',
+      verification: 'verified', note: 'Read on the live 2027 course-finder pages (2026-10-04). Selection is by school results and NBT; the NBT must be written by 17 August.', source_url: 'https://www.wits.ac.za/course-finder/undergraduate/humanities/audiology/' }),
   d({ id: 'wits-nbt-health', university_id: 'wits', kind: 'nbt', title: 'NBT deadline for Health Sciences', date: '2026-08-17',
       applies_to: 'Must be written in person; online NBTs are not considered', verification: 'reported',
       source_url: 'https://www.wits.ac.za/course-finder/undergraduate/health/medicine-and-surgery/' }),

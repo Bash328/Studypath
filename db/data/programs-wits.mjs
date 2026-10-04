@@ -155,10 +155,10 @@ export const witsPrograms = [
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 7)],
     notes: 'Confirmed unchanged by a direct fetch of the 2027 course-finder page (2026-10-02 spot-check). APS 39-41 with English 5 and Mathematics 7 may be wait-listed.' },
   { ...base, id: 'wits-bcom-law', career_id: 'lawyer', name: 'BCom with Law (part-time)',
-    faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 43,
+    faculty: 'Commerce, Law & Management', duration_years: null, min_aps: 43,
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/bcom-part-time-with-law/',
     subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5)],
-    notes: 'RESOLVED 2026-10-02 (closes the last open Wits gap - see wits-bcom-law-resolved-2026-10-02 in research-log.mjs): a direct fetch of the live course-finder page confirms APS 43+ belongs specifically to the part-time route (evening lectures, Braamfontein West Campus, no NSFAS/scholarships/residence). APS 35-42 with English and Mathematics Level 6 may be wait-listed. There is no separate full-time "BCom with Law" degree - a full-time student wanting both does the general BCom (APS 38, see wits-bcom-general) and chooses Law as their second major, the same way other BCom major combinations work.' },
+    notes: 'Re-checked 2026-10-04: the page gives the duration as 4 to 6 years (part-time), so duration is left blank; the wits-bcom-law-full-time row is the 3-year route listed separately on the programmes index. RESOLVED 2026-10-02 (closes the last open Wits gap - see wits-bcom-law-resolved-2026-10-02 in research-log.mjs): a direct fetch of the live course-finder page confirms APS 43+ belongs specifically to the part-time route (evening lectures, Braamfontein West Campus, no NSFAS/scholarships/residence). APS 35-42 with English and Mathematics Level 6 may be wait-listed. There is no separate full-time "BCom with Law" degree - a full-time student wanting both does the general BCom (APS 38, see wits-bcom-general) and chooses Law as their second major, the same way other BCom major combinations work.' },
   // CONFLICT found in the 2026-10-01 Wits spot-check: a direct fetch of the 2027
   // course-finder page confirms APS 46+ (unchanged) but gives Mathematics at Level 5,
   // not the Level 4 the 2026 schools-liaison guide states - we show the course-finder's
@@ -269,9 +269,9 @@ export const witsPrograms = [
     notes: 'About 60 places.' },
   { ...base, id: 'wits-fine-arts', career_id: 'artist', name: 'BA Fine Arts',
     faculty: 'Humanities', duration_years: 4, min_aps: 34,
-    source_url: 'https://www.wits.ac.za/media/wits-university/study/undergraduate/documents/Bachelor%20of%20Arts%20in%20Fine%20Arts.pdf',
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/humanities/fine-arts/',
     subject_requirements: [pct('English', 60), manual('Portfolio', 'A portfolio and a questionnaire are required.')],
-    notes: 'An APS of 30-33 is also considered.' },
+    notes: 'Re-checked 2026-10-04 against the course-finder page (programme code AFA01): APS 34+, English level 5, online questionnaire plus a portfolio of artworks and a CV; closes 30 September 2026. An APS of 30-33 is also considered.' },
   // wits-pass-3 (see research-log.mjs): remaining programmes from the academic-programmes index.
   { ...base, id: 'wits-bcom-economics', career_id: 'economist', name: 'BCom Economics', faculty: 'Commerce, Law & Management', duration_years: 3, min_aps: 38,
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/clm/economics/',
@@ -375,4 +375,9 @@ export const witsPrograms = [
     source_url: 'https://www.wits.ac.za/course-finder/undergraduate/health/biomedical-sciences/',
     subject_requirements: [{subject:'English',hl_min_level:5,fal_min_level:5},{subject:'Mathematics',min_level:5},{label:'Life or Physical Sciences',note:'Life Sciences and/or Physical Sciences at level 5.',not_computable:true},{label:'NBT',note:'The NBT must be written in person by 17 August.',not_computable:true}],
     notes: flag('no-cutoff-published', 'Read from the live 2027 course-finder page on 2026-10-04: Wits Health Sciences uses a Composite Index (75% school average across 5 subjects, 25% NBT), not APS, and does not publish the cut-off. Applications close 30 June 2026; residence applications 30 September 2026.') },
+  { ...base, id: 'wits-bhsc-health-systems', career_id: 'doctor', name: 'Bachelor of Health Sciences: Health Systems Sciences', faculty: 'Health Sciences', duration_years: 3, min_aps: null,
+    scoring_system: 'WITS_COMPOSITE_INDEX',
+    source_url: 'https://www.wits.ac.za/course-finder/undergraduate/health/health-systems-science/',
+    subject_requirements: [engLvl(5, 5), lvl('Mathematics', 5), manual('Life or Physical Sciences', 'Life Sciences and/or Physical Sciences at level 5.'), manual('NBT', 'The NBT must be written in person by 17 August.')],
+    notes: flag('no-cutoff-published', 'Read from the live course-finder page on 2026-10-04 (programme code MBA05): Composite Index (75% school average, 25% NBT), not APS, and no published cut-off. Applications close 30 June 2026. Filed under the closest existing career page - there is no health-systems career yet.') },
 ];
