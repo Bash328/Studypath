@@ -547,3 +547,6 @@ details.uni[open] > summary::after { rotate: 180deg; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Career page: breathing room between the stacked cards in the subjects section */
+.section.wrap--narrow > .card + .card { margin-top: 1.5rem; }
