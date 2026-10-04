@@ -40,34 +40,16 @@ function subjectsIn(r, out = new Set()) {
   return out;
 }
 
-// The three groupings most South African schools offer. They are a school convention, not an official category,
-// so the wording below says so and sends learners to their teacher.
-const STREAMS = {
-  science: { name: 'Science stream', subjects: 'Mathematics, Physical Sciences and Life Sciences', fits: 'engineering, health, science and technology' },
-  commerce: { name: 'Commerce (accounting) stream', subjects: 'Mathematics (or Mathematical Literacy), Accounting, and Business Studies or Economics', fits: 'accounting, finance, business and management' },
-  humanities: { name: 'Humanities stream', subjects: 'subjects such as History, Geography, languages, Tourism, Visual Arts or Dramatic Arts, with Mathematics or Mathematical Literacy', fits: 'law, teaching, social sciences, media and the arts' },
-};
-
-const SECTOR_STREAM = { Engineering: 'science', Technology: 'science', Science: 'science', Health: 'science', 'Built environment': 'science', 'Business & finance': 'commerce' };
-const STREAM_OVERRIDE = { 'urban-planner': 'humanities', 'industrial-psychologist': 'humanities' };
-
-/** A career's closest stream, from its sector (our programme data names Maths and the sciences far more often than Accounting or the humanities, so counting subjects would undersell Commerce and Humanities). */
-function recommendStream(career) {
-  return STREAM_OVERRIDE[career.id] || SECTOR_STREAM[career.sector] || 'humanities';
-}
-
 /** A dropdown of the subjects to ask for, ranked by how many of the career's programmes name them. */
-function subjectsToAsk(list, career) {
+function subjectsToAsk(list) {
   const count = {};
   for (const p of list) for (const sub of new Set([...(p.subjectRequirements || [])].flatMap((r) => [...subjectsIn(r)]))) count[sub] = (count[sub] || 0) + 1;
   const ranked = Object.entries(count).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  const stream = STREAMS[recommendStream(career)];
   const band = (n) => (n / list.length >= 0.75 ? 'Nearly all' : n / list.length >= 0.35 ? 'Many' : 'Some');
   return el('details', { class: 'subjects-ask' },
     el('summary', {}, 'Subjects to ask for'),
-    el('p', {}, el('strong', {}, 'Closest stream: '), `${stream.name} (${stream.subjects}) - the usual route into ${stream.fits}.`),
     ranked.length ? el('ul', { class: 'plain' }, ranked.map(([sub, n]) => el('li', {}, el('strong', {}, sub), ` – ${band(n)} of these programmes (${n} of ${list.length}) ask for it`))) : el('p', { class: 'small' }, 'The programmes we have captured for this career do not name specific school subjects beyond the general entry rules.'),
-    el('p', { class: 'small muted' }, 'A guide from the programmes we have captured, not a promise. Subject choices at your school differ, so check with your teacher or school counsellor before you choose. Streams are a common way schools group subjects, not an official category, and some schools do not offer all three.'));
+    el('p', { class: 'small muted' }, 'A guide from the programmes we have captured, not a promise. Subject choices at your school differ, so check with your teacher or school counsellor before you choose.'));
 }
 
 function careerBlock(career) {
@@ -77,7 +59,7 @@ function careerBlock(career) {
       el('span', { 'aria-hidden': 'true', html: GRADUATION_ICON }),
       ` ${career.name}`,
       el('button', { class: 'chip', type: 'button', 'aria-label': `Remove ${career.name}`, onclick: () => { picked = picked.filter((p) => p.id !== career.id); render(); } }, 'Remove ×')),
-    subjectsToAsk(list, career),
+    subjectsToAsk(list),
     list.length
       ? el('div', { class: 'table-scroll' }, el('table', { class: 'data' },
           el('thead', {}, el('tr', {}, el('th', { scope: 'col' }, 'University'), el('th', { scope: 'col' }, 'Programme'), el('th', { scope: 'col' }, 'Asks for'))),

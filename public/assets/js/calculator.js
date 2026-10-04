@@ -3,6 +3,7 @@
 // this device and the two can never disagree.
 
 import { $, el, clear, getJson, store, track, sourceLine, plural } from './core.js';
+import { maybePromptShare } from './share.js';
 import { SUBJECTS } from './engine/subjects.js';
 import { qualifyAll, InputError } from './engine/qualify-core.js';
 
@@ -204,6 +205,7 @@ async function runCalculator() {
     state.data = result;
     track('calculator_run', { subjects: result.marksCounted, universities: result.universities.length });
     setStep(3);
+    maybePromptShare();
   } catch (err) {
     const msg = err instanceof InputError ? err.message : (err.message || 'Something went wrong.');
     clear(root).append(el('div', { class: 'callout callout--warn' }, el('p', {}, msg),

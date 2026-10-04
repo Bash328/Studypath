@@ -2,6 +2,10 @@
 
 import './analytics.js';
 import { $, $$ } from './core.js';
+import { openShare } from './share.js';
+
+const shareLink = $('#share-open');
+if (shareLink) shareLink.addEventListener('click', openShare);
 
 // The "More" sheet in the phone tab bar closes when you tap elsewhere or press Escape.
 const more = $('.tab--more');

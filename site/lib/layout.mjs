@@ -128,6 +128,7 @@ ${body}
       </div>
       <nav aria-label="Footer">
         ${MORE.map(([href, , label]) => `<a href="${href}">${esc(label)}</a>`).join('\n        ')}
+        <button type="button" class="site-footer__share" id="share-open">Share Studypath</button>
       </nav>
     </div>
   </div>

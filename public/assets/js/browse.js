@@ -4,6 +4,7 @@
 // This checks points only, not subject requirements - the page says so up front.
 
 import { $, el, set, store, track, sourceLine } from './core.js';
+import { maybePromptShare } from './share.js';
 import { SCORING_SYSTEMS } from './engine/scoring.js';
 
 const root = $('#browse');
@@ -76,7 +77,7 @@ function renderScoreEntry() {
   const runBtn = el('button', {
     class: 'btn btn--primary btn--big', type: 'button',
     disabled: computable.length && !hasAnyScore() ? true : null,
-    onclick: () => { state.showResults = true; track('browse_run', { university: state.uniId }); render(); },
+    onclick: () => { state.showResults = true; track('browse_run', { university: state.uniId }); render(); maybePromptShare(); },
   }, 'Show me what I can get into →');
 
   const inputs = computable.map((s) => el('div', { class: 'mark-row' },
