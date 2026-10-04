@@ -152,6 +152,16 @@ function programRow(entry, score) {
     el('details', {}, el('summary', {}, 'Full requirements'), requirementList(entry.requirements), program.notes ? el('p', { class: 'small muted' }, program.notes) : null, sourceLine(program.sourceUrl, program.intakeYear ? `${program.intakeYear} intake` : null)));
 }
 
+// Programmes grouped by faculty, each a collapsed category that opens to show its programmes.
+function byFaculty(list, byId) {
+  const fac = {};
+  for (const e of list) (fac[e.program.faculty || 'Other'] ||= []).push(e);
+  return Object.entries(fac).sort((a, b) => b[1].length - a[1].length).map(([name, items]) =>
+    el('details', { class: 'cat cat--sm' },
+      el('summary', { class: 'cat__head' }, el('span', { class: 'cat__name' }, name), el('span', { class: 'cat__count' }, String(items.length))),
+      el('div', { class: 'cat__body' }, items.map((e) => programRow(e, byId[e.scoreId])))));
+}
+
 function universityCard(block) {
   const total = block.qualifies.length + block.marksOk.length;
   const scoreBoxes = (block.scores || []).map((s) => s.computable
@@ -179,14 +189,11 @@ function universityCard(block) {
       block.selectionScores.length ? el('div', { class: 'callout' },
         el('h4', {}, 'Extra selection scores this university publishes'),
         block.selectionScores.map((s) => el('p', { class: 'small' }, el('strong', {}, `${s.label}: ${s.value} ${s.unit}`), el('br'), el('span', { class: 'muted' }, s.note)))) : null,
-      ...groups.map(([title, list], i) => {
-        const rows = list.map((e) => programRow(e, byId[e.scoreId]));
-        const heading = el('h4', {}, `${title} (${list.length})`);
-        // The first two groups (what you qualify for, or nearly do) matter most - show them
-        // open. The rest is useful but can overwhelm, so it's tucked behind a toggle.
-        if (i < 2) return el('div', { class: 'group' }, heading, rows);
-        return el('details', { class: 'group group--collapsible' }, el('summary', {}, heading), rows);
-      })));
+      block.qualifies.length + block.marksOk.length
+        ? el('div', { class: 'group' }, el('h4', {}, `Programmes you can apply for (${total})`), byFaculty([...block.qualifies, ...block.marksOk], byId))
+        : el('p', { class: 'muted' }, 'Nothing here is open to you with these marks yet.'),
+      ...groups.filter(([t]) => !/Good to go|More to it/.test(t)).map(([title, list]) =>
+        el('details', { class: 'group group--collapsible' }, el('summary', {}, el('h4', {}, `${title} (${list.length})`)), byFaculty(list, byId)))));
 }
 
 async function runCalculator() {
