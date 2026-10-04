@@ -89,7 +89,7 @@ export function universityPages(data) {
   return universities.map((u) => {
     const list = programs.filter((p) => p.university.id === u.id);
     const byGroup = {};
-    for (const p of list) (byGroup[facultyGroup(p.faculty)] ||= []).push(p);
+    for (const p of list) (byGroup[p.faculty || 'Other'] ||= []).push(p);
     const groups = Object.keys(byGroup).sort((a, b) => byGroup[b].length - byGroup[a].length);
     const faculties = [...new Set(list.map((p) => p.faculty))];
     const systems = [...new Set(list.map((p) => p.scoringSystem))];
@@ -143,15 +143,18 @@ ${list.length ? `
 ${list.length ? `
 <section class="section wrap" id="degrees">
   ${sectionHead('🎓', 'Programmes')}
-  ${groups.length > 1 ? `<div class="chip-row" id="degree-filters" role="group" aria-label="Filter by field">
-    <button class="chip" type="button" data-group="" aria-pressed="true">All (${list.length})</button>
-    ${groups.map((g) => `<button class="chip" type="button" data-group="${esc(g)}" aria-pressed="false">${iconOrEmoji(GROUP_EMOJI[g] || '')} ${esc(g)} (${byGroup[g].length})</button>`).join('')}
-  </div>` : ''}
+  <p class="small muted">${list.length === 1 ? 'One programme' : `${list.length} programmes`} in ${groups.length === 1 ? 'one faculty' : `${groups.length} faculties`}. Pick a faculty to see what you can study there.</p>
+  <div class="cats">
   ${groups.map((g) => `
-  <div class="degree-block" data-group="${esc(g)}">
-    <h3 class="uni-head">${iconOrEmoji(GROUP_EMOJI[g] || '')} ${esc(g)}</h3>
-    <div class="grid grid--2">${byGroup[g].map((p) => programCard(p, { showUniversity: false })).join('')}</div>
-  </div>`).join('')}
+  <details class="cat" id="cat-${esc(g.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}">
+    <summary class="cat__head">
+      <span class="cat__icon" aria-hidden="true">${iconOrEmoji(GROUP_EMOJI[facultyGroup(g)] || '')}</span>
+      <span class="cat__name">${esc(g)}</span>
+      <span class="cat__count">${byGroup[g].length}</span>
+    </summary>
+    <div class="cat__body grid grid--2">${byGroup[g].map((p) => programCard(p, { showUniversity: false })).join('')}</div>
+  </details>`).join('')}
+  </div>
 </section>` : `
 <section class="section wrap">
   <div class="callout">

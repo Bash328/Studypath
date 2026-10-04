@@ -15,10 +15,12 @@ function openTarget() {
   const id = decodeURIComponent(location.hash.slice(1));
   if (!id) return;
   const target = document.getElementById(id);
-  if (target && target.tagName === 'DETAILS') {
-    target.open = true;
-    target.scrollIntoView({ block: 'start' });
+  if (!target) return;
+  let opened = false;
+  for (let el = target; el; el = el.parentElement) {
+    if (el.tagName === 'DETAILS' && !el.open) { el.open = true; opened = true; }
   }
+  if (opened) target.scrollIntoView({ block: 'start' });
 }
 window.addEventListener('hashchange', openTarget);
 openTarget();
@@ -40,6 +42,6 @@ if (toTop) {
   };
   window.addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
   window.addEventListener('resize', update, { passive: true });
-  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  toTop.addEventListener('click', () => { toTop.blur(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
   update();
 }
