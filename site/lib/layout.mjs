@@ -14,7 +14,7 @@ export const NAV = [
   ['/grade-10-subjects', 'Choose subjects'],
   ['/dates', 'Dates'],
   ['/nbt', 'The NBT'],
-  ['/bursaries', 'Costs & aid'],
+  ['/bursaries', 'Costs & funding'],
   ['/faq', 'FAQs'],
 ];
 
@@ -24,7 +24,7 @@ export const MORE = [
   ['/universities', '\ud83c\udfeb', 'Universities'],
   ['/grade-10-subjects', '\ud83e\udde0', 'Choose your subjects'],
   ['/nbt', '\u270d\ufe0f', 'The NBT explained'],
-  ['/bursaries', '\ud83d\udcb0', 'Costs & aid'],
+  ['/bursaries', '\ud83d\udcb0', 'Costs & funding'],
   ['/faq', '\u2753', 'FAQs'],
   ['/ask-a-university', '\ud83d\udcde', 'Ask a university'],
   ['/ask', '\ud83d\udcac', 'Ask us a question'],
@@ -124,6 +124,7 @@ ${body}
         <p class="small"><em>Find your way.</em></p>
         <p class="small">Free and independent help for South African learners choosing what to study. We are not a university and cannot apply for you.</p>
         <p class="small"><strong>Always confirm on the university\u2019s own page before you rely on anything</strong> \u2013 that is why we link to it every time.</p>
+        <p class="small">We don\u2019t list every degree or programme yet. We add them as we research each university\u2019s own documents, so this site is updated all the time \u2013 if something is missing it simply hasn\u2019t been researched yet, not that it isn\u2019t offered.</p>
       </div>
       <nav aria-label="Footer">
         ${MORE.map(([href, , label]) => `<a href="${href}">${esc(label)}</a>`).join('\n        ')}
@@ -142,6 +143,8 @@ ${body}
     </div>
   </details>
 </nav>
+
+<button class="to-top" id="to-top" type="button" aria-label="Back to the top" hidden>\u2191 <span>Top</span></button>
 
 <script type="module" src="/assets/js/app.js?v=${BUILD_V}"></script>
 ${scripts.map((s) => `<script type="module" src="${s}?v=${BUILD_V}"></script>`).join('\n')}

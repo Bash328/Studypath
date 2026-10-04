@@ -33,7 +33,7 @@ export function moneyPage(data) {
 <section class="hero hero--slim">
   <div class="wrap wrap--narrow">
     <p class="eyebrow">Paying for it</p>
-    <h1>Costs & aid: application fees, NSFAS and bursaries</h1>
+    <h1>Costs & funding: application fees, NSFAS and bursaries</h1>
     <p class="lead">The biggest reason learners miss out on funding isn’t their marks – it’s a deadline that went past while they were busy. Here’s what we’ve verified.</p>
     ${jumpNav([
       { href: 'fees', label: `${iconOrEmoji('💳')} Application fees` },
@@ -120,6 +120,6 @@ export function moneyPage(data) {
     description: `What it costs to apply to each university, plus NSFAS (closes ${prettyDate(nsfas.date_end)}) and verified bursaries – with WhatsApp deadline reminders.`,
     body,
     scripts: ['/assets/js/bursaries.js'],
-    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Costs & aid', path: '/bursaries' }],
+    breadcrumbs: [{ name: 'Home', path: '/' }, { name: 'Costs & funding', path: '/bursaries' }],
   }];
 }

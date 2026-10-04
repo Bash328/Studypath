@@ -33,6 +33,7 @@ export function universitiesIndex(data) {
   <div class="wrap">
     <p class="eyebrow">All ${stats.universities} public universities have their requirements captured – updated as we re-check them, or as universities change their own</p>
     <h1>Universities</h1>
+    <p class="small muted">We don’t list every degree or programme yet. We add them as we research each university’s own documents, so this site is updated all the time – if something is missing it simply hasn’t been researched yet, not that it isn’t offered.</p>
     <p class="lead">Pick one to see how it scores you, what its programmes need, when applications close and exactly who to contact – with the official source next to every number.</p>
   </div>
 </section>
