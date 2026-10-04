@@ -26,12 +26,24 @@ function paintStatus(row) {
     if (startDays != null && startDays >= 0) { status.textContent = startDays === 0 ? 'Today' : `In ${startDays} day${startDays === 1 ? '' : 's'}`; status.className = 'date__status is-open'; return; }
   }
   if (days == null) { status.textContent = ''; return; }
-  if (days < 0) { status.textContent = 'Closed'; status.className = 'date__status'; }
+  // Only application closing dates are "Closed"; an open day, NBT sitting or "applications opened" date just "passed".
+  const word = row.dataset.kind === 'close' || row.dataset.kind === 'funding' ? 'Closed' : (row.dataset.kind === 'open' ? 'Opened' : 'Passed');
+  if (days < 0) { status.textContent = word; status.className = 'date__status is-closed'; }
   else if (days === 0) { status.textContent = 'Today'; status.className = 'date__status is-soon'; }
   else if (days <= 30) { status.textContent = `${days} day${days === 1 ? '' : 's'} left`; status.className = 'date__status is-soon'; }
   else { status.textContent = `${days} days left`; status.className = 'date__status'; }
 }
 rows.forEach(paintStatus);
+
+// Upcoming dates first, then the ones that have passed (marked Closed / Passed), each group in date order.
+const list = $('#dates');
+if (list) {
+  const upcoming = rows.filter((r) => !r.classList.contains('is-past'));
+  const past = rows.filter((r) => r.classList.contains('is-past')).reverse();
+  [...upcoming, ...past].forEach((r) => list.appendChild(r));
+}
+// Past dates stay visible by default so a student can see what has closed.
+if (showPast) showPast.checked = true;
 
 function apply() {
   const uni = uniFilter.value;

@@ -415,6 +415,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--brand); outline:
 .date__status:empty { display: none; }
 .date__status.is-soon { background: var(--accent-soft); color: var(--accent-ink); }
 .date__status.is-open { background: var(--good-soft); color: var(--good); }
+.date__status.is-closed { background: var(--line); color: var(--ink-soft); text-transform: uppercase; letter-spacing: .03em; }
 .date__title { margin-bottom: .2rem; }
 .date.is-past { opacity: .62; border-left-color: var(--line); }
 .dates--plain .date.is-past { opacity: 1; }
