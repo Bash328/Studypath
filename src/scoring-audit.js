@@ -87,13 +87,13 @@ export const SCORING_AUDIT = {
   },
 
   UJ_APS_exLO: {
-    status: 'partial',
-    sources: [{ label: 'UJ faculty undergraduate yearbooks (seen via search results)', url: 'https://www.uj.ac.za/faculties/health-sciences/undergraduate/' }],
+    status: 'verified',
+    sources: [{ label: 'UJ 2027 Undergraduate Prospectus, “How to determine your Admission Point Score (APS)” (p. 15-16)', url: 'https://www.uj.ac.za/wp-content/uploads/2026/07/uj_undergrad_prospectus2027_online_25jun2026.pdf' }],
     confirmed: [
-      'Six subjects on the NSC 1-7 scale, Life Orientation excluded.',
-      'A programme’s compulsory subjects are counted first, then the best of the remaining subjects.',
+      'Six subjects, added up on the NSC 1-7 scale (7 = 80-100%, 6 = 70-79%, 5 = 60-69%, 4 = 50-59%, 3 = 40-49%, 2 = 30-39%, 1 = 0-29%), maximum 42.',
+      'Life Orientation is not counted. The prospectus’s own worked example (65%, 71%, 61%, 68%, 81%, 86% = 5+6+5+5+7+7 = 35) matches our calculation.',
     ],
-    gaps: ['UJ’s documents blocked automated access, so we only saw these rules as excerpts of UJ’s own pages, not the full pages. Confirm on the UJ programme page.'],
+    gaps: ['The prospectus’s general section says “the six school subjects” and its Orange Carpet section says “six best”. Counting a programme’s compulsory subjects first, then the best of the rest, comes from the faculty entry rules; it only changes your score if a compulsory subject is one of your weaker marks.'],
   },
 
   UKZN_APS_exLO: {
