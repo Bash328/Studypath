@@ -4,7 +4,7 @@
 import { el, store, track } from './core.js';
 
 const SEEN = 'studypath.share.seen';
-const TEXT = 'Studypath shows which South African university programmes your marks can get you into, scored the way each university does it.';
+const TEXT = 'Studypath shows which South African university degrees your marks can get you into, scored the way each university does it.';
 
 let dialog;
 

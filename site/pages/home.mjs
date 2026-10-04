@@ -113,8 +113,8 @@ export function home(data) {
 
   return [{
     path: '/',
-    title: 'Studypath – which programmes can your marks actually get you into?',
-    description: 'Free South African career and university guide. Put in your marks and see which programmes you qualify for – scored the way each university scores, with a link to the official page for every number.',
+    title: 'Studypath – which degrees can your marks actually get you into?',
+    description: 'Free South African career and university guide. Put in your marks and see which degrees you qualify for – scored the way each university scores, with a link to the official page for every number.',
     body,
     scripts: ['/assets/js/home.js'],
     jsonLd: [{
