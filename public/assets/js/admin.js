@@ -14,7 +14,7 @@ let show = 'new';
 
 function login(message) {
   const input = el('input', { type: 'password', id: 'admin-key', autocomplete: 'current-password', 'aria-label': 'Admin key' });
-  const form = el('form', { class: 'card' },
+  const form = el('form', { class: 'card admin-login' },
     el('label', { for: 'admin-key' }, 'Admin key'), input,
     message ? el('p', { class: 'small', style: 'color:var(--bad)' }, message) : null,
     el('div', { class: 'btn-row' }, el('button', { class: 'btn btn--primary', type: 'submit' }, 'Open')));
@@ -70,7 +70,7 @@ function render() {
     el('div', { class: 'chip-row' }, ['new', 'answered', 'ignored'].map((s) =>
       el('button', { class: 'chip', type: 'button', 'aria-pressed': String(show === s), onclick: () => { show = s; render(); } }, `${s[0].toUpperCase()}${s.slice(1)} (${count(s)})`))),
     el('div', { class: 'stack' }, shown.length ? shown.map(card) : el('p', { class: 'muted' }, `Nothing ${show} right now.`)),
-    el('p', {}, el('button', { class: 'btn btn--ghost', type: 'button', onclick: () => { setKey(''); login(); } }, 'Lock')));
+    el('p', { class: 'admin-lock' }, el('button', { class: 'btn btn--ghost', type: 'button', onclick: () => { setKey(''); login(); } }, 'Lock')));
 }
 
 getKey() ? load() : login();

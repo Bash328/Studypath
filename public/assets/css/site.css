@@ -613,3 +613,9 @@ dialog.share p { margin: 0 0 1rem; }
 .share__actions .btn { width: 100%; justify-content: center; text-align: center; }
 .share__status { min-height: 1.4em; margin: 0 0 6px; font-weight: 600; color: var(--brand-ink); }
 .share__close { width: 100%; justify-content: center; border-color: transparent; }
+
+/* Admin inbox */
+.admin-login label { display: block; margin-bottom: 10px; font-weight: 700; }
+.admin-login input { display: block; width: 100%; max-width: 360px; margin-bottom: 16px; }
+.admin-lock { margin-top: 32px; }
+#admin .chip-row { margin-bottom: 20px; }
